@@ -1,0 +1,68 @@
+<ion-content [fullscreen]="true" class="">
+
+    <ion-grid class="myprofile-header">
+        <ion-row class="settings-header-row ion-padding-vertical">
+            <ion-col size="4" class="">
+                <img (click)="backBtnClick()" src="assets/images/arrow-left.svg" class="previous-icon">
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <img routerLink="/tablinks/my-profile" src="assets/images/myprofile-pocn-logo.svg" class="header-logo">
+            </ion-col>
+            <ion-col size="4" class="align-right audio-video-call">
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid class="mt-24">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="preferenceBtnClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Preferences</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal" [hidden]="hidePatientConnectBtn">
+            <ion-col size="12" class="">
+                <ion-button (click)="patientConnectBtnClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Patient connect settings</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="faqClick()" fill="clear" class="blue-bg-button width-100p logout-btn">FAQ</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="privacyClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Privacy Policy</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="contactUsClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Contact Us</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="logoutBtnClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Logout <span *ngIf="setLogoutLoader"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="">
+        <ion-row class="ion-padding-vertical ion-padding-horizontal">
+            <ion-col size="12" class="">
+                <ion-button (click)="deleteBtnClick()" fill="clear" class="blue-bg-button width-100p logout-btn">Delete Account
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

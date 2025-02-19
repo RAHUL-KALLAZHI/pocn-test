@@ -1,0 +1,189 @@
+<ion-app>
+    <ion-content [fullscreen]="true" class="post-page">
+
+        <ion-grid>
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left settings">
+                    <button fill="clear"><img src="assets/images/arrow-left.svg " class="previous-icon" (click)="goToPost()"></button>
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <img [routerLink]="['/tablinks/my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call"></ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Post starts-->
+        <ion-grid [hidden]="showSharePostSuccess" class="mt-75">
+            <ion-row class="ion-no-padding-vertical accept-request">
+                <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                    <img src="assets/images/accept-request.svg" class="mr-8">
+                    <ion-text>You just shared a post successfully. </ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid>
+            <ion-row class="post-content-section ion-padding-horizontal mynetwork mt-8">
+                <ion-item class="ionitem-padding-remove ion-no-padding search-datas " lines="none" *ngIf="postFrom == 'admin' || postFrom == 'miniflux'">
+                    <img (error)="onProfileImgError($event)" src="{{profileImg}}" class=" mr-8 mynetwork-img">
+                    <h3 class="admin-title">{{postFromData}}</h3>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding search-datas" lines="none" *ngIf="postFrom != 'admin' && postFrom != 'miniflux'">
+                    <img (error)="onProfileImgError($event)" *ngIf="!fileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(userDataId)">
+                    <img (error)="onProfileImgError($event)" *ngIf="fileExtension" src="{{profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(userDataId)">
+                    <!-- <img *ngIf="!fileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(userDataId)"> -->
+                    <!-- <img *ngIf="profileImage != null" src="{{profileImage}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(userDataId)"> -->
+                    <!-- <img *ngIf="this.fileExtension" src="{{profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)"> -->
+                    <!-- <img *ngIf="viewPost.fileExtension" src="{{viewPost.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)"> -->
+
+                    <!-- <img *ngIf="fileExtension" src="{{profileImgUrl}}{{userDataId}}.{{fileExtension}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)"> -->
+                    <ion-label (click)="basicProfileClick(userDataId)">{{fullName | titlecase}}</ion-label>
+                    <span class="my-network-chip">
+              <div class="chip-content">
+                  <ion-chip  *ngIf="specialty != 'Unspecified' && specialty != 'Other (i.e., a specialty other than those appearing above)' && specialty" class="custom-chip truncate speciality-tag">{{specialty}}</ion-chip>
+                  <ion-chip *ngIf="providerType" class="custom-chip">{{providerType}}</ion-chip>
+              </div>
+          </span>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" [hidden]="!feedTitle">
+                    <ion-text class="title-text">
+                        {{feedTitle}}
+                    </ion-text>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding quote" lines="none" *ngIf="groupViewContentLink && parentPostContent" (click)="getParentPosts(parentPostId)">
+                    <span *ngIf="parentPostContent">
+              <img src="assets/images/quote-green.svg" class="mr-8 quote-icon" >
+          <ion-text class="read-more-data">
+              <p>{{newContentDescription}}</p>
+          </ion-text>
+          </span>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding quote" lines="none" [hidden]="groupViewDataContentLink" (click)="getParentPosts(parentPostId)">
+                    <span *ngIf="parentPostContent">
+            <img src="assets/images/quote-green.svg" class="mr-8 quote-icon" >
+        <ion-text class="read-more-data">
+          <p>Check out my new Group</p>
+                  <p class="faq" (click)="groupUrl('postContent')">{{descDataContentLink}}</p><br>
+                  <p>{{ newContentDescription}}</p>
+                  </ion-text>
+                  </span>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" *ngIf="groupViewLink">
+                    <ion-text *ngIf="description">
+                        {{description}} <a *ngIf="feedUrl" [href]="feedUrl" target="_blank">more</a>
+                    </ion-text>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-detail-description mt-8 width-100p" lines="none" [hidden]="groupViewLink" (click)="groupUrl('normalPost')">
+                    <ion-text>
+                        <span>Check out my new Group</span><br>
+                        <span class="faq">{{descDataLink}}</span><br>
+                        <span>{{ newDescription}}</span> </ion-text>
+                </ion-item>
+                <!-- <ion-item class="ionitem-padding-remove ion-no-padding quote" lines="none" *ngIf="groupViewContentLink && parentPostContent != 'null'" (click)="getParentPosts(parentPostId)">
+                    <span>
+                <img src="assets/images/quote-green.svg" class="mr-8 quote-icon" >
+            <ion-text class="read-more-data">
+                <p>{{parentPostContent}}</p>
+            </ion-text>
+            </span>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding quote" lines="none" [hidden]="groupViewContentLink" (click)="getParentPosts(parentPostId)">
+                    <span *ngIf="parentPostContent">
+            <img src="assets/images/quote-green.svg" class="mr-8 quote-icon" >
+        <ion-text class="read-more-data">
+          <p *ngIf="descDataContentLink">Check out my new Group</p>
+                  <p class="faq" (click)="groupUrl('postContent')">{{descDataContentLink}}</p><br>
+                  <p>{{ newContentDescription}}</p>
+                  </ion-text>
+                  </span>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" *ngIf="groupViewLink">
+                    <ion-text *ngIf="description">
+                        {{description}}
+                    </ion-text>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" [hidden]="groupViewLink" (click)="groupUrl('normalPost')">
+                    <ion-text>
+                        <span *ngIf="descDataLink">Check out my new Group</span><br>
+                        <span class="faq">{{descDataLink}}</span><br>
+                        <span>{{ newDescription}}</span> </ion-text>
+                </ion-item> -->
+                <!-- <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" [hidden]="hideDetailContent">
+                    <ion-text *ngIf="feedContent">
+                        {{feedContent}}
+                    </ion-text>
+                </ion-item> -->
+
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-16 author-item width-100p" lines="none" *ngIf="feedAuthor">
+                    <ion-text class="author-text">
+                        Author: {{feedAuthor}}
+                    </ion-text>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-detail-description width-100p source-item" lines="none" *ngIf="feedUrl">
+                    <ion-text *ngIf="feedUrl">
+                        Source:
+                    </ion-text>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none" *ngIf="feedUrl">
+                    <ion-text class="faq">
+                        {{feedUrl}}
+                    </ion-text>
+                </ion-item>
+                <!-- <ion-item *ngIf="hideLinkPreview">
+                    <div class="preview">
+                        <div [hidden]="!preview.image">
+                            <img class="image" [src]="preview.image">
+                        </div>
+                        <div class="preview-text">
+                            <div [hidden]="!preview.title" class="title">
+                                <span>{{preview.title}}</span>
+                            </div>
+                            <div [hidden]="!preview.description" class="description">
+                                <span>{{preview.description}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item> -->
+                <ion-item *ngIf="!imageType && this.postAttachment" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                    <!-- <img src="{{imageUrl}}{{this.postAttachment}}" class="media"> -->
+                    <img (error)="onImgError($event, this.postAttachment)" src="{{this.postImageUrl}}" class="media">
+                </ion-item>
+                <ion-item *ngIf="!videoType && this.postAttachment" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                    <video src="{{imageUrl}}{{this.postAttachment}}" class="media" controls></video>
+                </ion-item>
+                <ion-item *ngIf="!audioType && this.postAttachment" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                    <!-- <audio id="audio " src="{{imageUrl}}{{this.postAttachment}}"> -->
+                    <audio controls>      <source src="{{imageUrl}}{{this.postAttachment}}" type="{{this.fileType}}" />   </audio>
+                    <!-- </audio> -->
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding post-user-description width-100p mt-24 separator" lines="none">
+                    <ion-col size="4" class="duration">
+                        <ion-text> {{postDate | timeAgo}}</ion-text>
+
+                    </ion-col>
+                    <ion-col size="8" class="like-comment">
+
+                        <span class="like-area" *ngIf="showUnLikePost == 'unLike'">
+            <div class="likepost" (click)="likePost('liked')"></div>
+            <i *ngIf="likeCount > 0">{{likeCount}}</i>
+          </span>
+                        <span class="like-area" *ngIf="showUnLikePost == 'like'">
+            <div class="liked-post" (click)="likePost('unLiked')"></div>
+            <i>{{likeCount}}</i>
+          </span>
+                        <span class="comment" (click)="commentPopover(commentData)">
+                <img src="assets/images/quote.svg" class="mr-8 like-comment-img ">
+              </span>
+                        <span class="share">
+                <img src="assets/images/share.svg " (click)="showSharePopover(postId)" class="mr-8 like-comment-img">
+              </span>
+                        <span class="more" [ngClass]="{ 'remove-disable': userDataId !==userId} " (click)="userDataId == userId && deletePostPopover() ">
+                <img src="assets/images/more.svg " class="mr-8 like-comment-img more ">
+              </span>
+                    </ion-col>
+                </ion-item>
+            </ion-row>
+        </ion-grid>
+
+    </ion-content>
+
+</ion-app>

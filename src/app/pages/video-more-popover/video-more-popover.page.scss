@@ -1,0 +1,26 @@
+.mute-caller, .unmute-caller{
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+}
+.drop-caller{
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #DF1642;
+}
+.edit-delete-popover img{
+    margin-right: 8px;
+    position: relative;
+    top: 4px;
+}
+.fullscreen ion-icon{
+    font-size: 22px;
+    margin-right: 10px;
+    position: relative;
+    top: 5px;
+    color: rgb(122 168 189);
+}

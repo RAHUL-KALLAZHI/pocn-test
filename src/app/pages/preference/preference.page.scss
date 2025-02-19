@@ -1,0 +1,428 @@
+.personalization-profile-section{
+    
+}
+.item-content {
+    width: 100%;
+    display: flex;
+  }
+ion-row.personalization-profile-section ion-item {
+    width: 100% !important;
+}
+.preference-checkbox-section ion-checkbox, .preference-checkbox-section ion-label{
+    float: left;
+    margin: 0;
+}
+.ccp-label{
+margin-left: 0 !important;
+}
+.preference-checkbox-section ion-label {
+    position: relative;
+    margin-left: 15px;
+}
+.communication-channel{
+    width: 100%;
+    display: inline-block !important;
+}
+.communication-channel-sms{
+    width: 100%;
+    float: left;
+}
+span.primary-checkbox, .opportunities-checkbox {
+    width: 100%;
+    margin: 10px 0;
+}
+.preference-checkbox-section ion-item ion-label {
+    position: relative;
+    top: 5px;
+}
+.opportunities-checkbox ion-label {
+    margin-left: 10px;
+    position: relative;
+    top: -8px;
+    color: rgb(50 50 50) !important;
+}
+.opportunities-section h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: rgb(66 66 66);
+}
+.opportunities-section{
+    padding: 0 16px;
+}
+.opportunities-title h2{
+    font-size: 20px;
+    margin-bottom: 0;
+    color: rgb(66 66 66);
+}
+.opportunity-area {
+    width: 100%;
+    clear: both;
+    margin-bottom: 10px;
+    float: left;
+}
+.preference-form{
+    width: 100%;
+}
+span.toggle-section {
+    float: right;
+    position: relative;
+    top: -15px;
+}
+ion-row.preference-success-msg {
+    
+}
+.user-profile-toggle ion-toggle {
+    padding-top: 5px;
+}
+.user-profile-toggle span{
+    color: #000;
+    position: relative;
+    top: -11px;
+}
+.show-hide-label {
+    float: left;
+}
+ion-list.show-hide-list ion-label {
+    float: left;
+    margin-bottom: 0 !important;
+    position: relative;
+    top: 8px;
+}
+
+ion-list.show-hide-list {
+    padding: 10px 0;
+    border-bottom: 1px solid rgb(222 222 222);
+}
+ion-list.show-hide-list ion-toggle {
+    float: right;
+}
+.show-hide-content{
+    display: block !important;
+    padding: 15px 0;
+}
+.user-profile-toggle{
+    float: right;
+}
+.update-message-success {
+    color: rgb(0 128 0);
+}
+.update-message-error {
+    color: rgb(255 0 0);
+}
+.topicsofinterest ion-label, .topicsofinterest ion-select{
+    width: 100%;
+}
+// .topicsofinterest ionic-selectable span{
+//    display: flex;
+// }
+.topicsofinterest-outer ionic-selectable{
+    padding: 7px 10px !important;
+    max-width: 100% !important;
+    height: 39px;
+    overflow: hidden;
+}
+ion-row.show-hide-section, ion-row.show-hide-section ion-list {
+    width: 100%;
+    background: #fff;
+}
+.communication-channel ion-list{
+    background: #fff !important;
+    padding: 0 !important;
+}
+span.primary-checkbox-pref {
+    float: left !important;
+    position: relative;
+    top: 4px;
+}
+span.primary-checkbox-pref ion-checkbox {
+    position: relative;
+    top: 3px;
+    float: left;
+}
+.ml-15{
+    margin-left: 15px;
+  }
+.disclaimer ion-label {
+    font-size: 13px !important;
+    color: rgb(130 130 130) !important;
+}
+.specialty-select, .specialty-select ion-select {
+    width: 100%;
+}
+.specialty-select ion-select {
+    max-width: 100% !important;
+}
+.specialty-select ion-input{
+    padding: 0 10px !important;
+}
+.preference-email, .preference-sms{
+    width: 100%;
+    float: left;
+    margin-right: 0px;
+}
+.preference-email-sms {
+    width: 25% !important;
+    float: left;
+}
+.preference-email-sms ion-input{
+    padding: 0 10px !important;
+}
+.ccp-title span {
+    color: rgb(137 137 137);
+    font-size: 13px;
+    display: block;
+}
+ion-button.add-specialty {
+    font-size: 20px;
+    color: rgb(0 123 181) !important;
+    opacity: 9;
+    position: relative;
+    top: -5px;
+}
+.primary-specialty-section {
+    border: 1px solid rgb(233 233 233);
+    margin: 5px 0;
+    padding: 10px 16px;
+    width: 100%;
+}
+.primary-specialty-select p{
+    float: left;
+    margin-bottom: 10px;
+    color: rgb(66 66 66);
+    margin-top: 0;
+    font-size: 17px;
+    font-weight: 500;
+    width: 100%;
+}
+.remove-specialty ion-icon {
+    color: rgb(255 0 0);
+    font-size: 20px;
+}
+button.remove-specialty {
+    background: none;
+}
+
+// .primary-specialty-select span{
+//     float: right;
+// }
+.delete-icon {
+    float: right; 
+}
+.primary-specialty-select {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid rgb(233 233 233);
+    margin-bottom: 8px;
+}
+.primary-specialty-checkbox ion-radio, .primary-specialty-checkbox ion-label, .primary-specialty-checkbox ion-button {
+    float: left;
+}
+.primary-specialty-checkbox ion-radio {
+    position: relative;
+    top: 2px;
+    margin: 0;
+}
+.primary-specialty-checkbox ion-label {
+    margin-left: 10px;
+    margin-right: 20px;
+    color: rgb(66 66 66);
+    position: relative;
+    top: 2px;
+}
+.primary-specialty-checkbox ion-button {
+    position: relative;
+    top: -7px;
+    color: rgb(255 0 0);
+    margin-bottom: -5px;
+    margin-left: 0;
+}
+.primary-specialty-select:last-child{
+    border-bottom: 0 !important;
+    margin-bottom: -5px;
+}
+  .user-icon {
+    font-size: 39px;
+  }
+  ion-toolbar.profile-icon-right {
+    --background: rgb(0 0 0 / 0%);
+  }
+  .usersettings-top-right{
+    max-width: 80%;
+    margin: auto;
+  }
+  .personalization-profile-section h1{
+    margin-top: 0;
+    color: #000;
+  }
+
+  ion-col{
+    padding: 0;
+}
+ion-grid {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.myprofile-header-row{
+    padding: 24px 0 27px 0 ;
+}
+.personalization-profile-section h2{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    color: rgb(50 50 50);
+    margin-top: 24px;
+}
+.personalization-profile-section h3{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    color: rgb(50 50 50);
+    margin-top: 0;
+}
+.ccp-title ion-label{
+    padding-left: 0;
+}
+.disclaimer ion-text{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 120%;
+    letter-spacing: -0.01em;
+    color: #000;
+
+}
+
+.ccp-title ion-label{
+    margin-bottom: 0 !important;
+}
+.show-hide-content h3{
+    float: left;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    color: rgb(50 50 50);
+    margin-top: 0;
+}
+ion-toggle {
+    zoom: 1;
+  }
+  .ps-title{
+    position: relative;
+    top: 8px;
+  }
+  .myprofile-header, .p-16{
+    padding: 0 16px;
+  }
+
+  ion-radio {
+    --border-radius: 4px;
+    --inner-border-radius: 4px;
+  
+    --color: #ddd;
+    --color-checked: #00A9E0;
+  }
+  
+  ion-radio.ios {
+    width: 20px;
+    height: 20px;
+  
+    border: 2px solid rgb(134, 134, 134);
+    background: #fcfcfc !important;
+    border-radius: 4px;
+  }
+  
+  .radio-checked.ios {
+    border-color: #00A9E0;
+  }
+
+  ion-checkbox {
+    --size: 27px;
+    --background-checked: #00A9E0 !important;
+    --ion-item-background: rgb(252 252 252);
+  }
+  
+  ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #00A9E0;
+    --ion-background-color: #fcfcfc !important;
+  }
+  .ccp-section-inner {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.ccp-section-inner ion-label {
+    top: 0px;
+}
+.show-hide-content ion-toggle {
+    //padding: 0 !important;
+}
+ionic-selectable.areas-interest {
+    height: 38px;
+    overflow: hidden;
+}
+img.header-logo {
+    height: 30px;
+}
+.main-title ion-label{
+    font-weight: 500 !important;
+    position: relative;
+    top: 4px;
+}
+// ion-toggle.toggle-checked::part(handle) {
+//     background: #fff;
+//   }
+//   ion-toggle::part(track),
+//   ion-toggle.toggle-checked::part(track) {
+//     background:#red !important;
+//   }
+.mobile-alert-text{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 120%;
+    color: rgb(88 81 171);
+    margin-bottom: 12px;
+    
+}
+
+
+.preference-checkbox-section {
+    width: 50%;
+    float: left;
+    margin-bottom: 15px;
+}
+.accept-request{
+    background: #424242;
+    padding: 12px 16px;
+}
+.ingore-request{
+    background: #FF8038;
+    padding: 12px 16px;
+}
+.accept-request ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #E0E0E0;
+    position: relative;
+    top: -5px;
+}
+.ingore-request ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #FFFFFF;
+    position: relative;
+    top: -5px;
+}
+.add-specialty ion-icon{
+    color: #00A9E0 !important;
+}
+
+
+    
+    

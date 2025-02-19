@@ -1,0 +1,13 @@
+<div class="background-opts contact-edit-popover delete-popover" [ngStyle]="background">
+  <ion-col class="edit-delete-header">
+    <h2>Select Profile Image<button class="close" (click)="dismissModal()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+</ion-col>
+<ion-content [scrollEvents]="true">
+  <ion-row style="margin-top: 5px">
+  <ion-row *ngFor="let image of imageUrlArray; let i = index" class="image-container" >
+    <img (click)="goToImageModal(i)" class="uploaded-img" [src]="image" />
+  </ion-row>
+</ion-row>
+</ion-content>
+</div>
+

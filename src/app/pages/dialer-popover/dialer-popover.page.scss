@@ -1,0 +1,90 @@
+.contact-edit-popover {
+    width: 100%;
+}
+
+.edit-delete-header button {
+    background: none;
+    float: right;
+    position: absolute;
+    right: 14px;
+}
+
+.edit-delete-header h2 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+}
+
+.primary-checkbox ion-label {
+    position: relative;
+    top: -8px;
+    margin-left: 10px;
+}
+
+ion-row.contact-form-row {
+    margin-bottom: 5px;
+}
+
+.update-buttons {
+    margin-top: 13px;
+}
+
+.select-caller-id {
+    background: rgb(245 245 245);
+    border-radius: 9px;
+}
+
+.calleridnumber {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    color: rgb(0 123 181) !important;
+    margin-bottom: 6px;
+}
+
+.location {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 110%;
+    color: rgb(97 97 97);
+}
+
+.select-caller-id {
+    background: none;
+    border-radius: 0;
+    padding: 8px 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.dialer-popover {
+    padding-left: 11px;
+    padding-right: 11px;
+}
+
+.show-select .select-caller-id {
+    background: #EEEEEE !important;
+    border-radius: 9px;
+    border: 0 !important;
+}
+
+.show-select .select-caller-id .calleridnumber,
+.show-select .select-caller-id .location {
+    color: #00A9E0 !important;
+}
+
+.show-select .select-caller-id {
+    color: #00A9E0 !important;
+    border-color: rgb(12 17 49);
+}
+
+#scroll-list {
+    height: 200px;
+}
+.callerid-icon {
+    text-align: center;
+    width: 20px;
+}

@@ -1,0 +1,60 @@
+<ion-content class="lookup-modal-section">
+    <!--<span class="load-page" *ngIf="pageLoaderStatus"></span>-->
+  <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+    <ion-row>
+      <ion-col>
+        <h2 class="lookup-title">NPI Lookup
+          <span class="modal-close">
+            <button fill="clear" (click)="closeLookUp()" class="modal-close-button lookupmodal-close">
+              <img src="assets/images/close.svg">
+            </button>
+          </span>
+        </h2>
+
+      </ion-col>
+     
+    </ion-row>
+
+    <ion-row [hidden]="!pageLoaderStatus ">
+      <span  class="loader-npi ">
+        <img src="./../assets/images-pocn/ajax-loader.gif ">
+      </span>
+    </ion-row>
+
+    <ion-row class="ion-padding-horizontal lookup-modal-info" [hidden] = "pageLoaderStatus">
+      <ion-col class="lookup-modal-col" *ngIf="npiResults.length > 0">
+       <p>These are the closest matches to the information you provided. Tap to select from the list below.</p>
+      </ion-col>
+     </ion-row>
+    
+    <ion-row [hidden] = "pageLoaderStatus" class="ion-padding-horizontal npi-details-main" (click)="selectLookUp(npi)" *ngFor="let npi of npiResults" fill="clear" >
+      <ion-col class="lookup-col" *ngIf="npiResults.length > 0">
+       <h2 class="npi-number">NPI#{{npi.npi}}</h2>
+       <p class="npi-details">
+         <span class="name">{{npi.firstName}} {{npi.lastName}}, {{npi.hcpDegreeGroupCode}}</span>
+         <span class="location">{{npi.hcpLocality}}, {{npi.hcpState}}</span>
+         <!-- <span class="location">{{npi.hcoLocality}}<ion-text *ngIf="npi.hcpState"> , </ion-text>
+          {{npi.hcpState}}</span> -->
+       </p>
+      </ion-col>
+    </ion-row>
+    <ion-row  [hidden] = "pageLoaderStatus" class="ion-padding-horizontal npi-details-main" *ngIf="npiResults.length==0">
+      <ion-col class="lookup-modal-col">
+        <p>We couldn’t find any matches for the information you provided. Please check your entry and try again.</p>
+      </ion-col>
+     </ion-row>
+
+   
+  <!-- <ion-row id="select-npi-results" *ngIf="npiResults.length > 0">
+      <ion-col class="ion-padding-vertical">
+        <div class="">
+          <h2 class="selcet-npi">Click on the name to select</h2>
+          <div name="npi-results-div" id="npi-results-div">
+            <ion-button (click)="selectLookUp(npi)" fill="clear" class="npi-results-row" *ngFor="let npi of npiResults">
+              {{ npi.firstName }} {{ npi.lastName }} , {{ npi.cbsaName }} , {{ npi.hcpType }} </ion-button> <br>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>  -->
+  </form>
+</ion-content> 

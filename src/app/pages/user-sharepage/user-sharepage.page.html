@@ -1,0 +1,109 @@
+<!-- <app-headers></app-headers> -->
+<ion-app class="post-share">
+    <ion-content [fullscreen]="true" class="post-page">
+        <!-- <ion-app class="post-page"> -->
+        <ion-grid>
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left settings">
+                    <button fill="clear" [routerLink]="['/tablinks/post']"><img src="assets/images/arrow-left.svg " class="previous-icon"></button>
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <img [routerLink]="['/tablinks//my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                    <img src="assets/images/video-call.svg" class="mr-24" (click)="patientConnectStatusCalls('video')">
+                    <img src="assets/images/audio-call.svg" (click)="patientConnectStatusCalls('audio')">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Post starts-->
+        <!-- <ion-grid [hidden]="showSharePostSuccess" class="mt-75">
+            <ion-row class="ion-no-padding-vertical accept-request">
+                <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                    <img src="assets/images/accept-request.svg" class="mr-8">
+                    <ion-text>You just shared a post successfully. </ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-grid> -->
+        <ion-grid class="ion-padding-horizontal" [hidden]="hideSearchData">
+            <ion-row class="ion-no-padding-vertical accept-request" [hidden]="showSharePostSuccess">
+                <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                    <img src="assets/images/accept-request.svg" class="mr-8">
+                    <ion-text>You just shared a post successfully. </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p" *ngFor="let users of userData">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img (error)="onProfileImgError($event,users.userId, users.fileExtension)" *ngIf="!users.fileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(users.userId)">
+                        <img (error)="onProfileImgError($event,users.userId, users.fileExtension )" *ngIf="users.fileExtension" src="{{users.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(users.userId)">
+                        <!-- <img src="{{defaultImg}}" class="mr-8 mynetwork-img" (click)="basicProfileClick(users.userId)"> -->
+                        <!-- <img src="{{defaultImg}}" class="connection-request-img"> -->
+                        <ion-label (click)="basicProfileClick(users.userId)">{{users.fullName}}</ion-label>
+                        <span class="my-network-chip">
+                        <div class="chip-content">
+                            <ion-chip [outline]="true" *ngIf="users.primarySpecialtyDesc!= 'Unspecified' && users.primarySpecialtyDesc != 'Other (i.e., a specialty other than those appearing above)' && users.primarySpecialtyDesc"  class="custom-chip truncate speciality-tag">{{users.primarySpecialtyDesc}}</ion-chip>
+                            <ion-chip [outline]="true"  *ngIf="users.providerType" class="custom-chip tag-limit">{{users.providerType}}</ion-chip>
+                        </div>
+                        <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                          <ion-checkbox color="secondary" value="{{users.userId}}" (click)="setCheck(users.userId)" name="option"></ion-checkbox>
+
+                          <!-- <input type="checkbox"  name="nameCheck" (change)="GetStats($event)"> -->
+                        </ion-item>
+                    </span>
+                    </ion-item>
+                </ion-list>
+            </ion-row>
+        </ion-grid>
+        <!--search user data-->
+        <div class="ion-no-padding emtpyresult" [hidden]="emptyShowResult">
+            <h1 class="no-connection-msg ">No search result found</h1>
+        </div>
+        <span [hidden]="searchLoaderStatus" class="loader-npi ">
+        <img src="./../assets/images-pocn/ajax-loader.gif ">
+    </span>
+        <ion-grid class="ion-padding-horizontal" [hidden]="showSearchData">
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p" *ngFor="let users of userSearchData">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img (error)="onProfileImgError($event,users.userId, users.fileExtension)" *ngIf="!users.fileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(users.userId)">
+                        <img (error)="onProfileImgError($event,users.userId, users.fileExtension )" *ngIf="users.fileExtension" src="{{users.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(users.userId)">
+                        <!-- <img src="{{defaultImg}}" class="connection-request-img"> -->
+                        <ion-label (click)="basicProfileClick(users.userId)">{{users.fullName}}</ion-label>
+                        <span class="my-network-chip">
+              <div class="chip-content">
+                  <ion-chip [outline]="true" *ngIf="users.primarySpecialtyDesc!= 'Unspecified' && users.primarySpecialtyDesc != 'Other (i.e., a specialty other than those appearing above)' && users.primarySpecialtyDesc"  class="custom-chip truncate speciality-tag">{{users.primarySpecialtyDesc}}</ion-chip>
+                  <ion-chip [outline]="true"  *ngIf="users.providerType" class="custom-chip tag-limit">{{users.providerType}}</ion-chip>
+              </div>
+              <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                <!-- <ion-checkbox (click)="setCheck(users.userId)"
+                slot="start"></ion-checkbox> -->
+                <ion-checkbox color="secondary" value="{{users.userId}}" (click)="setCheck(users.userId)" name="option"></ion-checkbox>
+
+                <!-- <input type="checkbox"  name="nameCheck" (change)="GetStats($event)"> -->
+              </ion-item>
+          </span>
+                    </ion-item>
+                </ion-list>
+            </ion-row>
+        </ion-grid>
+    </ion-content>
+    <ion-grid class="post-search width-100p">
+        <ion-row class="width-100p white-bg">
+            <ion-col size="9">
+                <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+                    <!-- <ion-searchbar placeholder=" " [(ngModel)]="searchText" enterkeyhint="go " (search)="searchPosts(searchText) " inputmode="search " class="network-searchbar"></ion-searchbar> -->
+
+                    <ion-searchbar placeholder=" " [(ngModel)]="searchText" enterkeyhint="go" (search)="searchUserData(searchText)" inputmode="search" class="network-searchbar"></ion-searchbar>
+                </ion-item>
+            </ion-col>
+            <ion-col size="3">
+                <ion-button fill="clear" [ngClass]="{'blue-bg-button': eventUserId.length > 0, 'grey-bg-button':(eventUserId.length < 1 || hideShareUserbutton == false)}" (click)="shareUserPost()">Share</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-app>
+
+
+<!--<app-main-tabs></app-main-tabs>-->

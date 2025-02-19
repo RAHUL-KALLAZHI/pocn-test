@@ -1,0 +1,19 @@
+<ion-list class="edit-delete-popover videomorepopover">
+    <ion-item lines="none" class="edit ion-no-padding"  (click)="muteParticipants()" *ngIf="isMuted">
+        <ion-label class="mute-caller"><img src="assets/images/mute-caller.svg" class="editpopover-icon" /> Mute
+            Caller</ion-label>
+    </ion-item>
+    <ion-item  lines="none" class="edit ion-no-padding" *ngIf="!isMuted" (click)="muteParticipants()">
+      <ion-label class="unmute-caller"><img src=" assets/images/mute-caller.svg " class="editpopover-icon" /> Unmute Caller</ion-label>
+  </ion-item>
+
+    <ion-item lines="none " class=" delete ion-no-padding "  (click)="disconnectParticipant()">
+        <ion-label class="drop-caller"><img src="assets/images/delete-popover.svg " class="deletepopover-icon" /> Drop
+            Caller</ion-label>
+    </ion-item>
+    <ion-item lines="none " class="ion-no-padding fullscreen" (click)="onClickParticipant(listTrack)">
+        <ion-label class="drop-caller"><ion-icon name="expand-outline" class="editpopover-icon" ></ion-icon> Full Screen</ion-label>
+    </ion-item>
+    <!-- edit ion-no-padding -->
+</ion-list>
+

@@ -1,0 +1,361 @@
+<ion-grid class="contact-edit-popover workhistory-slide">
+  <ion-header class="edit-delete-header">
+    <h2>
+      <div *ngIf="!disablePrevBtn" style="position: absolute;top: 0%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()"> 
+       <img src="assets/images/arrow-left.svg" class="previous-icon">
+      </div>
+      Add work History <button class="close" (click)="close()" fill="clear">
+        <img src="assets/images/close.svg">
+      </button>
+    </h2>
+  </ion-header>
+  <ion-content>
+    <ion-slides #mySlider pager="true" [options]="slideOpts" (ionSlideDidChange)='ionSlideDidChange()' class="">
+      <ion-slide class="startmonth-section">
+        <!-- <h1>Slide 1</h1> -->
+        <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate>
+          <div *ngFor="let workHistory of workHistoryList; let i = index;">
+            <ion-row class="contact-form-row" *ngIf="i==0">
+              <ion-col class="align-left">
+                <ion-label>Employer <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
+                  <ion-searchbar placeholder="" [(ngModel)]="workHistory.healthOrganization" #healthOrgzn="ngModel" name="healthOrganization" (search)="searchUser(workHistory.healthOrganization,i)"  enterkeyhint="go"
+                   inputmode="search" class="network-searchbar" [ngClass]="{ 'is-invalid': f1.submitted && workHistory.healthOrganization.invalid }" required>
+                  </ion-searchbar>
+                </ion-item>
+                <div *ngIf="f1.submitted && healthOrgzn.invalid">
+                  <div *ngIf="(healthOrgzn.errors.required )" class="error-msg">Please enter a valid workplace</div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="statusMessage">
+            <h1 class="no-result">No result found</h1>
+          </div>
+          <span *ngIf = "firstSlide"> 
+            <div class="chip-content-main" *ngFor="let hco of searchData; let i = index;"
+            [ngClass]="{ 'show-select': selectedItem == i}" (click)="updateActive(i)" >
+              <div class="about-content-main" *ngIf="hco" (click)="selectSearchData(hco,i)">
+                <div class="university-details">
+                  <div class="subtab-logo experience-icon"><img src="assets/images/ambassador.svg" /></div>
+                  <div class="subtab-content">
+                    <h2 class="workhistory-clinic-title truncate">{{hco.hcoName}}</h2>
+                    <div class="chip-content">
+                      <ion-chip [outline]="true">{{hco.hcoLocality}}</ion-chip>
+                      <ion-chip [outline]="true">{{hco.hcoStateProvince}}</ion-chip>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
+            <ion-col>
+              <ion-button type="submit" *ngIf="!showCustomAddBtn"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+                full round (click)="swipeNext1(mySlider,f1,selectedItem)">
+                <span *ngIf = "NextSlide == 'Add work Experience'" class="plus-icon mr-8"><img src="assets/images/plus-button-icon.svg"></span>
+                <span class="next-btn-text mr-8">{{NextSlide}}</span>
+                <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
+              </ion-button >
+              <ion-button type="submit" *ngIf="showCustomAddBtn"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              full round (click)="customSwipeNext1(mySlider,f1,selectedItem)">
+              <span class="next-btn-text mr-8 custom-hco">Add Your Workplace </span>
+              <img src="assets/images/arrow-right.svg">
+              </ion-button>
+                <div  *ngIf="selectEmployerMsg" class="error-msg">Please select your employer name</div>
+            </ion-col>
+          </ion-item>
+        </form>
+      </ion-slide>
+      <ion-slide class="startmonth-section">
+        <!-- <h1>Slide 2</h1> -->
+        <form name="form" (ngSubmit)="f2.form.valid" #f2="ngForm" novalidate>
+          <div class="chip-content-main add-edu-nobg" *ngIf="(hcoDetails.hcoName) || workHistoryList[0].healthOrganization">
+            <div class="about-content-main">
+              <div class="university-details">
+                <div class="subtab-logo experience-icon"><img src="assets/images/ambassador.svg" /></div>
+                <div class="subtab-content">
+                  <h2 class="workhistory-clinic-title">{{hcoDetails.hcoName || workHistoryList[0].healthOrganization}}</h2>
+                  <div class="chip-content">
+                    <ion-chip *ngIf="hcoDetails.hcoLocality" [outline]="true" class="custom-chip">{{hcoDetails.hcoLocality}}</ion-chip>
+                    <ion-chip *ngIf="hcoDetails.hcoStateProvince" [outline]="true" class="custom-chip">{{hcoDetails.hcoStateProvince}}</ion-chip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let workHistory of workHistoryList; let i = index;">
+            <div *ngIf="i==0">
+              <ion-row class="contact-form-row">
+                <ion-col class="align-left ">
+                  <ion-label>Job Title <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                  <ion-input [(ngModel)]="workHistory.experienceTitle" type="text" #jobTitle="ngModel" [clearInput]="true" placeholder=""
+                    name="experienceTitle_{{i}}" class="contact-section-form blue-border-input"
+                    (change)='experienceTitleData($event,workHistory.experienceTitle,i)' 
+                    [ngClass]="{ 'is-invalid': f2.submitted && workHistory.experienceTitle.invalid }"
+                    [pattern]="noSpacesRegex" required></ion-input>
+                  <div *ngIf="f2.submitted && jobTitle.invalid">
+                    <div *ngIf="(jobTitle.errors.required )" class="error-msg">Please enter a valid job title</div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="employment-type-sec mt-8 ">
+                <ion-item lines="none" class="ion-no-padding ionitem-padding-remove type-item">
+                  <ion-label class="input-label" position="stacked">Employement Type</ion-label>
+                  <ul class="donate-now" (change)='emplyementType($event,workHistory.emplyementType,i)'>
+                    <li [ngClass]="{ 'provider-active': npRadio}">
+                      <input type="radio" id="fullTime" name="emplyementType" value="fullTime"
+                        [(ngModel)]="workHistory.emplyementType" #provideType="ngModel" checked="npRadio" />
+                      <label for="np">Full Time</label>
+                    </li>
+                    <li [ngClass]="{ 'provider-active': paRadio}">
+                      <input type="radio" id="partTime" name="emplyementType" value="partTime"
+                        [(ngModel)]="workHistory.emplyementType" #provideType="ngModel" checked="paRadio" />
+                      <label for="pa">Part Time</label>
+                    </li>
+                    <li [ngClass]="{ 'provider-active': paRadio}">
+                      <input type="radio" id="contract" name="emplyementType" value="contract"
+                        [(ngModel)]="workHistory.emplyementType" #provideType="ngModel" checked="paRadio" />
+                      <label for="pa">Contract</label>
+                    </li>
+                  </ul>
+                </ion-item>
+              </ion-row>
+            </div>
+          </div>
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-8 next-bottom-button" lines="none">
+            <ion-col>
+              <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              full round (click)="swipeNext2(mySlider,f2)">
+              <span *ngIf = "NextSlide == 'Add work Experience'" class="plus-icon mr-8"><img src="assets/images/plus-button-icon.svg"></span>
+              <span class="next-btn-text mr-8">{{NextSlide}}</span>
+              <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
+            </button>
+            </ion-col>
+          </ion-item>
+        </form>
+      </ion-slide>
+      <ion-slide class="startmonth-section">
+        <span *ngIf="lastSlide"> 
+          <form name="form" (ngSubmit)="f3.form.valid" #f3="ngForm" novalidate>
+            <div class="chip-content-main add-edu-nobg" *ngIf="(hcoDetails.hcoName) || workHistoryList[0].healthOrganization">
+              <div class="about-content-main">
+                <div class="university-details">
+                  <div class="subtab-logo experience-icon"><img src="assets/images/ambassador.svg" /></div>
+                  <div class="subtab-content">
+                    <h2 class="workhistory-clinic-title">{{hcoDetails.hcoName || workHistoryList[0].healthOrganization}}</h2>
+                    <div class="chip-content">
+                      <ion-chip *ngIf="hcoDetails.hcoLocality"  [outline]="true" class="custom-chip">{{hcoDetails.hcoLocality}}</ion-chip>
+                      <ion-chip *ngIf="hcoDetails.hcoStateProvince"  [outline]="true" class="custom-chip">{{hcoDetails.hcoStateProvince}}</ion-chip>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let workHistory of workHistoryList; let i = index;">
+              <div *ngIf="i==0">
+                <ion-row class="contact-form-row workhistory-startend-date">
+                  <ion-col class="align-left"  >
+                    <ion-label>Start Month <span class="required-star"><img src="assets/images/required.svg"></span>
+                    </ion-label>
+                    <ionic-selectable class="contact-section-form blue-border-input"
+                    #fMonth="ngModel"
+                    [ngClass]="{ 'is-invalid': f3.submitted && workHistory.startMonth.invalid }"
+                    [(ngModel)]="tempStartMonth[0]"
+                    required
+                    confirmButtonText="Select" 
+                    placeholder="" 
+                    name="startMonth" 
+                    [items]="monthHistory" 
+                    itemValueField="id" 
+                    itemTextField="name" 
+                    [canSearch]="true" 
+                    [isMultiple]="false"
+                    [canClear]="true" 
+                    clearButtonText="Clear"
+                    [canClear]="false"
+                    closeButtonText="Close"
+                    searchPlaceholder="">
+                    <ng-template ionicSelectableHeaderTemplate>
+                        <ion-row class="searchmodule-header">
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="8">
+                          <ion-title>
+                              Start Month
+                          </ion-title>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-buttons class="close" (click)="close()" fill="clear">
+                              <img src="assets/images/close.svg">
+                          </ion-buttons>
+                        </ion-col>
+                        </ion-row>
+                      </ng-template>
+                    </ionic-selectable>
+                    <div *ngIf="f3.submitted && f3.value['startMonth'].name ==''">
+                      <div *ngIf="f3.submitted && f3.value['startMonth'].name ==''" class="error-msg">Please select month</div>
+                    </div>
+                  </ion-col>
+                  <ion-col class="align-left"  >
+                    <ion-label>Start Year <span class="required-star"><img src="assets/images/required.svg"></span>
+                    </ion-label>
+                    <ionic-selectable inputmode="numeric" class="contact-section-form blue-border-input"
+                    #fYear="ngModel"
+                    [ngClass]="{ 'is-invalid': f3.submitted && workHistory.startYear.invalid }"
+                    [(ngModel)]="tempStartYear[0]"
+                    required
+                    confirmButtonText="Select" 
+                    placeholder="" 
+                    name="startYear" 
+                    [items]="yearHistoryTemp" 
+                    itemValueField="val" 
+                    itemTextField="val" 
+                    [canSearch]="true" 
+                    [isMultiple]="false"
+                    [canClear]="true" 
+                    clearButtonText="Clear"
+                    [canClear]="false"
+                    closeButtonText="Close"
+                    searchPlaceholder="">
+                    <ng-template ionicSelectableHeaderTemplate>
+                        <ion-row class="searchmodule-header">
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="8">
+                          <ion-title>
+                              Start Year
+                          </ion-title>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-buttons class="close" (click)="close()" fill="clear">
+                              <img src="assets/images/close.svg">
+                          </ion-buttons>
+                        </ion-col>
+                        </ion-row>
+                      </ng-template>
+                    </ionic-selectable>
+                    <div *ngIf="f3.submitted && f3.value['startYear'].val ==''">
+                      <div *ngIf="f3.submitted && f3.value['startYear'].val ==''" class="error-msg">Please select year</div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="contact-form-row workhistory-startend-date">
+                  <ion-col class="align-left"  >
+                    <ion-label>End Month</ion-label>
+                    <ionic-selectable class="contact-section-form blue-border-input"
+                    #toMonth="ngModel"
+                    [ngClass]="{ 'is-invalid': f3.submitted && workHistory.startMonth.invalid }"
+                    [(ngModel)]="tempEndMonth[0]"
+                    required
+                    confirmButtonText="Select" 
+                    placeholder="" 
+                    name="endMonth" 
+                    [items]="monthHistory" 
+                    itemValueField="id" 
+                    itemTextField="name" 
+                    [canSearch]="true" 
+                    [isMultiple]="false"
+                    [canClear]="true" 
+                    clearButtonText="Clear"
+                    [canClear]="false"
+                    closeButtonText="Close"
+                    searchPlaceholder="">
+                    <ng-template ionicSelectableHeaderTemplate>
+                        <ion-row  class="searchmodule-header">
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="8">
+                          <ion-title>
+                              End Month
+                          </ion-title>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-buttons class="close" (click)="close()" fill="clear">
+                              <img src="assets/images/close.svg">
+                          </ion-buttons>
+                        </ion-col>
+                        </ion-row>
+                      </ng-template>
+                    </ionic-selectable>
+                  </ion-col>
+                  <ion-col class="align-left"  >
+                    <ion-label>End Year</ion-label>
+                    <ionic-selectable class="contact-section-form blue-border-input"
+                    #endYear="ngModel"
+                    [(ngModel)]="tempEndYear[0]"
+                    required
+                    confirmButtonText="Select" 
+                    placeholder="" 
+                    name="endYear" 
+                    [items]="yearHistoryTemp" 
+                    itemValueField="val" 
+                    itemTextField="val" 
+                    [canSearch]="true" 
+                    [isMultiple]="false"
+                    [canClear]="true" 
+                    clearButtonText="Clear"
+                    [canClear]="false"
+                    closeButtonText="Close"
+                    searchPlaceholder="">
+                    <ng-template ionicSelectableHeaderTemplate>
+                        <ion-row  class="searchmodule-header">
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="8">
+                          <ion-title>
+                              End Year
+                          </ion-title>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-buttons class="close" (click)="close()" fill="clear">
+                              <img src="assets/images/close.svg">
+                          </ion-buttons>
+                        </ion-col>
+                        </ion-row>
+                      </ng-template>
+                    </ionic-selectable>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="contact-form-row profile">
+                    <ion-col class="">
+                      <!-- <div *ngIf="f3.submitted "> -->
+                        <div *ngIf="workHistory.workYearCheck" class="error-msg">Please select end date greater than start date</div>
+                      <!-- </div> -->
+                    </ion-col>
+                  </ion-row>
+                <ion-row class="contact-form-row current-job">
+                  <ion-col class="align-left">
+                    <p>Leave end date empty if this is your current job</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="contact-form-row">
+                  <ion-col class="align-left">
+                    <ion-label>Tags</ion-label>
+                    <ion-textarea auto-grow="true" placeholder="" name="tags_{{i}}" [(ngModel)]="workHistory.tags"
+                      class="contact-section-form blue-border-input" (change)='tagsData($event,workHistory.tags,i)'>
+                    </ion-textarea>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="contact-form-row">
+                  <ion-col class="align-left">
+                    <ion-label>Description</ion-label>
+                    <ion-textarea auto-grow="true" placeholder="" [(ngModel)]="workHistory.description" name="decription_{{i}}"
+                      class="contact-section-form blue-border-input"
+                      (change)='descriptionData($event,workHistory.description,i)'></ion-textarea>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </div>
+            <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-8 next-bottom-button" lines="none">
+              <ion-col>
+                <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+                full round (click)="swipeNext3(mySlider,f3)">
+                <span *ngIf = "NextSlide == 'Add work Experience'" class="plus-icon mr-8"><img src="assets/images/plus-button-icon.svg"></span>
+                <span class="next-btn-text">{{NextSlide}}</span>
+                <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
+              </button>
+              </ion-col>
+            </ion-item>
+          </form>
+        </span>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
+</ion-grid>

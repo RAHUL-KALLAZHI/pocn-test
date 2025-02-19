@@ -1,0 +1,28 @@
+<ion-content class="contact-edit-popover delete-popover">
+  <ion-grid class="contact-edit-popover" >
+    <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+      <ion-col class="">
+        <h2>Profile Image Update
+          <button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button>
+        </h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="contact-form-row update-buttons">
+      <!--<ion-col class="align-right">
+        <ion-button (click)="close()" fill="clear" class="blue-border-button width-100p">
+          <span class="add-btn-text">Cancel</span>
+        </ion-button>
+      </ion-col>-->
+      <ion-col class="align-right" >
+        <ion-button type="submit" (click)="selectProfileImage()" fill="clear" class="blue-bg-button width-100p">
+          <span class="save-btn-text" ><span><img src="assets/images/edit-icon.svg" class="delete-btn-icon"></span> Edit</span>
+        </ion-button>
+      </ion-col>
+      <ion-col class="align-right" [hidden]="!hasProImage">
+        <ion-button type="submit"  (click)="delete()" fill="clear" class="delete-button width-100p">
+          <span class="save-btn-text" ><span><img src="assets/images/delete-button.svg" class="delete-btn-icon"></span> Delete</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

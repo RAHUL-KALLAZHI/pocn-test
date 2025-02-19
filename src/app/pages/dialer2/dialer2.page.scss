@@ -1,0 +1,173 @@
+.number-id ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+    width: 100%;
+}
+.dial-number-display ion-text{
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #000000;
+}
+.backspace {
+    position: relative;
+    top: 3px;
+}
+span.letter {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color:#00A9E0;
+}
+.dialpad div {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #00A9E0;
+}
+.dialpad {
+    max-width: 80%;
+}
+img.dial-list {
+    position: relative;
+    top: 2px;
+    margin-left: 10px;
+}
+ion-col{
+    padding: 0;
+}
+
+
+.call-engaged{
+    --background: #323232 !important;
+    position: relative;
+}
+ion-grid{
+    /*background: #323232;*/
+    background: none;
+}
+.speaker-icon{
+    margin-left: 30px;
+}
+.call-timer {
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 100%;
+    text-align: center;
+    color: rgb(245 245 245);
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 90px;
+}
+.call-timer{
+    padding: 0;
+}
+.video-tile{
+    width: 100%;
+    float: left;
+    height: 100%;
+    position: absolute;   
+    z-index: -2;
+    overflow: visible !important;
+    
+}
+.local-container{
+    height: 20%;
+    width:20%;
+    // background-color: green;    
+    position:absolute;
+    top:120px;
+    left:24px;
+}
+.video-tiles-section {
+    padding: 6px;
+    margin-top: 8px;
+    position: relative;
+    top: 114px;
+}
+.video-tile img{
+    border-radius: 9px;
+}
+.mr-10{
+    margin-right: 2%;
+}
+.call-action-buttons img{
+    width: 64px;
+}
+.call-action-sec{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 29px;
+}
+.call-action-buttons{
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 11px 0;
+    height: 86px;
+}
+.usericon{
+    margin-right: 25px;
+    width: 24px;
+}
+
+
+// Fullscreen
+.video-fullscreen-sec {
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    z-index: -1;
+    object-fit: fill;
+}
+.fullscreen-icon{
+    margin-right: 25px;
+    width: 24px;
+}
+
+
+ion-grid.myprofile-header {
+    position: fixed;
+    z-index: 9;
+    right: 0;
+    left: 0;
+}
+.caller-name{
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 100%;
+    text-align: center;
+    color: #5DBFEC;
+    font-family: "Nunito", sans-serif !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 90px;
+}
+.video-tile label{
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    position: absolute;
+    margin-left: 7px;
+    top:3px
+}
+.dialer-logo img{
+    width: 100px;
+}
+span.minute, .seconds {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+}

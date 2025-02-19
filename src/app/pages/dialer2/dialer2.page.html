@@ -1,0 +1,91 @@
+<ion-content class="call-engaged">
+    <ion-grid class="myprofile-header">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-left">
+                <img (click)="showAlert()" src="assets/images/arrow-prev-white.svg">
+                <img disabled="true" class="speaker-icon" src="assets/images/speaker-white.svg">
+            </ion-col>
+            <ion-col size="4" class="align-center dialer-logo">
+                <img src="assets/images/white-logo.svg">
+            </ion-col>
+            <ion-col size="4" class="align-right">
+                <!-- <img disabled="true" class="usericon" src="assets/images/user-icon.svg"> -->
+                <img (click)="showVideoPopOver()" src="assets/images/dialer-add.svg">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid class="call-timer">
+        <span class="minute">{{videoRoomName}}</span>
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text [ngStyle]="{'visibility': showParticipants ? 'hidden' : 'visible'}" >
+                    <span class="minute">{{min}}m</span>
+                    <span class="seconds"> {{sec}}s</span>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="video-tiles-section">
+        <div class="">
+            <!-- <div class="video-tile mr-10" id="local-media" #localMedia ></div> -->
+            <div class="video-tile" id="remote-media" #list></div>
+        </div>
+    </ion-grid>
+    <ion-grid class="">
+        <div (click)="onFullScreenVideoClick()" [ngStyle]="{'visibility': showParticipants ? 'visible' : 'hidden'}" class="fullscreen-video-section">
+            <div class="fullscreen-video" #fullView>
+                <div class="caller-name">{{participantName}}<span class="caller-details-drop"><img src="assets/images/drop-liteblue.svg"></span></div>
+            </div>
+        </div>
+        <div [ngStyle]="{'visibility': showParticipants ? 'visible' : 'hidden'}" class="fullscreen-video-tile">
+            <div class="videotile-fullview" id="local-media" #localMedia></div>
+        </div>
+    </ion-grid>
+    <ion-grid class="call-action-sec">
+        <ion-row class="call-action-buttons align-center">
+            <ion-col size="3" class="" *ngIf="!isAudioMuted" (click)="muteAudio()"><img src="assets/images/dialer-voice-call.svg"></ion-col>
+            <ion-col size="3" class="" *ngIf="isAudioMuted" (click)="muteAudio()"><img src="assets/images/mute-icon.svg"></ion-col>
+            <ion-col size="3" class="" *ngIf="!isVideoMuted" (click)="muteVideo()"><img src="assets/images/call-pause.svg"></ion-col>
+            <ion-col size="3" class="" *ngIf="isVideoMuted" (click)="muteVideo()"><img src="assets/images/videocall-resume.svg"></ion-col>
+            <ion-col size="3" class="" (click)="flipCamera()"><img src="assets/images/camera-flip.svg"></ion-col>
+            <ion-col size="3" class="" (click)="leaveRoom()"><img src="assets/images/call-stop.svg"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<!-- Video call screen mode -->
+<!-- <ion-content class="call-engaged">
+  <ion-grid class="myprofile-header no-bg">
+    <ion-row class="ion-padding-vertical">
+       <ion-col size="4" class="align-left">
+          <img disabled="true" src="assets/images/arrow-left.svg">
+          <img disabled="true" class="speaker-icon" src="assets/images/speaker.svg">
+       </ion-col>
+       <ion-col size="4" class="align-center">
+          <img src="assets/images/myprofile-pocn-logo.svg">
+       </ion-col>
+       <ion-col size="4" class="align-right">
+        <img disabled="true" class="fullscreen-icon" src="assets/images/fullscreen-icon.svg">
+          <img disabled="true" src="assets/images/call-add.svg">
+       </ion-col>
+    </ion-row>
+ </ion-grid>
+
+  <ion-grid class="video-fullscreen-sec">
+    <ion-row class="fullscreen-video">
+      <ion-col size="12" class="align-center">
+        <img src="assets/images/Portraits.jpg">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="call-action-sec no-bg">
+    <ion-row class="call-action-buttons align-center">
+      <ion-col size="3" class=""><img src="assets/images/dialer-voice-call.svg"></ion-col>
+      <ion-col size="3" class=""><img src="assets/images/call-pause.svg"></ion-col>
+      <ion-col size="3" class=""><img src="assets/images/camera-flip.svg"></ion-col>
+      <ion-col size="3" class=""><img src="assets/images/call-stop.svg"></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content> -->
+<!-- Video call screen mode -->

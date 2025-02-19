@@ -1,0 +1,126 @@
+.contact-edit-popover {
+    width: 100%;
+    padding-bottom: 50px;
+}
+.edit-delete-header button{
+    background: none;
+    float: right;
+    position: absolute;
+    right: 10px;
+    z-index: 99;
+    top: 0;
+}
+.edit-delete-header h2{
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+    padding: 0 40px;
+}
+.primary-checkbox ion-label {
+    position: relative;
+    top: -8px;
+    margin-left: 10px;
+}
+ion-row.contact-form-row {
+    margin-bottom: 5px;
+}
+.update-buttons {
+    margin-top: 13px;
+}
+.add-education ion-col{
+    padding: 0 16px;
+}
+.education-next{
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 24px;
+}
+.chip-content-main {
+    background: rgb(245 245 245);
+    border-radius: 9px;
+    margin: 16px;
+  }
+
+  .show-select {
+    background: rgb(216 221 253) !important;
+  }
+  .show-select h2.workhistory-clinic-title {
+    color: rgb(12 17 49) !important;
+  }
+  .show-select .custom-chip {
+    color: rgb(12 17 49);
+    border-color: rgb(12 17 49);
+  }
+  .subtab-logo{
+    width: 12%;
+    float: left;
+}
+.subtab-content{
+    width: 88%;
+    float: left;
+    padding: 0px 15px;
+    text-align: left;
+}
+.subtab-more{
+    width: 5%;
+    float: left;
+}
+.subtab-content h2{
+    font-weight: 500;
+font-size: 19px;
+line-height: 150%;
+color: #00A9E0;
+margin: 0;
+}
+.about-content-main {
+    margin-top: 10px;
+    display: inline-block;
+    width: 100%;
+}
+.subtab-logo img {
+    max-width: 30px;
+}
+.subtab-more button {
+    background: none;
+    padding: 0;
+}
+.add-edu-nobg{
+    background: none !important;
+}
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width:100%;
+  }
+  .chip-content-main.add-edu-nobg h2.workhistory-clinic-title{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 150%;
+    color: #323232 !important;
+    }
+
+    .loading-section{
+        text-align: center;
+        width: 100%;
+    }
+    span.next-btn-text {
+        position: relative;
+        top: -5px;
+    }
+    .next-bottom-button{
+        
+    }
+    span.plus-icon img {
+        width: 22px;
+    }
+    .edit-delete-header {
+        padding-bottom: 15px !important;
+      }
+      .next-bottom-button {
+        margin-bottom: 15px;
+    }

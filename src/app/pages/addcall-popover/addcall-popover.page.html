@@ -1,0 +1,92 @@
+<ion-grid class="add-social-details contact-edit-popover">
+    <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+        <ion-col>
+            <h2>Add New Call <button class="close" (click)="close(participantList)" fill="clear"><img
+    src="assets/images/close.svg"></button></h2>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+<ion-grid class="dial-number-display">
+    <ion-row class=" ">
+        <ion-col size="10" class="align-center ">
+            <ion-text>{{participantPhone}}</ion-text>
+        </ion-col>
+        <ion-col size="2" class="align-right ion-no-padding" (click)="backSpace()">
+            <img src="assets/images/backspace.svg " class="backspace ">
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<!-- Dial Pad -->
+<ion-grid class="dialpad ">
+    <ion-row class="ion-padding-vertical ">
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '1','participant') ">
+            <div>1</div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '2','participant') ">
+            <div>2<span class="letter ">ABC</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '3','participant') ">
+            <div>3<span class="letter ">DEF</span></div>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-vertical ">
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '4','participant') ">
+            <div>4<span class="letter ">GHI</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '5','participant') ">
+            <div>5<span class="letter ">JKL</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '6','participant') ">
+            <div>6<span class="letter ">MNO</span></div>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-vertical ">
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '7','participant') ">
+            <div>7<span class="letter ">PQRS</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '8','participant') ">
+            <div>8<span class="letter ">TUV</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '9','participant') ">
+            <div>9<span class="letter ">WXYZ</span></div>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-vertical ">
+        <ion-col size="4 " class="align-center ">
+            <div>*</div>
+        </ion-col>
+        <ion-col size="4 " class="align-center " (click)="writeToInput( '0','participant') ">
+            <div>0<span class="letter ">+</span></div>
+        </ion-col>
+        <ion-col size="4 " class="align-center ">
+            <div>#</div>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-vertical" *ngIf="showCallerIcon">
+        <ion-col size="4" class="align-center"></ion-col>
+        <ion-col size="4" class="align-center call-start-end" (click)="addNewParticipant()">
+            <img src="assets/images/call-start.svg" class="call-start ">
+        </ion-col>
+        <ion-col size="4" class="align-center"></ion-col>
+    </ion-row>
+
+    <!-- Call merge buttons -->
+    <ion-row class="ion-padding-vertical " [hidden]="showCallerIcon">
+        <ion-col size="4 " (click)="muteParticipant('mute')" class="align-center " *ngIf="!participantList[lastIndex]?.muted">
+            <img src="assets/images/dialer-voice-call.svg">
+        </ion-col>
+        <ion-col size="4 " (click)="muteParticipant('unmute')" class="align-center " *ngIf="!participantList[lastIndex]?.muted">
+            <img src="assets/images/mute-icon.svg">
+        </ion-col>
+        <ion-col size="4 " class="align-center call-start-end " (click)="mergeCall() ">
+            <img src="assets/images/call-merge.svg " class="call-start ">
+        </ion-col>
+        <ion-col size="4 " (click)="disconnectParticipant() " class="align-center ">
+            <img src="assets/images/call-stop.svg">
+        </ion-col>
+    </ion-row>
+    <!-- Call merge buttons -->
+
+</ion-grid>
+<!-- Dial Pad -->

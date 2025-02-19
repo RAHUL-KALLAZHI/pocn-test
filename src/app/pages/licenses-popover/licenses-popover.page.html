@@ -1,0 +1,115 @@
+<ion-grid class="contact-form-section contact-profile edit-form contact-edit-popover" >
+    <ion-content zooming="true" direction="xy" style="height:500px">
+        <!-- Put your content here -->
+      
+  <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+    <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+      <ion-col>
+        <h2> Licenses / Certifications <button class="close" (click)="close()" fill="clear"><img
+          src="assets/images/close.svg"></button></h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="contact-form-row">
+      <ion-col class="">
+        <div id="content" >
+          <div id="contentInside" *ngFor="let license of licenseList; let i = index;">
+              <div *ngIf="i==0">
+            <ion-row class="contact-form-row" >
+              <ion-col class="">
+                <ion-label>
+                  
+                  <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                  Certification Name <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                <ion-input class="blue-border-input custom-input" [clearInput]="true" 
+                name="certificateName"  [(ngModel)]="license.certificateName" 
+                #certificateName="ngModel" 
+                 
+                placeholder="" [pattern]="noSpacesRegex" required></ion-input>
+                <div *ngIf="f.submitted && certificateName.invalid">
+                  <!-- <div *ngIf="certificateName.errors.required" class="error-msg">Certification Name is required</div>
+                  <div *ngIf="certificateName.errors.pattern" class="error-msg">Please enter valid Certification Name</div> -->
+                  <div *ngIf="certificateName.errors.required" class="error-msg">Please enter valid certification name</div>
+                  <div *ngIf="certificateName.errors.pattern" class="error-msg">Please enter valid certification name</div>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row class="contact-form-row" [ngClass]="{ 'validation-error': f.submitted && specialtyName.invalid}">
+              <ion-col class=""  >
+                <ion-label>
+                  <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                  Please select speciality <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+             
+
+               <ionic-selectable 
+                  class="custom-input ion-no-padding blue-border-input" 
+                  name="speciality" 
+                  ngDefaultControl 
+                  [(ngModel)]="temp[0]"
+                  #specialtyName="ngModel" 
+                  required 
+                  [items]="specialityType" 
+                  itemValueField="specialtyCode" 
+                  itemTextField="specialtyName" 
+                  [canSearch]="true" 
+                  [isMultiple]="false" 
+                  closeButtonText="Close"
+                  searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                  <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                      Speciality
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+                </ionic-selectable>
+
+   
+                <div *ngIf="f.submitted && f.value['speciality']['specialtyName']==''">
+                  <div *ngIf="f.submitted && f.value['speciality']['specialtyName']==''" class="error-msg">Please select speciality</div>
+                </div>
+
+              </ion-col>
+            </ion-row>
+            <ion-row class="contact-form-row">
+              <ion-col class="">
+                <ion-label>Institution Name</ion-label>
+                <ion-input class="blue-border-input"  [clearInput]="true"
+                  name="institutionName" [(ngModel)]="license.institutionName" placeholder=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <!-- <ion-row class="contact-form-row update-buttons">
+              <ion-col class="">
+                <ion-button (click)="presentAlert(license,'removeLicense')"  fill="clear" class="add-icon delete">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row> -->
+          </div>
+          </div>
+        </div>
+        <ion-row class="contact-form-row update-buttons">
+          <ion-col class="">
+            <ion-button (click)="close()" fill="clear" class="width-100p blue-border-button"><span
+                class="save-btn-text">Cancel</span>
+            </ion-button>
+          </ion-col>
+          <ion-col class="">
+            <ion-button type="submit" (click)="updateLicense(f)" fill="clear" class="width-100p blue-bg-button"><span
+                class="save-btn-text">Save</span>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+</ion-grid>

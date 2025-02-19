@@ -1,0 +1,225 @@
+<ion-grid class="contact-edit-popover workhistory-slide">
+  <ion-header class="edit-delete-header">
+    <h2>
+      <div *ngIf="!disablePrevBtn" style="position: absolute;top: 0%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()"> 
+       <img src="assets/images/arrow-left.svg" class="previous-icon">
+     </div>
+      Add Education<button class="close" (click)="close()" fill="clear">
+        <img src="assets/images/close.svg">
+      </button>
+    </h2>
+  </ion-header>
+  <ion-content>
+    <ion-slides #mySlider pager="true" [options]="slideOpts"  pager="true" (ionSlidesDidLoad)="ionSlidesDidLoad(mySlider)" (ionSlideDidChange)='ionSlideDidChange(mySlider)' class="">
+      <ion-slide>
+        <!-- <h1>Slide 1</h1> -->
+        <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate class="width-100p add-education">
+          <div *ngFor="let education of educationList; let i = index;">
+            <ion-row class="contact-form-row mt-24" *ngIf="i==0">
+              <ion-col class="align-left ion-padding">
+                <ion-label>Institution <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
+                <ion-searchbar placeholder="" [(ngModel)]="education.school" #school="ngModel" name="school" enterkeyhint="go"
+                  (search)="searchUser(education.school,i)" inputmode="search"
+                  class="network-searchbar" [ngClass]="{ 'is-invalid': f1.submitted && education.school.invalid }" required></ion-searchbar>
+                </ion-item>
+                <div *ngIf="f1.submitted && school.invalid">
+                  <div *ngIf="(school.errors.required )" class="error-msg">Please enter valid institution</div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="statusMessage">
+              <h1 class="no-result">No result found</h1>
+          </div >
+          <span *ngIf = "NextSlide != 'Add Education'"> 
+            <div class="chip-content-main"  *ngFor="let hcoName of searchData; let i = index;" 
+            [ngClass]="{ 'show-select': selectedItem == i}" (click)="updateActive(i)">
+              <div class="about-content-main" (click)="selectSearchData(hcoName,i)">
+                <div class="university-details">
+                  <div class="subtab-logo experience-icon"><img src="assets/images/education-icon.svg" /></div>
+                  <div class="subtab-content">
+                      <h2 class="workhistory-clinic-title truncate">{{hcoName.hcoName.split(',')[0]}}</h2>
+                      <div class="chip-content">
+                        <ion-chip [outline]="true" *ngIf="hcoName.hcoName.split(',')[1]" class="custom-chip">{{hcoName.hcoName.split(',')[1]}}</ion-chip>
+                      </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </span>
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
+            <ion-col>
+              <button type="submit"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              full round (click)="swipeNext(mySlider,f1,selectedItem)">
+              <span class="next-btn-text mr-8">{{NextSlide}}</span>
+              <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
+              </button>
+            </ion-col>
+          </ion-item>
+        </form>
+      </ion-slide>
+      <ion-slide>
+        <!-- <h1>Slide 2</h1> -->
+        <form name="form" (ngSubmit)="f2.form.valid" #f2="ngForm" novalidate class="width-100p add-education">
+          <div class="chip-content-main add-edu-nobg" *ngIf="hcoDetails.hcoName">
+          <div class="about-content-main" >
+              <div class="university-details">
+                   <div class="subtab-logo experience-icon"><img src="assets/images/education-icon.svg" /></div>
+                   <div class="subtab-content">
+                      <h2 class="workhistory-clinic-title" *ngIf="hcoDetails.hcoName" >{{hcoDetails.hcoName.split(',')[0]}}</h2>
+                      <div class="chip-content" *ngIf="hcoDetails.hcoName.split(',')[1]" >
+                         <ion-chip [outline]="true" class="custom-chip">{{hcoDetails.hcoName.split(',')[1]}}</ion-chip>
+                      </div>
+                   </div>
+             </div>
+          </div>
+            </div>
+          <div *ngFor="let education of educationList; let i = index;">
+            <div *ngIf="i==0">
+              <ion-row class="contact-form-row mt-8">
+                <ion-col class="align-left">
+                  <ion-label>Degree Earned <span class="required-star"><img src="assets/images/required.svg"></span>
+                  </ion-label>
+                  <!--<ion-select idlDefault placeholder="" [(ngModel)]="education.hcoDegree" #degree="ngModel" name="degree_{{i}}"
+                      class="contact-section-form blue-border-input"
+                      (ionChange)="hcoDegreeType($event,education.hcoDegree,i)" [ngClass]="{ 'is-invalid': f2.submitted && education.hcoDegree.invalid }" required>
+                      <ion-select-option *ngFor="let source of degreeType" value="{{ source.degreeName }}">
+                        {{ source.degreeName }}</ion-select-option>
+                    </ion-select>
+                  -->
+                  <ionic-selectable class="custom-input ion-no-padding blue-border-input"
+                  #degree="ngModel"
+                  [ngClass]="{ 'is-invalid': f2.submitted && education.hcoDegree.invalid }"
+                  [(ngModel)]="temp[0]"
+                  required
+                  confirmButtonText="Select" 
+                  placeholder=""
+                  ngDefaultControl  
+                  name="degree"
+                  [items]="degreeType" 
+                  itemValueField="degreeName" 
+                  itemTextField="degreeName" 
+                  [canSearch]="true" 
+                  [isMultiple]="false"
+                  [canClear]="true" 
+                  clearButtonText="Clear"
+                  [canClear]="false"
+                  closeButtonText="Close"
+                  searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row  class="searchmodule-header">
+                                  <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                      Degree Earned
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+                  </ionic-selectable>
+
+
+                  <div *ngIf="f2.submitted && f2.value['degree']['degreeName']==''">
+                    <div *ngIf="f2.value['degree']['degreeName']==''" class="error-msg">Please select degree</div>
+                  </div>
+
+          
+
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="contact-form-row">
+                <ion-col class="align-left">
+                  <ion-label>Field of Study</ion-label>
+                  <ion-input maxlength="200" type="text" [clearInput]="true" [(ngModel)]="education.field" placeholder=""
+                    class="contact-section-form blue-border-input" (ionChange)="fieldData($event,education.field,i)"
+                    name="field_{{i}}"></ion-input>
+                </ion-col>
+
+              </ion-row>
+              <ion-row class="contact-form-row">
+
+                <ion-col class="align-left" >
+                  <ion-label>Graduation Year <span class="required-star"><img src="assets/images/required.svg"></span>
+                  </ion-label>
+                  <!--
+                  <ion-select idlDefault placeholder="" [(ngModel)]="education.year" #toYear="ngModel" name="periodFfrom_{{i}}"
+                    class="contact-section-form blue-border-input" (ionChange)="graduationYear($event,education.year,i)" 
+                    required>
+                    <ion-select-option *ngFor="let toYear of yearHistory" value="{{ toYear }}">{{ toYear }}
+                    </ion-select-option>
+                  </ion-select>-->
+
+
+                  <ionic-selectable class="contact-section-form blue-border-input"
+                  #toYear="ngModel"
+                  [(ngModel)]="tempYear[0]"
+                  required
+                  confirmButtonText="Select" 
+                  ngDefaultControl 
+                  placeholder="" 
+                  name="year" 
+                  [items]="yearHistoryTemp" 
+                  itemValueField="val" 
+                  itemTextField="val" 
+                  [canSearch]="true" 
+                  [isMultiple]="false"
+                  [canClear]="true" 
+                  clearButtonText="Clear"
+                  [canClear]="false"
+                  closeButtonText="Close"
+                  searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row  class="searchmodule-header">
+                                  <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                      Graduation Year
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+                  </ionic-selectable>
+                  <div *ngIf="f2.submitted && f2.value['year']['val']==''">
+                    <div *ngIf="f2.value['year']['val']==''" class="error-msg">Please select graduation year</div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="contact-form-row">
+                <ion-col class="align-left">
+                  <ion-label>Description</ion-label>
+                  <ion-textarea auto-grow="true"  [(ngModel)]="education.description" placeholder=""
+                    class="contact-section-form blue-border-input"
+                    (ionChange)="descriptionData($event,education.description,i)" name="description_{{i}}">
+                  </ion-textarea>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
+            <ion-col>
+              <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              full round (click)="swipeNextSecond(mySlider,f2)">
+              <span *ngIf = "NextSlide == 'Add Education'" class="plus-icon mr-8"><img src="assets/images/plus-button-icon.svg"></span>
+              <span class="next-btn-text">{{NextSlide}}</span>
+            </button>
+            </ion-col>
+          </ion-item>
+        </form>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
+</ion-grid>

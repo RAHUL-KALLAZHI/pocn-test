@@ -1,0 +1,20 @@
+{
+	"appId": "com.pocn.pocnconnect",
+	"appName": "POCN-Connect",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"android": {
+		"flavor": "dev"
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 5000,
+			"launchAutoHide": false,
+			"backgroundColor": "#fffff",
+			"androidScaleType": "CENTER_CROP",
+			"SplashMaintainAspectRatio": true
+		}
+	},
+	"cordova": {}
+}

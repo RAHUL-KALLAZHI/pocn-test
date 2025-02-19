@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "com.pocn.pocnconnect",
+                 "sha256_cert_fingerprints": ["8A:8C:4B:7B:DE:AD:DA:3C:2D:C7:66:E4:04:37:BD:48:B8:18:01:2E:7B:9A:39:96:B1:5A:92:70:28:B3:FB:A4"] }
+  }]

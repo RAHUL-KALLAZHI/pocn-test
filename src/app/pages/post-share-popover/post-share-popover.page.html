@@ -1,0 +1,21 @@
+<ion-list class="share-popover" >
+    <!-- <ion-item lines="none" class="edit ion-no-padding">
+        <ion-label class="mute-caller"><img src="assets/images/mute-caller.svg" class="editpopover-icon" />Copy Url</ion-label>
+    </ion-item> -->
+    <ion-item lines="none" class="delete ion-no-padding groups" (click)="shareGroup()" [hidden]="!showGrpDetails"> 
+        <ion-label class="drop-caller">
+            <ion-icon name="people"></ion-icon> Share to Groups</ion-label>
+    </ion-item>
+    <ion-skeleton-text class="drop-caller" [animated]="true" [hidden]="showGrpDetails || !showSkelton"></ion-skeleton-text>
+    <ion-item lines="none" class="delete ion-no-padding connections" (click)="shareConnection()" [hidden]="!showConnection">
+        <ion-label class="drop-caller">
+            <ion-icon name="link"></ion-icon> Share to Connections</ion-label>
+    </ion-item>
+    <ion-skeleton-text class="drop-caller" [animated]="true" [hidden]="showConnection || !showSkelton"></ion-skeleton-text>
+    <ion-item lines="none" class="delete ion-no-padding user" (click)="shareUser()" [hidden]="!showUserPost">
+        <ion-label class="drop-caller">
+            <ion-icon name="person"></ion-icon> Share to User</ion-label>
+    </ion-item>
+    <ion-skeleton-text class="drop-caller" [animated]="true" [hidden]="showUserPost || !showSkelton"></ion-skeleton-text>
+    <!-- edit ion-no-padding -->
+</ion-list>

@@ -1,0 +1,187 @@
+.number-id ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #F5F5F5;
+    width: 100%;
+}
+.dial-number-display ion-text{
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #fff;
+}
+.backspace {
+    position: relative;
+    top: 3px;
+}
+span.letter {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: rgb(93 191 236);
+}
+.dialpad div {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #00A9E0;
+}
+.dialpad {
+    max-width: 80%;
+}
+img.dial-list {
+    position: relative;
+    top: -2px;
+    margin-left: 11px;
+    width: 12px;
+}
+ion-col{
+    padding: 0;
+}
+
+
+.call-engaged{
+    --background: #323232 !important;
+    border: 2px solid #000000;
+    position: relative;
+}
+ion-grid{
+    background: #323232;
+}
+.speaker-icon{
+    margin-left: 30px;
+}
+.call-timer {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    text-align: center;
+    color: rgb(245 245 245);
+    margin-top: 8px;
+}
+.call-timer{
+    padding: 0;
+}
+.video-tile{
+    width: 49%;
+    float: left;
+}
+.video-tiles-section {
+    padding: 16px;
+    margin-top: 8px;
+}
+.video-tile img{
+    border-radius: 9px;
+}
+.mr-10{
+    margin-right: 2%;
+}
+.call-action-buttons img{
+    width: 64px;
+}
+.call-action-sec{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 22px;
+}
+.call-action-buttons{
+    border-radius: 50px;
+    padding: 11px 0;
+    height: 86px;
+}
+.usericon{
+    margin-right: 25px;
+    width: 24px;
+}
+
+
+// Fullscreen
+.video-fullscreen-sec {
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    z-index: -1;
+    object-fit: fill;
+}
+.fullscreen-icon{
+    margin-right: 25px;
+    width: 24px;
+}
+span.letter {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: #fff;
+}
+.dialpad div {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #fff;
+}
+.dialpad {
+    max-width: 80%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 120px;
+}
+.dial-number-display {
+    margin-top: 8px;
+}
+.minute{
+    margin-right: 5px;
+}
+
+
+// Multi call list
+.nobg{
+    --background: none;
+}
+.experience-more{
+    background: none;
+}
+.incall-section{
+    padding-left: 11px;
+    padding-right: 11px;
+}
+.incall-section h2{
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 120%;
+    color: #F5F5F5;
+}
+.incall-section ion-label{
+    font-weight: 400;
+    font-size: 19px !important;
+    line-height: 120%;
+    color: #F5F5F5 !important;
+    padding-left: 15px;
+}
+.incall-item {
+    margin-top: 20px;
+}
+.dialer-header img{
+    width: 100px;
+}
+.dialer-logo img{
+    width: 100px;
+}
+span.minute, .seconds {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+}

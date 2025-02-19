@@ -1,0 +1,294 @@
+<!-- <app-headers></app-headers> -->
+<!-- <ion-app> -->
+    <ion-content [fullscreen]="true" class="post-page">
+        <!-- <ion-app class="post-page"> -->
+        <ion-grid>
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left settings">
+                    <img (click)="goToGroups()" src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <img [routerLink]="['/tablinks//my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                    <img src="assets/images/video-call.svg" class="mr-24" (click)="patientConnectStatusCalls('video')">
+                    <img src="assets/images/audio-call.svg" (click)="patientConnectStatusCalls('audio')">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Post starts-->
+        <ion-grid [hidden]="showPostSuccess">
+            <ion-row class="ion-no-padding-vertical accept-request">
+                <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                    <img src="assets/images/accept-request.svg" class="mr-8">
+                    <ion-text>You just posted a message.</ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-grid [hidden]="hideSearchData" class="groupdetails">
+
+            <ion-row class="ion-padding-horizontal mt-8 mb-16">
+                <ion-item class="ionitem-padding-remove ion-no-padding top-cnt-group group-name-edit width-100p" lines="none">
+                    <div class="group-img width-100p">
+
+                        <!-- <img class="upload-banner" class="width-100p group-banner" src="{{ attachmentTypeContent }}" [hidden]="showBanner" /> -->
+                        <img [src]="grpEditImageUrl" class="width-100p group-banner" (error)="onImgError($event,bannerFileName)" *ngIf="showBanner">
+                        <!-- <input type="file" name="file" id="pickImageInput" style="display:none;" accept="image/*" #pickImageInput (change)="postImageUploads($event)" />
+                    <label for="pickImageInput"><img src="assets/images/group-banner-edit.svg" class="banner-edit"> </label> -->
+                </div>
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding top-cnt-group mt-8 width-100p" lines="none">
+                <div class="group-img-description width-100p">
+                    <span class="group-img-title">{{groupName}}</span>
+                    <span class="group-img-right-icon"><img src="assets/images/info.svg" (click)="showGroupDetailEdit()"></span>
+                </div>
+            </ion-item>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal emtpyresult" [hidden]="showPostData">
+            <h1 class="no-connection-msg ">No Post data found</h1>
+        </ion-row>
+        <ion-row class="post-content-section ion-padding-horizontal mynetwork mt-8" *ngFor="let viewPost of groupPostView, let i=index">
+            <ion-item class="ionitem-padding-remove ion-no-padding shared-info width-100p" lines="none" *ngIf="viewPost.sharedStatus==true">
+                <ion-col size="2 ">
+                    <img (error)="onProfileImgError($event) " *ngIf="!viewPost.fileExtension && viewPost.sharedStatus==true" src="{{profileImg}} " class=" mr-8 mynetwork-img " (click)="basicProfileClick(viewPost.userId) ">
+                    <img (error)="onProfileImgError($event) " *ngIf="viewPost.fileExtension && viewPost.sharedStatus==true" src="{{viewPost.profileShareImgUrl}} " class=" mr-8 mynetwork-img " (click)="basicProfileClick(viewPost.userId) ">
+                </ion-col>
+                <ion-col size="10" class="shared-details">
+                    <p *ngIf="viewPost.fullName && viewPost.shareTo && viewPost.shareTo != 'User'">{{viewPost.fullName}} shared this to {{viewPost.shareTo}}</p>
+                    <p *ngIf="viewPost.fullName && viewPost.shareTo && viewPost.shareTo == 'User'">{{viewPost.fullName}} shared this to you</p>
+                </ion-col>
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding search-datas" lines="none">
+                <img (error)="onProfileImgError($event)" *ngIf="!viewPost.originalFileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.originalPostUserId)">
+                <img (error)="onProfileImgError($event)" *ngIf="viewPost.originalFileExtension" src="{{viewPost.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.originalPostUserId)">
+                <!-- <img *ngIf="viewPost.fileExtension" src="{{viewPost.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)"> -->
+                <ion-label *ngIf="viewPost.originalPostFullName" (click)="basicProfileClick(viewPost.originalPostUserId)">{{ viewPost.originalPostFullName }}</ion-label>
+                <span class="my-network-chip">
+              <div class="chip-content">
+                <ion-chip *ngIf="viewPost.specialty != 'Unspecified' && viewPost.specialty != 'Other (i.e., a specialty other than those appearing above)' && viewPost.specialty" class="custom-chip speciality-tag">{{viewPost.specialty}}</ion-chip>
+                <ion-chip *ngIf="viewPost.providerType" class="custom-chip ">{{viewPost.providerType}}</ion-chip>
+              </div>
+          </span>
+            </ion-item>
+            <ion-item *ngIf="viewPost.parentPostContent" class="ionitem-padding-remove ion-no-padding quote width-100p" lines="none" (click)="postDetailNavigate(viewPost.postId)">
+                <span class="width-100p">
+              <!-- <img src="assets/images/quote-green.svg " class="mr-8 quote-icon ">
+              <ion-text class="read-more-data">
+                <p>{{viewPost.parentPostContent}}</p>
+             </ion-text> -->
+             <img src="assets/images/quote-green.svg" class="mr-8 quote-icon ">
+                <ion-text class="read-more-data">
+               <span *ngIf="viewPost.colorCss=='faq'">Check out my new Group</span>
+                <p [class]="viewPost.colorCss">{{viewPost.parentPostContent}}{{viewPost.colorCss}}</p>
+                <p>{{viewPost.newContentDescription}}</p>
+                </ion-text>
+                </span>
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding post-user-description width-100p" lines="none" (click)="postDetailNavigate(viewPost.postId)">
+                <ion-text class=" read-more-data ">
+                    <span *ngIf="viewPost.colorCss=='faq'">Check out my new Group</span>
+                    <p [class]="viewPost.colorCss ">{{viewPost.description}}</p>
+                    <p>{{viewPost.newDescription}}</p>
+                </ion-text>
+            </ion-item>
+            <!-- <ion-item *ngIf="hideLinkPreview">
+                <div class="preview">
+                    <div [hidden]="!viewPost.preview.image">
+                        <img class="image" [src]="viewPost.preview.image">
+                    </div>
+                    <div class="preview-text">
+                        <div [hidden]="!viewPost.preview.title" class="title">
+                            <span>{{viewPost.preview.title}}</span>
+                        </div>
+                        <div [hidden]="!viewPost.preview.description" class="description">
+                            <span>{{viewPost.preview.description}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ion-item> -->
+            <ion-item *ngIf="!imageType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                <img (error)="onImgPostError($event, viewPost.fileName)" src="{{viewPost.postImageUrl}}" class="media">
+
+            </ion-item>
+            <ion-item *ngIf="!videoType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                <video src="{{imageUrl}}{{viewPost.fileName}}" width="100%" class="media" controls></video>
+            </ion-item>
+            <ion-item *ngIf="!audioType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                <!-- <audio id="audio" src="{{imageUrl}}{{viewPost.fileName}}"> -->
+                <audio controls>      <source src="{{imageUrl}}{{viewPost.fileName}}" type="{{viewPost.fileType}}" />   </audio>
+                <!-- </audio> -->
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding post-user-description width-100p mt-24 separator " lines="none ">
+                <ion-col size="4 " class="duration ">
+                    <!-- <ion-text>2<span class="hours ">h</span></ion-text> -->
+                    <ion-text>
+                        {{viewPost.postDate | timeAgo}}
+                        <!-- <ion-datetime displayFormat="H " [(ngModel)]="viewPost.postDate "></ion-datetime><span class="hours ">h</span> -->
+                    </ion-text>
+                </ion-col>
+                <ion-col size="8 " class="like-comment">
+                    <!-- <span class="like " *ngIf="viewPost.likeCount==n ull || userId !=v iewPost.likedUsers[0] ">
+                    <ion-icon name='heart-outline' (click)="likePost(viewPost.postId,i) " class="mr-8 like-comment-img " ></ion-icon>
+
+
+                      <i>{{viewPost.likeCount}}</i>
+                  </span>
+                    <span class="like " *ngIf="userId==v iewPost.likedUsers[0] ">
+                   <ion-icon name='heart'  (click)="likePost(viewPost.postId,i) " class="mr-8 like-comment-img " ></ion-icon>
+
+
+                  <i>{{viewPost.likeCount}}</i>
+                  </span> -->
+                    <span class="like-area" *ngIf="!viewPost.likedUsers.includes(userId)">
+                    <div class="likepost" (click)="likePost(viewPost.postId,i, 'viewPost', 'liked')"></div>
+                    <i *ngIf="viewPost.likeCount > 0">{{viewPost.likeCount}}</i>
+                  </span>
+                    <span class="like-area" *ngIf="viewPost.likedUsers.includes(userId)">
+                    <div class="liked-post" (click)="likePost(viewPost.postId,i, 'viewPost', 'unLiked')"></div>
+                    <i>{{viewPost.likeCount}}</i>
+                  </span>
+
+                        <span class="comment" (click)="commentPopover(viewPost.postId,viewPost.description,viewPost.groupUuid)">
+          <img src="assets/images/quote.svg" class="mr-8 like-comment-img ">
+      </span>
+                    <!-- <span class="share">
+          <img src="assets/images/share.svg " (click)="showSharePopover(viewPost.postId)" class="mr-8 like-comment-img remove-disable">
+      </span> -->
+                    <span class="more " [ngClass]="{ 'remove-disable': userId !==viewPost.originalPostUserId} " (click)="userId==viewPost.originalPostUserId && deletePostPopover(viewPost.postId) ">
+          <img src="assets/images/more.svg " class="mr-8 like-comment-img more ">
+      </span>
+                </ion-col>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <!--search data-->
+    <div class="ion-no-padding emtpyresult" [hidden]="emptyShowResult ">
+        <h1 class="no-connection-msg ">No result found</h1>
+    </div>
+    <span [hidden]="searchLoaderStatus" class="loader-npi ">
+          <img src="./../assets/images-pocn/ajax-loader.gif ">
+      </span>
+        <ion-grid [hidden]="showSearchData">
+            <ion-row class="ion-padding-horizontal mt-8 mb-16">
+                <ion-item class="ionitem-padding-remove ion-no-padding top-cnt-group width-100p" lines="none">
+                    <div class="group-img width-100p"><img src="{{groupBanner}}" class="width-100p"></div>
+                </ion-item>
+                <ion-item class="ionitem-padding-remove ion-no-padding top-cnt-group mt-8 width-100p" lines="none">
+                    <div class="group-img-description width-100p">
+                        <span class="group-img-title">{{groupDescription}}</span>
+                        <span class="group-img-right-icon"><img src="assets/images/info.svg" (click)="showGroupDetailEdit()"></span>
+                    </div>
+                </ion-item>
+            </ion-row>
+            <ion-row class="post-content-section ion-padding-horizontal mynetwork mt-8 " *ngFor="let viewPost of postSearch, let i=index ">
+                <ion-item class="ionitem-padding-remove ion-no-padding search-datas " lines="none ">
+                    <img (error)="onProfileImgError($event)" *ngIf="!viewPost.fileExtension" src="{{profileImg}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)">
+                    <img (error)="onProfileImgError($event)" *ngIf="viewPost.fileExtension" src="{{viewPost.profileImgUrl}}" class=" mr-8 mynetwork-img" (click)="basicProfileClick(viewPost.userId)">
+                    <ion-label *ngIf="viewPost.fullName" (click)="basicProfileClick(viewPost.userId) ">{{ viewPost.fullName }}</ion-label>
+                    <span class="my-network-chip ">
+          <div class="chip-content ">
+              <ion-chip *ngIf="viewPost.specialty" class="custom-chip speciality-tag ">{{viewPost.specialty}}</ion-chip>
+              <ion-chip *ngIf="viewPost.providerType " class="custom-chip ">{{viewPost.providerType}}</ion-chip>
+          </div>
+      </span>
+            </ion-item>
+            <ion-item *ngIf="viewPost.parentPostContent" class="ionitem-padding-remove ion-no-padding quote width-100p" lines="none ">
+                <span class="width-100p">
+                  <img src="assets/images/quote-green.svg " class="mr-8 quote-icon ">
+                  <ion-text class="read-more-data ">
+                    <span *ngIf="viewPost.colorCss=='faq' ">Check out my new Group</span>
+                <p [class]="viewPost.colorCss ">{{viewPost.parentPostContent}}</p>
+                <p>{{viewPost.newContentDescription}}</p>
+                </ion-text>
+                <!-- <img src="assets/images/quote-green.svg" class="mr-8 quote-icon ">
+              <ion-text class="read-more-data">
+                <p>{{viewPost.parentPostContent}}</p>
+             </ion-text> -->
+                </span>
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding post-user-description width-100p " lines="none ">
+                <ion-text class=" read-more-data ">
+                    <span *ngIf="viewPost.colorCss=='faq'">Check out my new Group</span>
+                    <p [class]="viewPost.colorCss">{{viewPost.description}}</p>
+                    <p>{{viewPost.newDescription}}</p>
+                </ion-text>
+            </ion-item>
+            <!-- <ion-item *ngIf="hideLinkPreview">
+                <div class="preview">
+                    <div [hidden]="!viewPost.preview.image">
+                        <img class="image" [src]="viewPost.preview.image">
+                    </div>
+                    <div class="preview-text">
+                        <div [hidden]="!viewPost.preview.title" class="title">
+                            <span>{{viewPost.preview.title}}</span>
+                        </div>
+                        <div [hidden]="!viewPost.preview.description" class="description">
+                            <span>{{viewPost.preview.description}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ion-item> -->
+            <ion-item *ngIf="!imageType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                <!-- <img src="{{imageUrl}}{{viewPost.fileName}}" class="media "> -->
+                <img (error)="onImgError($event, viewPost.fileName)" src="{{viewPost.postImageUrl}}" class="media ">
+            </ion-item>
+            <ion-item *ngIf="!videoType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p " lines="none ">
+                <video src="{{imageUrl}}{{viewPost.fileName}}" class="media video " controls></video>
+                <!-- <video width="320 " height="240 " controls autoplay>
+                <source src="{{ viewPost.postAttachment }} ">
+              </video> -->
+            </ion-item>
+            <ion-item *ngIf="!audioType[i] && viewPost.fileName" class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p" lines="none ">
+                <audio controls>      <source src="{{imageUrl}}{{viewPost.fileName}}" type="{{viewPost.fileType}}" />   </audio>
+
+            </ion-item>
+            <ion-item class="ionitem-padding-remove ion-no-padding post-user-description width-100p mt-24 separator" lines="none ">
+                <ion-col size="4" class="duration">
+                    <!-- <ion-text>2<span class="hours ">h</span></ion-text> -->
+                    <ion-text>
+                        {{viewPost.postDate | timeAgo}}
+                        <!-- <ion-datetime displayFormat="H " [(ngModel)]="viewPost.postDate "></ion-datetime><span class="hours ">h</span> -->
+                    </ion-text>
+                </ion-col>
+                <ion-col size="8" class="like-comment">
+                    <span class="like-area" *ngIf="!viewPost.likedUsers.includes(userId)">
+                      <div class="likepost" (click)="likePost(viewPost.postId,i, 'searchPost', 'liked') "></div>
+                      <i *ngIf="viewPost.likeCount > 0">{{viewPost.likeCount}}</i>
+                    </span>
+                    <span class="like-area" *ngIf="viewPost.likedUsers.includes(userId)">
+                      <div class="liked-post" (click)="likePost(viewPost.postId,i, 'searchPost', 'unLiked')"></div>
+                      <i>{{viewPost.likeCount}}</i>
+                    </span>
+                    <span class="comment " (click)="commentPopover(viewPost.postId,viewPost.description,viewPost.groupUuid) ">
+          <img src="assets/images/quote.svg " class="mr-8 like-comment-img ">
+      </span>
+                    <!-- <span class="share ">
+          <img src="assets/images/share.svg " (click)="showSharePopover(viewPost.postId) " class="mr-8 like-comment-img remove-disable">
+      </span> -->
+                    <span class="more" *ngIf="userId==viewPost.userId" (click)="deletePostPopover(viewPost.postId) ">
+            <img src="assets/images/more.svg " class="mr-8 like-comment-img more ">
+      </span>
+                </ion-col>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <!-- </ion-app> -->
+</ion-content>
+<ion-grid class="post-bottom ">
+    <ion-row (click)="postPopOver() ">
+        <img src="assets/images/created-post-pen.svg ">
+    </ion-row>
+</ion-grid>
+<ion-grid class="post-search">
+    <ion-row class="width-100p">
+        <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+            <ion-searchbar placeholder=" " [(ngModel)]="searchText" enterkeyhint="go " (search)="searchPostGroup(searchText) " inputmode="search " class="network-searchbar"></ion-searchbar>
+        </ion-item>
+    </ion-row>
+</ion-grid>
+
+<!-- </ion-app> -->
+
+
+<!--<app-main-tabs></app-main-tabs>-->

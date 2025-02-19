@@ -1,0 +1,64 @@
+<ion-grid class="add-social-details contact-edit-popover">
+    <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+        <ion-col>
+            <h2>Add New Caller ID <button class="close" (click)="close()" fill="clear"><img
+          src="assets/images/close.svg"></button></h2>
+        </ion-col>
+    </ion-row>
+    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <ion-row class="contact-form-row">
+            <ion-col class="">
+                <div id="content">
+                    <div id="contentInside">
+                        <div class="dialer-popover">
+                            <ion-row class="contact-form-row">
+                                <ion-col class="">
+                                </ion-col>
+                            </ion-row>
+                            <ion-row class="contact-form-row">
+                                <ion-col class="ion-no-padding">
+                                    <ion-label>Name <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                                    <ion-input type="text" [clearInput]="true" name="userName" [(ngModel)]="userName" class="textinput blue-border-input"></ion-input>
+                                    <div *ngIf="showNameErr" class="error-msg">Name is required</div>
+                                    <div *ngIf="connectNameWhiteSpaceCheck" class="error-msg">Please enter valid User Name</div>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row class="contact-form-row mt-16">
+                                <ion-col class="ion-no-padding">
+                                    <ion-label>Phone Number <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                                    <ion-input type="tel" [clearInput]="true" class="textinput blue-border-input contact-section-form" name="workPhoneNumber" [(ngModel)]="workNumber" maxlength="14" placeholder="">
+                                    </ion-input>
+                                    <div *ngIf="showPhoneErr" class="error-msg">Phone is required</div>
+                                    <div *ngIf="ShowErrMsgPhone" class="error-msg">Phone number already exists</div>
+                                    <div *ngIf="showAddCountryError" class="error-msg">Please enter a valid number</div>
+                                    <div [hidden]="showAddNumber" class="error-msg">Please enter numeric values</div>
+                                    <div [hidden]="callerVerifyErr" class="error-msg">Not verified, Please try again</div>
+                                    <div class="phone-number-hint">Enter numbers without dashes.</div>
+                                </ion-col>
+                            </ion-row>
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+                </div>
+                <ion-row class="contact-form-row update-buttons">
+                    <ion-col size="3" class="align-right"></ion-col>
+                    <ion-col size="3" class="align-right"></ion-col>
+                    <ion-col size="3" class="align-right">
+                        <ion-button (click)="close()" fill="clear" class="blue-border-button width-100p">
+                            <span class="add-btn-text">Cancel</span>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="3" class="align-right">
+                        <ion-button type="submit" (click)="saveAddPopOver(f)" fill="clear" class="blue-bg-button width-100p">
+                            <span class="add-btn-text">Save</span>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </form>
+</ion-grid>

@@ -1,0 +1,202 @@
+<ion-app>
+    <ion-content>
+        <ion-grid class="myprofile-header">
+            <ion-row class="settings-header-row ion-padding-vertical">
+                <ion-col size="4" class="">
+                    <img (click)="backNavigation()" src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <a href="/register"><img src="assets/images/logo-pocn.svg"></a>
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-grid class="faq-data">
+            <ion-list>
+
+                <ion-text class="pca">Patient Connect FAQs</ion-text>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>What is Patient Connect and where can I download it?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Patient Connect is a HIPAA-compliant tool that allows you to quickly and easily communicate with peers and patients using voice or video calling. It allows you to mask your phone number to ensure privacy, as well as manage multiple caller ID personas.
+                            <br>
+                            To use Patient Connect, visit the App Store or Google Play, or visit www.pocn.com and join the POCN community. Then, follow the prompts to set up the Patient Connect tool.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>How much does the Patient Connect cost?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Patient Connect is free to use for all US-based nurse practitioners and physician associates.                             
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Is Patient Connect HIPAA secure?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Yes, Patient Connect follows and maintains all HIPPA requirements to ensure you have a free and easy way to connect with your patients and peers.
+                            <br>
+                            This means we:
+                            <br>
+                            <ul>
+                                <li>Perform a HIPAA Security Rule risk analysis</li>
+                                <li>Execute Security Rule safeguards and implement written Security Rule policies</li>
+                                <li>Enforce HIPAA training for employees</li>
+                                <li>Keep required documentation</li>
+                                <li>Destroy or return PHI</li>
+                            </ul>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Who can use the Patient Connect?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Any US-based nurse practitioner or physician associate can use Patient Connect. At this time, students are not able to access the feature because we require a valid NPI number to register for POCN. 
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Can I make international calls with Patient Connect?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            No, Patient Connect is available to make calls to all 50 US states, the District of Columbia, and US territories.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Will patients be able to see my phone number?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            No, patients will only see the caller ID numbers you set up during the initiation of the Patient Connect feature. 
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Will patients be able to see the nicknames that I give my caller ID personas?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            No, patients will only see the phone number associated with the caller ID personas.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Can I view a history/log of the calls I’ve made to patients?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            No, you cannot view a history or log of the calls you’ve made using Patient Connect.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Does Patient Connect support calls over WiFi?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Yes, calls can be made via your WiFi network. Most modern mobile phones allow users to make calls using one of the two options: cellular connection or WiFi connection. Users can switch between either options to make calls. If you have spotty cellular connection or the cellphone reception is weak, WiFi calling ensures that the call doesn't drop. WiFi calling to US phone numbers is free, and most cellular carriers allow this. You must, however, have a WiFi network available to connect to in order to use this service. Most internet speeds allow WiFi calls, and a high-speed connection is not required.
+                            <br>
+                            To enable WiFi calling, the user must turn on WiFi calling. For calls to be made via Patient Connect, the user must have either cellular or WiFi connection.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>Does Patient Connect use my data connection for phone calls?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Patient Connect requires access to the Internet in order to place voice and video calls. You can access the Internet on your phone either via a WiFi network or your cellular network. Voice and video calls made via a WiFi network does not use your phone's cellular data. If you don't have access to a WiFi network, calls made via Patient Connect uses your mobile carrier's cellular Internet.                        
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>How much data will a one-minute voice or video call consume on average for a user?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            There will not be any data usage if you are using your WiFi network to place calls for voice or video. If you are using your mobile carrier's cellular internet, voice calls will typically consume about 1MB/min and video calls will consume about 10 to 15MB/min.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>How do I know if my POCN app and Patient Connect are up to date?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            If your phone is set to automatically update your apps, POCN should always be updated to the latest version.
+                            <br>
+                            If you do not have applications set to automatically update, you will see an "updates available" notification if one is available when the app launches. Acknowledgement of the update will install the newer version on your mobile phone.
+                            <br>
+                            You must have enabled notifications for the POCN app in your settings to receive app update notifications. To do this, go to Settings >> Notifications >> POCN and click to allow notifications.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>How can I add my office number on Patient Connect so it appears on my patients’ caller ID when I call them?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            You can easily add your office phone number as one of your caller ID personas:
+                            <ul>
+                                <li>Tap the POCN icon in the upper righthand corner of your screen</li>
+                                <li>Tap the small arrow in the caller ID area of the screen</li>
+                                <li>Click “Add” and enter the nickname and phone number you’d like to use</li>
+                                <li>Tap “Save”</li>
+                            </ul>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+                <ion-item class="ion-no-padding ionitem-padding-remove">
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-title>How can I add people to a call using Patient Connect?</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            It’s simple to add patients, caregivers, or other clinicians to a call that’s already in progress.
+                            <br>
+                            In a voice call:
+                            <ul>
+                                <li>Once you’re in an active call, tap the “+” in the upper righthand corner of the screen</li>
+                                <li>Enter the phone number of the individual you’d like to add</li>
+                                <li>Tap “Add to Call”</li>
+                            </ul>
+                            In a video call:
+                            <ul>
+                                <li>Once you’re in an active call, tap the “+” in the upper righthand corner of the screen</li>
+                                <li>If you’d like to copy a link to the call, tap the “copy link” icon</li>
+                                <li>If you’d like to send an invitation directly from the app, click on the “Invite” button</li>
+                                <li>Follow the prompt to send the invitation</li>
+                            </ul>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-item>
+            </ion-list>
+        </ion-grid>
+
+    </ion-content>
+</ion-app>

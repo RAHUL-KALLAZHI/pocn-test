@@ -1,0 +1,38 @@
+<ion-content class="call-engaged workhistory-slide">
+    <ion-header class="edit-delete-header">
+        <h2>SMS<button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+    </ion-header>
+    <ion-grid class="ion-padding-horizontal mt-24">
+        <form name="form" (ngSubmit)="f3.form.valid" #f3="ngForm" novalidate>
+            <ion-item lines="none" class="contact-form-row ion-no-padding ionitem-padding-remove" [ngClass]="{ 'validation-error': (showPhoneDiv == true)}">
+                <ion-col class="">
+                    <ion-label><span class="required-star"><img src="assets/images/required.svg"></span>
+                        <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Telephone
+                    </ion-label>
+                    <ion-input class="blue-border-input custom-input" #telephoneInput [clearInput]="true" [(ngModel)]="mobileNumberInput" name="phoneNumber" inputmode="numeric" #mobilePhoneNumber="ngModel" type="text" minlength="11" pattern="^[+0-9]+$" required>
+                    </ion-input>
+                    <div *ngIf="!mobilePhoneNumber?.valid">
+                        <!--<div class="error-msg">Please enter phone number</div>-->
+                        <div *ngIf="mobilePhoneNumber.errors?.pattern && !mobilePhoneNumber.errors?.required " class="error-msg"></div>
+                    </div>
+                    <!-- <div>
+                        <div *ngIf="showPhoneDiv" class="error-msg"></div>
+                    </div> -->
+                    <ion-col>
+                        <span class="mobile-alert-text">Enter numbers without dashes.</span>
+                    </ion-col>
+                </ion-col>
+            </ion-item>
+
+            <ion-row class="contact-form-row update-buttons">
+                <ion-col class="">
+                    <ion-button type="submit" fill="clear" class="blue-bg-button" (click)="submitPhone(f3)">Submit</ion-button>
+
+                </ion-col>
+
+            </ion-row>
+
+        </form>
+    </ion-grid>
+
+</ion-content>

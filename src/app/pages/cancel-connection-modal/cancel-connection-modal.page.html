@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+    <ion-col class="">
+        <h2>Connection Cancel<button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+    </ion-col>
+</ion-row>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="mt-8">
+      <ion-col text-center class="feed-image-seclect ion-padding-horizontal cancel-data">
+        <!-- Model : {{ name }} -->Do you want to cancel this request? 
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-row class="ion-no-padding">
+    <ion-col text-center class="feed-modal-buttons cancel-done-btns ion-padding-horizontal" size="6">
+      <ion-button (click)="close()" fill="clear" class="feed-cancel blue-border-button width-100p">Cancel</ion-button>
+    </ion-col>
+    <ion-col text-center class="feed-modal-buttons cancel-done-btns ion-padding-horizontal" size="6">
+      <ion-button fill="clear" (click)="withdrawConnectionRequest()" [disabled]="hideButton" class="feed-done red-bg-button width-100p">Done</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

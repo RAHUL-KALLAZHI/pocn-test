@@ -1,0 +1,103 @@
+ion-col {
+  padding: 0;
+}
+h2.lookup-title{
+font-weight: 500;
+font-size: 18px;
+line-height: 100%;
+letter-spacing: -0.01em;
+color: #000000;
+text-align: center;
+padding: 0 24px;
+}
+.lookup-modal-info p{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #616161;
+}
+.lookup-modal-section ion-label{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 110%;
+  display: flex;
+  align-items: center;
+  color: #616161;
+  margin-bottom: 5px;
+}
+.lookup-modal-section ion-input, .lookup-modal-section ion-select{
+  background: #FFFFFF;
+  border: 2px solid #00A9E0;
+  border-radius: 10px;
+  height: 40px;
+  max-height: 40px;
+  font-size: 17px;
+}
+.lookupmodal-close{
+  background: none;
+}
+.lookupmodal-close img {
+  width: 20px;
+  position: relative;
+  top: -4px;
+}
+.modal-close {
+    float: right;
+}
+.lookup-col{
+  padding: 16px;
+  gap: 8px;
+  width: 343px;
+  background: rgb(255 255 255);
+  border: 1px solid rgb(189 189 189);
+  border-radius: 9px;
+  margin-bottom: 24px;
+}
+.lookup-col h2{
+  margin-top: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
+  color: #323232;
+  margin-bottom: 0;
+}
+p.npi-details {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 110%;
+  color: rgb(97 97 97);
+  margin-bottom: 0;
+  margin-top: 7px;
+}
+.npi-details span {
+  display: block;
+}
+.load-page {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #00A9E0;
+  width: 75px;
+  height: 75px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.lookup-modal-col p{
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000000;
+}
+.loader-npi{
+  width: 100%;
+  text-align: center;
+  height: 25px;
+  position: relative;
+  top: -3px;
+  margin-right: 35px;
+}

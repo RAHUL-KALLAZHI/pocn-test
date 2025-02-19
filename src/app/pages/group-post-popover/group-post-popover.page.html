@@ -1,0 +1,114 @@
+<ion-app>
+    <ion-content>
+        <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate class="group-form">
+
+            <ion-grid class="edit-delete-header">
+                <ion-row class="ion-padding-vertical myprofile-header-row">
+                    <ion-col size="4 " class="align-left">
+                        <button fill="clear" (click)="close('data',f)"><img src="assets/images/arrow-left.svg " class="previous-icon"></button>
+                    </ion-col>
+                    <ion-col size="4 " class="align-center">
+                        <img [routerLink]="[ '/tablinks/my-profile'] " src="assets/images/myprofile-pocn-logo.svg " class="pocn-header ">
+                    </ion-col>
+                    <ion-col size="4 " class="align-right post-btn">
+                        <ion-button [disabled]="disablePostBtn" fill="clear" type="submit" size="4" class="post align-right audio-video-call" (click)="submitPostForm(f)">
+                            Post <img src="assets/images/send-dark.svg " class="send-icon">
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <!-- <ion-col>
+      <button class="close " (click)="close() " fill="clear ">
+      <img src="assets/images/close.svg "></button>
+
+  </ion-col>-->
+            <ion-grid [hidden]="showAlertPostSuccess">
+                <ion-row class="ion-no-padding-vertical accept-request ">
+                    <ion-col size="12 " class=" ">
+                        <img src="assets/images/accept-request.svg " class="mr-8 ">
+                        <ion-text>Please publish your post. You will lose your changes once you navigate away from the screen. </ion-text>
+                        <div>
+                            <ion-button (click)="groupEmit(f)">Go Back</ion-button>
+                            <ion-button (click)="dismissGroup(f)">Dismiss</ion-button>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <ion-grid class="add-post-description ion-no-padding">
+                <ion-row class="ion-padding-horizontal">
+                    <ion-col class="ion-no-padding" size="12">
+                        <ion-textarea autoGrow="true" name="postDescription" #autoFocus [(ngModel)]="description" placeholder="Post Description" class="post-description"></ion-textarea>
+                    </ion-col>
+                </ion-row>
+                <div [hidden]="showDescriptionErr" class="error-msg show-description">Description is required</div>
+            </ion-grid>
+        </form>
+
+    </ion-content>
+
+    <ion-footer>
+        <ion-grid class="post-bottom-section ion-no-padding">
+            <ion-row class="ion-no-padding">
+                <ion-item lines="none" class="post-content ion-no-padding ionitem-padding-remove width-100p">
+
+                    <ion-row class="width-100p">
+                        <ion-col class="manual-fileupload" size="5">
+                            <span class="camera-photo mr-8">
+                          <label class="" (click)="takeImage()" ><img src="assets/images/post-camera.svg" class="cam-gal-icon"/></label>
+                      </span>
+                            <span class="upload-from-gallery">
+                          <input type="file"  name="file" style="display:none;" #pickImageInput (change)="postImageUploads($event)">
+                      <label class="" (click)="selectFile()"><img src="assets/images/gallery-icon.svg" class="cam-gal-icon"/></label>
+
+                      </span>
+                        </ion-col>
+                        <!-- <ion-col class="gallery-images" size="7">
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                      <img src="assets/images/user-demo-image.jpg" class="gallery-pic"/>
+                  </ion-col> -->
+                    </ion-row>
+                </ion-item>
+                <ion-item lines="none" class="delete ion-no-padding ionitem-padding-remove width-100p uploaded-image-section" [hidden]="showImageData">
+                    <ion-col size="12">
+                        <div class="uploaded-image" [hidden]="showImage">
+                            <img class="uploaded-img" [src]="attachmentTypeContent">
+                        </div>
+                        <div class="uploaded-image video-thumbnail" [hidden]="showVideo">
+                            <video width="200" height="200" controls [src]="videoContent">
+                              <!-- <source src={{videoContent}} type="video/mp4"> -->
+                          </video>
+                        </div>
+                        <div class="file-delete" [hidden]="showDeleteIcon" (click)="removeFile()">
+                            <img src="assets/images/trash-blue.svg" class="deletepopover-icon" />
+                        </div>
+                        <!-- <div class="uploaded-imge-details" [hidden]="showRename">
+                  <div class="uploaaded-filename">
+                      <p class="filename">{{ postFileName}}</p>
+                  </div>
+                  <div class="filedetails-tag">
+                      <span class="resume-name">{{ date | date: 'dd/MM/yyyy'}}</span>
+                      <span class="resume-name">{{ fileSize}}</span>
+                      <span class="resume-name">{{ fileType}}</span>
+                  </div>
+              </div> -->
+                    </ion-col>
+                </ion-item>
+                <ion-item lines="none" class="error-text ion-no-padding ionitem-padding-remove width-100p" *ngIf="idfileErrorStatus || postImageErrorMsg">
+                    <ion-col size="12">
+                        <span *ngIf="idfileErrorStatus">
+                      <span  class="error-msg" >{{ errorMsg }}</span>
+                        </span>
+                        <span *ngIf="postImageErrorMsg">
+                       <span  class="error-msg" >{{ postErrorMsg }}</span>
+                        </span>
+                    </ion-col>
+                </ion-item>
+            </ion-row>
+        </ion-grid>
+    </ion-footer>
+
+</ion-app>

@@ -1,0 +1,88 @@
+<ion-content>
+    <form>
+        <ion-grid class="myprofile-header">
+            <ion-row class="ion-padding-vertical">
+                <ion-col size="2" class="" (click)="goBackProfile()">
+                    <img src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="8" class="align-center dialer-header">
+                    <img src="assets/images/myprofile-pocn-logo.svg">
+                </ion-col>
+                <ion-col size="2">
+
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid class="number-id">
+            <ion-row class="ion-padding-vertical align-center">
+                <ion-text>{{callerIdNumber}} <img src="assets/images/arrow-drop.svg " (click)="showDialerPopOver() " class="dial-list "></ion-text>
+            </ion-row>
+        </ion-grid>
+        <ion-grid class="dial-number-display ">
+            <ion-row class=" ">
+                <ion-col size="10 " class="align-center ">
+                    <ion-text>{{dialedPhone}}</ion-text>
+                </ion-col>
+                <ion-col size="2 " class="align-left " (click)="backSpace() ">
+                    <img src="assets/images/backspace.svg " class="backspace ">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <!-- Dial Pad -->
+        <ion-grid class="dialpad ">
+            <ion-row class="ion-padding-vertical ">
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '1') ">
+                    <div>1</div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '2') ">
+                    <div>2<span class="letter ">ABC</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '3') ">
+                    <div>3<span class="letter ">DEF</span></div>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-padding-vertical ">
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '4') ">
+                    <div>4<span class="letter ">GHI</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '5') ">
+                    <div>5<span class="letter ">JKL</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '6') ">
+                    <div>6<span class="letter ">MNO</span></div>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-padding-vertical ">
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '7') ">
+                    <div>7<span class="letter ">PQRS</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '8') ">
+                    <div>8<span class="letter ">TUV</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '9') ">
+                    <div>9<span class="letter ">WXYZ</span></div>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-padding-vertical ">
+                <ion-col size="4 " class="align-center ">
+                    <div>*</div>
+                </ion-col>
+                <ion-col size="4 " class="align-center " (click)="writeToInput( '0') ">
+                    <div>0<span class="letter ">+</span></div>
+                </ion-col>
+                <ion-col size="4 " class="align-center ">
+                    <div>#</div>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-padding-vertical ">
+                <ion-col size="4 " class="align-center "></ion-col>
+                <ion-col size="4 " class="align-center call-start-end " (click)="callDialer() ">
+                    <img src="assets/images/call-start.svg " class="call-start ">
+                </ion-col>
+                <ion-col size="4 " class="align-center "></ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Dial Pad -->
+    </form>
+</ion-content>

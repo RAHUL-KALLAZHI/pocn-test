@@ -1,0 +1,104 @@
+<ion-content class="contact-edit-popover delete-popover">
+    <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+        <ion-col class="">
+            <h2>Invite to Group<button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+        <ion-col size="4" class="align-left">
+            <!-- <button class="back" *ngIf="showSearch==true && connectionTabType=='myNetwork'" (click)="backClose('network')" fill="clear"><img src="assets/images/arrow-left.svg"></button> -->
+            <button class="back" *ngIf="showSearch==true" (click)="backClose('recomand')" fill="clear"><img src="assets/images/arrow-left.svg"></button>
+            <!-- <img src="assets/images/settings.svg" class="settings"> -->
+        </ion-col>
+        </ion-row>
+    <ion-grid class="myprofile-header connection-loader" *ngIf="showSearch ==true">
+        <ion-row class="width-100p">
+            <span *ngIf="searchLoaderStatus" class="loader-npi width-100p">
+                <img src="./../assets/images-pocn/ajax-loader.gif ">
+            </span>
+        </ion-row>
+
+        <ion-row class="ion-padding-horizontal search-title" [hidden]="showPocnUser==true">
+            <ion-col size="12" class=" " [hidden]="searchLoaderStatus==true">
+                <h2>POCN Community <span class="more" (click)="moreClick('pocn')" *ngIf="searchData && searchData.length==10 ">
+                    More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span>
+                </h2>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal">
+            <ion-label class="ion-no-padding" *ngIf="pocnStatusMessage && !searchLoaderStatus">
+                <h1 class="no-connection-msg">No search result found</h1>
+            </ion-label>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal mynetwork mt-8" [hidden]="showPocnUser==true">
+
+            <ion-item class="ionitem-padding-remove ion-no-padding search-datas width-100p" lines="none" *ngFor="let data of searchData">
+                <!-- <img src="assets/images/user-demo-image.jpg " *ngIf="!searchLoaderStatus " class="mr-8 mynetwork-img "
+      (click)="showMdmMemberProfile(data, 'search') " > -->
+                <ion-col size="2">
+                    <img *ngIf="!searchLoaderStatus" src="{{imageUrl}}{{data.userId}}.{{data.fileExtension}}" 
+                    (error)="onImgError($event)" class="connection-request-img" (click) = "showPublicProfileModal(data,'inviteGrp')">
+                    <!-- <img *ngIf="!searchLoaderStatus && !data.fileExtension" src="{{defaultImg}}" class="connection-request-img" (click) = "showPublicProfileModal(data,'inviteGrp')"> -->
+                    <img *ngIf="!searchLoaderStatus" src="assets/images/verified.png " class="verified-png">
+                </ion-col>
+
+
+                <ion-label *ngIf="!searchLoaderStatus" (click) = "showPublicProfileModal(data,'inviteGrp')">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+                <span class="my-network-chip" *ngIf="!searchLoaderStatus">
+                    <div class="chip-content" >
+                        <ion-chip class="custom-chip truncate speciality-tag" *ngIf="data.primarySpecialtyDesc && data.primarySpecialtyDesc
+                        != '(i.e., a specialty other than those appearing above)'">
+                        {{ data.primarySpecialtyDesc}}
+                        </ion-chip>
+                        <ion-chip class="custom-chip " *ngIf="data.providerType ">{{data.providerType}}</ion-chip>
+                    </div>
+                </span>
+
+
+
+
+            </ion-item>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal search-title" [hidden]="showMdmUser==true ">
+            <ion-col size="12 " class=" " [hidden]="searchLoaderStatus==true">
+                <h2>Invite Your Peers to Join POCN <span class="more " (click)="moreMdmClick('mdm')" *ngIf="mdmConnection && mdmConnection.length==10 ">More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span></h2>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal">
+            <ion-label class="ion-no-padding" *ngIf="mdmStatusMessage && !searchLoaderStatus">
+                <h1 class="no-connection-msg ">No search result found</h1>
+            </ion-label>
+        </ion-row>
+        <ion-row class="ion-padding-horizontal mynetwork mt-8 " [hidden]="showMdmUser==true ">
+            <ion-item class="ionitem-padding-remove ion-no-padding search-datas width-100p" lines="none " *ngFor="let data of mdmConnection ">
+                <ion-col size="2 ">
+                    <img src="{{defaultImg}} " *ngIf="!searchLoaderStatus " class="connection-request-img " (click)="showMdmMemberProfile(data, 'search') ">
+                </ion-col>
+                <ion-label *ngIf="!searchLoaderStatus " (click)="showMdmMemberProfile(data, 'search') ">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+                <span class="my-network-chip " *ngIf="!searchLoaderStatus ">
+      <div class="chip-content ">
+          <ion-chip class="custom-chip truncate speciality-tag " *ngIf="data.primarySpecialtyDesc && data.primarySpecialtyDesc != '(i.e., a specialty other than those appearing above)'">
+              {{ data.primarySpecialtyDesc}}
+          </ion-chip>
+          <ion-chip class="custom-chip " *ngIf="data.providerType ">{{data.providerType}}</ion-chip>
+      </div>
+  </span>
+            </ion-item>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<ion-footer>
+    <ion-grid class="post-search width-100p ion-padding-horizontal">
+        <ion-row class="width-100p ">
+            <ion-col size="12">
+                <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p " lines="none ">
+                    <ion-searchbar placeholder=" " [(ngModel)]="searchText " enterkeyhint="go " (search)="searchUserData(searchText) " inputmode="search " class="network-searchbar "></ion-searchbar>
+                </ion-item>
+            </ion-col>
+            <!-- <ion-col size="3 ">
+                <ion-button fill="clear " class="blue-bg-button share-button" (click)="shareGroupPost() ">Share</ion-button>
+            </ion-col> -->
+        </ion-row>
+    </ion-grid>
+</ion-footer>

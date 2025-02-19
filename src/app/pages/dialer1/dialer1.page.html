@@ -1,0 +1,278 @@
+<ion-content class="call-engaged" *ngIf="showCommonDialer">
+    <ion-grid class="myprofile-header">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-left">
+                <img disabled="true" src="assets/images/arrow-prev-white.svg">
+                <img disabled="true" class="speaker-icon" src="assets/images/speaker-white.svg">
+            </ion-col>
+            <ion-col size="4" class="align-center dialer-header">
+                <img src="assets/images/white-logo.svg">
+            </ion-col>
+            <ion-col size="4" class="align-right">
+                <img (click)="addNewCallerPopOver()" src="assets/images/dialer-add.svg">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="number-id">
+        <ion-row class="align-center">
+            <ion-text>{{callerData}}<img src="assets/images/drop-calling.svg" class="dial-list"></ion-text>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="dial-number-display">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>{{dialedPhone}}</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" *ngIf="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>Calling...</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" [hidden]="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>
+                    <span class="minute">{{min}}m</span>
+                    <span class="seconds">{{sec}}s</span>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid class="dialpad">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>1</div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>2<span class="letter">ABC</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>3<span class="letter">DEF</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>4<span class="letter">GHI</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>5<span class="letter">JKL</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>6<span class="letter">MNO</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>7<span class="letter">PQRS</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>8<span class="letter">TUV</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>9<span class="letter">WXYZ</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>*</div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>0<span class="letter">+</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>#</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid class="call-action-sec">
+        <ion-row class="call-action-buttons align-center">
+            <ion-col size="3" class=""></ion-col>
+            <ion-col size="3" class="" *ngIf="!muted" (click)="muteCall()"><img src="assets/images/dialer-voice-call.svg"></ion-col>
+            <ion-col size="3" class="" *ngIf="muted" (click)="muteCall()"><img src="assets/images/mute-icon.svg"></ion-col>
+            <ion-col size="3" class="" (click)="endCall()"><img src="assets/images/call-stop.svg"></ion-col>
+            <ion-col size="3" class=""></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<!-- Multi call list -->
+<ion-content class="call-engaged" *ngIf="showCallParticipant">
+    <ion-grid class="myprofile-header">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-left">
+                <img disabled="true" src="assets/images/arrow-prev-white.svg">
+                <img disabled="true" class="speaker-icon" src="assets/images/speaker-white.svg">
+            </ion-col>
+            <ion-col size="4" class="align-center dialer-logo">
+                <img src="assets/images/white-logo.svg">
+            </ion-col>
+            <ion-col size="4" class="align-right">
+                <img (click)="addNewCallerPopOver()" src="assets/images/dialer-add.svg">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="number-id">
+        <ion-row class="align-center">
+            <ion-text>{{callerData}}<img src="assets/images/drop-calling.svg" class="dial-list"></ion-text>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="dial-number-display">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <!-- <ion-text>{{dialedPhone}}</ion-text> -->
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" *ngIf="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>Calling...</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" [hidden]="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>
+                    <span class="minute">{{min}}m</span>
+                    <span class="seconds">{{sec}}s</span>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="incall-section">
+        <ion-col size="12" class="socialmedia-details contact-list">
+            <h2>IN CALL</h2>
+            <ion-item lines="full" class="ion-no-padding ionitem-padding-remove nobg incall-item" *ngFor="let list of listParticipant">
+                <ion-label>{{list.number}}</ion-label>
+                <div class="subtab-more">
+                    <button fill="clear" slot="end" class="experience-more">
+                    <ion-spinner name="lines" color="light" *ngIf="list.loading"></ion-spinner>
+                   <img src="assets/images/more-white.svg" *ngIf="!list.loading" class="more-dots" (click)="showPopover($event,'participant',{number:list.number,muted:list.muted})">
+                </button>
+                </div>
+            </ion-item>
+        </ion-col>
+    </ion-grid>
+    <ion-grid class="call-action-sec">
+        <ion-row class="call-action-buttons align-center">
+            <!-- <ion-col size="4" class=""><img src="assets/images/dialer-voice-call.svg"></ion-col> -->
+            <ion-col size="4" class="" *ngIf="!muted" (click)="muteCall()"><img src="assets/images/dialer-voice-call.svg"></ion-col>
+            <ion-col size="4" class="" *ngIf="muted" (click)="muteCall()"><img src="assets/images/mute-icon.svg"></ion-col>
+            <ion-col size="4" class="" (click)="showDialer()"><img src="assets/images/keypad-icon.svg"></ion-col>
+            <ion-col size="4" class="" (click)="endCall()"><img src="assets/images/call-stop.svg"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<!-- Multi call list -->
+
+<!-- Multi call list keypad-->
+<ion-content class="call-engaged" *ngIf="showDialerPad">
+    <ion-grid class="myprofile-header">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-left">
+                <img disabled="true" src="assets/images/arrow-prev-white.svg">
+                <img disabled="true" class="speaker-icon" src="assets/images/speaker-white.svg">
+            </ion-col>
+            <ion-col size="4" class="align-center dialer-logo">
+                <img src="assets/images/white-logo.svg">
+            </ion-col>
+            <ion-col size="4" class="align-right">
+                <img (click)="addNewCallerPopOver()" src="assets/images/dialer-add.svg">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="number-id">
+        <ion-row class="align-center">
+            <ion-text>{{callerData}}<img src="assets/images/drop-calling.svg" class="dial-list"></ion-text>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="dial-number-display">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>{{dialedPhone}}</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" *ngIf="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>Calling...</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="call-timer" [hidden]="showCallStatus">
+        <ion-row class="">
+            <ion-col size="12" class="align-center">
+                <ion-text>
+                    <span class="minute">{{min}}m</span>
+                    <span class="seconds">{{sec}}s</span>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-grid class="dialpad">
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>1</div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>2<span class="letter">ABC</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>3<span class="letter">DEF</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>4<span class="letter">GHI</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>5<span class="letter">JKL</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>6<span class="letter">MNO</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>7<span class="letter">PQRS</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>8<span class="letter">TUV</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>9<span class="letter">WXYZ</span></div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical">
+            <ion-col size="4" class="align-center">
+                <div>*</div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>0<span class="letter">+</span></div>
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <div>#</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid class="call-action-sec">
+        <ion-row class="call-action-buttons align-center">
+            <ion-col size="4" class=""><img src="assets/images/dialer-voice-call.svg"></ion-col>
+            <ion-col size="4" class=""><img src="assets/images/incall-listicon.svg"></ion-col>
+            <ion-col size="4" class="" (click)="endCall()"><img src="assets/images/call-stop.svg"></ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<!-- Multi call list keypad-->

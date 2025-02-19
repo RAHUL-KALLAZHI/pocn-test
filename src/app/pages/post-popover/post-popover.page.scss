@@ -1,0 +1,203 @@
+ion-grid,
+ion-col {
+    padding: 0;
+}
+
+img.previous-icon {
+    width: 30px;
+    position: relative;
+    left: 10px;
+}
+
+.settings-header-row {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.logout-btn {
+    margin: 0;
+}
+
+.edit-delete-header button {
+    background: none;
+    float: left;
+    z-index: 99;
+    top: 0;
+    left: 10px;
+}
+
+.send-icon {
+    width: 24px;
+    margin-left: 8px;
+}
+
+img.pocn-header {
+    height: 30px;
+}
+
+.post-btn {
+    position: relative;
+    top: -10px;
+}
+
+.add-post-description p {
+    margin: 0;
+}
+
+.add-post-description ion-textarea {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 120%;
+    color: #323232 !important;
+    max-height: 90% !important;
+    overflow: auto;
+}
+
+.add-post-description textarea {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 120%;
+    color: #323232 !important;
+}
+
+.post-bottom-section {
+    // margin: auto;
+    // position: absolute;
+    // text-align: center;
+    // bottom: 20px;
+    // width: 100%;
+}
+
+.characters {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #616161;
+}
+
+.gallery-pic {
+    display: inline-block;
+}
+
+.camera-photo,
+.upload-from-gallery {
+    display: inline-block;
+}
+
+.cam-gal-icon {
+    width: 50px;
+}
+
+.gallery-images {
+    display: inline-flex;
+    white-space: nowrap;
+    font-size: 0;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+}
+
+.gallery-images img {
+    border-radius: 7px;
+    width: 55px;
+    height: 55px;
+    margin-right: 8px;
+}
+
+.manual-fileupload {
+    padding-left: 16px;
+}
+
+.error-text {
+    padding: 0 16px;
+}
+
+.uploaded-image {
+    position: relative;
+}
+
+.file-delete {
+    position: absolute;
+    right: 16px;
+    top: 0;
+}
+
+.uploaded-image-section ion-col {
+    padding: 0 16px;
+}
+
+img.uploaded-img {
+    border: 2px solid rgb(255 255 255);
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 9px;
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+}
+
+.uploaded-image-section {
+    margin: 15px 0;
+}
+
+.video-thumbnail {
+    border: 2px solid rgb(255 255 255);
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 9px;
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+}
+
+.show-description {
+    padding: 0 16px;
+}
+
+form.group-form {
+    height: 100%;
+}
+
+ion-grid.add-post-description {
+    height: 100%;
+}
+
+.accept-request {
+    background: #424242;
+    padding: 12px 16px;
+}
+
+.ingore-request {
+    background: #FF8038;
+    padding: 12px 16px;
+}
+
+.undo {
+    float: right;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    position: relative;
+    top: 11px;
+}
+
+.accept-request ion-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #E0E0E0;
+    position: relative;
+    top: -5px;
+}
+
+.ingore-request ion-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #FFFFFF;
+    position: relative;
+    top: -5px;
+}

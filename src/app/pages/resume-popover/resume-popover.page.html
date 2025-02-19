@@ -1,0 +1,38 @@
+<ion-list class="edit-delete-popover">
+  <ion-item (change)="pickResume($event)" lines="none" class="edit ion-no-padding">
+    <input type="file" name="uploadfile" id="img" style="display:none;" />
+    <!-- <span *ngIf="fileErrorStatus">
+        <span class="update-message-error">{{ errorMsg }}</span>
+      </span>
+      <span *ngIf="fileLoader">
+        <span class="update-message-success"><img src="assets/images-pocn/ajax-loader.gif" /></span>
+      </span>
+      <span *ngIf="successStatus">
+        <span class="update-message-success">{{ successMsg }}</span>
+      </span> -->
+    <label for="img"><img src="assets/images/file-upload.svg" class="editpopover-icon" /> Replace</label>
+  </ion-item>
+  <ion-item (click)="editResume()" lines="none" class="edit ion-no-padding">
+      <!-- <input type="text" name="resume" id="resume" /> -->
+      <label><img src="assets/images/edit-popover.svg" class="editpopover-icon" /> Rename</label>
+    </ion-item>
+  <ion-item (click)="removeResume()" lines="none" class=" delete ion-no-padding">
+    <label><img src="assets/images/delete-popover.svg" class="deletepopover-icon" /> Delete</label>
+  </ion-item>
+</ion-list>
+
+
+ <!-- <ion-row class="contact-form-row"  *ngIf="showResume">
+                  <ion-col class="ion-padding-horizontal">
+                    <ion-input type="file" (change)="pickResume($event)" class="contact-section-form"></ion-input>
+                    <span *ngIf="fileErrorStatus">
+                     <span class="update-message-error">{{ errorMsg }}</span>
+                   </span>
+                   <span *ngIf="fileLoader">
+                     <span class="update-message-success"><img src="assets/images-pocn/ajax-loader.gif" /></span>
+                   </span>
+                   <span *ngIf="successStatus">
+                     <span class="update-message-success">{{ successMsg }}</span>
+                   </span>
+                  </ion-col>
+                </ion-row> -->

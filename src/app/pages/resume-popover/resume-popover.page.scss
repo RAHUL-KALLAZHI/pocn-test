@@ -1,0 +1,58 @@
+.edit label{
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: rgb(0 123 181) !important;
+    margin: 0 !important;
+}
+.delete label{
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #DF1642 !important;
+    margin: 0 !important;
+}
+.editpopover-icon, .deletepopover-icon{
+    width: 24px;
+    position: relative;
+    top: 5px;
+    margin-right: 5px;
+}
+.edit, .delete {
+    padding: 0 20px;
+}
+.edit-delete-popover{
+    padding: 10px 0;
+}
+.update-buttons {
+    margin-top: 13px;
+}
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .custom-file-input::before {
+    content: 'edit';
+    display: inline-block;
+    // background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    background: linear-gradient(to bottom, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    // -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 500;
+    font-size: 10pt;
+  }
+  .custom-file-input:hover::before {
+    border-color: black;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+
+  

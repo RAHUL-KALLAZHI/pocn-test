@@ -1,0 +1,46 @@
+.contact-edit-popover {
+    width: 100%;
+  }
+  .close{
+    background: none;
+    float: right;
+    position: absolute;
+    right: 24px;
+  }
+  .previous-btn{
+    background: none;
+    float: right;
+    position: absolute;
+    left: 24px;
+  }
+  .edit-delete-header h2{
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-bottom: 2px;
+  }
+  .video-room-code ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #000000;
+  }
+  .room-code{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+  }
+  .invite-button {
+    text-align: right;
+}
+span.room-code img {
+    position: relative;
+    top: 3px;
+    margin-left: 2px;
+    width: 18px;
+}

@@ -1,0 +1,95 @@
+ion-col{
+    padding: 0;
+}
+ion-grid {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.contact-edit-popover {
+    width: 100%;
+}
+.edit-delete-header{
+    background: rgb(252 252 252);
+}
+.edit-delete-header .close{
+    background: none;
+    float: right;
+    position: absolute;
+    right: 20px;
+}
+.edit-delete-header .back{
+    background: none;
+    float: left;
+    position: absolute;
+    left: 20px;
+}
+.edit-delete-header h2{
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+}
+.add-msg p{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    color: #323232;
+    margin-bottom: 0;
+}
+img.send-icon {
+    width: 24px;
+    margin-right: 8px;
+}
+// .accept-request ion-text{
+//     font-weight: 500;
+//     font-size: 16px;
+//     line-height: 110%;
+//     color: #E0E0E0;
+//     position: relative;
+//     top: -5px;
+//     background: #424242;
+//     padding: 12px 16px;
+// }
+.accept-request{
+    background: #424242;
+    padding: 12px 16px;
+    position: relative;
+    top: 12px;
+}
+.ingore-request{
+    background: #FF8038;
+    padding: 12px 16px;
+    position: relative;
+    top: 12px;
+}
+.accept-request ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #E0E0E0;
+    position: relative;
+    top: -5px;
+}
+.ingore-request ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #FFFFFF;
+    position: relative;
+    top: -5px;
+}
+.ignore-accept ion-button {
+    margin-left: 14px;
+}
+.undo{
+    float: right;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    position: relative;
+    top: 11px;
+}

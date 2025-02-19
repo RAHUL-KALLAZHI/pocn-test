@@ -1,0 +1,248 @@
+.contact-edit-popover {
+    width: 100%;
+    padding-bottom: 50px;
+}
+.edit-delete-header button{
+    background: none;
+    float: right;
+    position: absolute;
+    right: 10px;
+    z-index: 99;
+    top: 0px;
+}
+.edit-delete-header h2{
+    text-align: center;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-bottom: 2px;
+    padding: 0 40px;
+}
+.primary-checkbox ion-label {
+    position: relative;
+    top: -8px;
+    margin-left: 10px;
+}
+ion-row.contact-form-row {
+    margin-bottom: 5px;
+}
+.update-buttons {
+    margin-top: 13px;
+}
+.donate-now {
+    list-style-type: none;
+    margin: 4px 0 17px 0;
+    padding: 0;
+    width: 100%;
+    float: left;
+    border: 2px solid #00A9E0;
+    display: flex;
+    border-radius: 5px;
+  }
+.donate-now li {
+    float: left;
+    height: 32px;
+    position: relative;
+    text-align: center;
+    flex-basis: 100%;
+    text-align: center;
+}
+.donate-now li:last-child label{
+  border-right: 0;
+  border-radius: 0 3px 3px 0;
+}
+.donate-now li:first-child label{
+  border-radius: 3px 0 0 3px;
+  margin-left: -1px;
+}
+  
+  .donate-now label,
+  .donate-now input {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .donate-now input[type="radio"] {
+    opacity: 0.01;
+    z-index: 100;
+  }
+  
+  .donate-now input[type="radio"]:checked+label,
+  .Checked+label {
+    background: #00A9E0;
+    color: #fff;
+  }
+  
+  .donate-now label {
+    padding: 5px 5px;
+    border-right: 2px solid #00A9E0;
+    cursor: pointer;
+    z-index: 90;
+    height: 34px;
+    color: #00A9E0;
+    font-size: 16px;
+    margin-top: -1px;
+  }
+
+
+
+.workhistory-slide form{
+  width: 100%;
+}
+.next-btn-text{
+  margin-right: 9px;
+}
+.workhistory-next-btn{
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 24px;
+}
+.employment-type-sec{
+  width: 100%;
+  display: block;
+}
+.startmonth-section{
+  display: block !important;
+}
+.startmonth-section{
+  padding: 24px 11px;
+}
+.startmonth-section row{
+  width: 100%;
+}
+.type-item{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.employment-type-sec ion-label{
+  margin-bottom: 5px !important;
+}
+.subtab-logo{
+  width: 15%;
+  float: left;
+}
+.subtab-content{
+  width: 85%;
+  float: left;
+  padding: 0px 15px 0 0;
+  text-align: left;
+}
+.subtab-more{
+  width: 5%;
+  float: left;
+}
+.subtab-content h2{
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 110%;
+  color: rgb(50 50 50);
+  margin-top: 0;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+.about-content-main {
+  margin-top: 10px;
+  display: inline-block;
+  width: 100%;
+}
+.subtab-logo img {
+  max-width: 42px;
+}
+.subtab-more button {
+  background: none;
+  padding: 0;
+}
+
+.chip-content-main {
+  background: rgb(245 245 245);
+  border-radius: 9px;
+  margin: 16px 6px;
+}
+h2.workhistory-clinic-title{
+  font-weight: 500;
+  font-size: 19px !important;
+  line-height: 150% !important;
+  color: #00A9E0 !important;
+}
+
+
+.show-select {
+  background: rgb(216 221 253) !important;
+}
+.show-select h2.workhistory-clinic-title {
+  color: rgb(12 17 49) !important;
+}
+.show-select .custom-chip {
+  color: rgb(12 17 49);
+  border-color: rgb(12 17 49);
+}
+.swiper-slide:not(.swiper-slide-active) > ion-slide {
+  display:none;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  width:100%;
+}
+.current-job p {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  color: rgb(0 0 0);
+  margin: 0;
+}
+.add-edu-nobg{
+  background: none !important;
+}
+.chip-content-main.add-edu-nobg h2.workhistory-clinic-title{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
+  color: #323232 !important;
+}
+.chip-content-main.add-edu-nobg{
+  margin-bottom: 0 !important;
+  background: none;
+}
+
+.loading-section{
+  text-align: center;
+  width: 100%;
+}
+ion-button span.next-btn-text {
+  position: relative;
+  top: 0;
+}
+button span.next-btn-text {
+  position: relative;
+  top: -5px;
+}
+.next-button img {
+  position: relative;
+  top: 2px;
+}
+.next-bottom-button{
+  
+}
+span.plus-icon img {
+  width: 22px;
+}
+
+.edit-delete-header {
+  padding-bottom: 15px !important;
+}
+.next-bottom-button {
+  margin-bottom: 15px;
+}
+.custom-hco{
+  text-transform: none;
+}

@@ -1,0 +1,150 @@
+<ion-content class="preference-page">
+    <ion-grid class="myprofile-header">
+        <ion-row class="settings-header-row ion-padding-vertical">
+            <ion-col size="4" class="">
+                <img src="assets/images/arrow-left.svg" [routerLink]="['/settings']" (click)="prevNavigation()" class="previous-icon">
+            </ion-col>
+            <ion-col size="4" class="align-center">
+                <img src="assets/images/myprofile-pocn-logo.svg" [routerLink]="['/tablinks/my-profile']" class="header-logo">
+            </ion-col>
+            <ion-col size="4" class="align-right audio-video-call">
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item *ngIf="successEmailResendMsg" class="strip ion-no-padding ionitem-padding-remove">
+        <ion-row class="ion-no-padding-vertical accept-request width-100p">
+            <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                <span class="strip-cnt">
+            <ion-text>Code sent successfully.</ion-text>
+            </span>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+    <ion-grid class="personalization-profile-section ion-no-padding">
+        <ion-item lines="none" class="ionitem-padding-remove ion-no-padding patient-connect-title">
+            <div class="item-content">
+                <h2>Patient Connect Settings</h2>
+            </div>
+        </ion-item>
+        <ion-row class="ion-no-padding">
+            <ion-col size="12" class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="fNum.form.valid" #fNum="ngForm" novalidate>
+                    <ion-item [disabled]="showDisablerNumber" [ngClass]="{ 'validation-error':(fNum.submitted && phoneNumber.invalid)|| !showCallCountryError || !showNumber}" lines="none" class="ionitem-padding-remove ion-no-padding">
+                        <ion-label position="stacked" class="input-label">
+                            <span class="required-star"><img src="assets/images/required.svg "></span>
+                            <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Patient Connect Mobile Number
+                        </ion-label>
+                        <ion-input [clearInput]="true" type="tel" name="mobilePhoneNumber" [(ngModel)]="myUserPhone" #phoneNumber="ngModel" [ngClass]="{'is-invalid': fNum.submitted && phoneNumber.invalid && phoneNumber.dirty}" class="contact-section-form mobile-reg textinput custom-input"
+                            required maxlength="16" placeholder=""></ion-input>
+                        <div *ngIf="fNum.submitted && phoneNumber.invalid">
+                            <div *ngIf="phoneNumber.errors?.required" class="error-msg">Phone Number is required.</div>
+                        </div>
+                        <div [hidden]="showCallCountryError || phoneNumber.errors?.required" class="error-msg">Please enter a valid mobile number.</div>
+                        <div [hidden]="showNumber || phoneNumber.errors?.required" class="error-msg">Please enter numeric values.</div>
+                    </ion-item>
+                    <ion-item [hidden]="showSendButton" class="ionitem-padding-remove ion-no-padding mt-16" lines="none">
+                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="editSettingsContact(fNum)">
+                            <span class="next-btn-text verification-mob-icon "><img src="assets/images/edit-icon.svg" class="send-verification mr-8"></span>
+                            <span>Edit</span>
+                        </ion-button>
+                    </ion-item>
+                    <ion-item *ngIf="showSendNumberButton" class="ionitem-padding-remove ion-no-padding mt-16" lines="none">
+                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" full round (click)="clickVerifyNumber(fNum)">
+                            <span><img src="assets/images/verify.svg" class="send-verification mr-8"> </span>
+                            <span>Verify</span>
+                        </ion-button>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-no-padding">
+            <ion-col size="12" class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="fNums.form.valid" #fNums="ngForm" novalidate>
+                    <ion-item [ngClass]="{'validation-error':(fNums.submitted && otp.invalid)|| !verifyMessage}" lines="none" *ngIf="showVerifyNumber" class="ionitem-padding-remove ion-no-padding mt-16">
+                        <ion-label position="stacked" class="input-label">Please enter the code we texted to you.
+                        </ion-label>
+                        <ion-input [clearInput]="true" type="tel" name="otpNumber" [(ngModel)]="otpNumber" #otp="ngModel" [ngClass]="{'is-invalid': fNums.submitted && otp.invalid }" class="contact-section-form mobile-reg textinput custom-input" required minlength="6" placeholder=""></ion-input>
+                        <div *ngIf="fNums.submitted && !otp.valid">
+                            <div *ngIf="otp.errors?.required" class="error-msg">OTP number is required.</div>
+                        </div>
+                        <div [hidden]="verifyMessage || otp.errors?.required" class="error-msg">Invalid OTP, please try again.</div>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding mt-24 mb-16" lines="none" *ngIf="showVerifyNumber">
+                        <ion-button slot="end" [disabled]="disableResendBtn" ion-button full round class="resend-btn blue-border-button otp-resend" fill="clear" (click)="sendNumberResendCode(fNums)">
+                            Resend Code
+                        </ion-button>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding" lines="none" *ngIf="showVerifyNumber">
+                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" full round (click)="clickVerifyOtp(fNums)">
+                            <span><img src="assets/images/verify.svg" class="send-verification mr-8"> </span>
+                            <span>Verify</span>
+                        </ion-button>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding mt-16">
+            <ion-col size="12" class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="fEmail.form.valid" #fEmail="ngForm" novalidate>
+                    <ion-item [disabled]="showDisableEmail" [ngClass]="{ 'validation-error':(fEmail.submitted && myUserEmail.invalid)|| !showCallCountryError || !showNumber}" lines="none" class="ionitem-padding-remove ion-no-padding">
+                        <ion-label position="stacked" class="input-label">
+                            <span class="required-star"><img src="assets/images/required.svg "></span>
+                            <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Patient Connect Email
+                        </ion-label>
+                        <ion-input [clearInput]="true" type="email" name="email" [(ngModel)]="email" #myUserEmail="ngModel" [ngClass]="{'is-invalid': fEmail.submitted && myUserEmail.invalid && myUserEmail.dirty}" class="contact-section-form mobile-reg textinput custom-input pc-email"
+                            required placeholder=""></ion-input>
+                        <div *ngIf="fEmail.submitted && myUserEmail.invalid">
+                            <div *ngIf="myUserEmail.errors?.required" class="error-msg">Email is required.</div>
+                        </div>
+                        <div [hidden]="showEmailError" class="error-msg">Please enter a valid email.</div>
+                    </ion-item>
+                    <ion-item [hidden]="showEmailEditButton" class="ionitem-padding-remove ion-no-padding mt-16" lines="none">
+                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button " fill="clear " ion-button full round (click)="editSettingsEmail(fEmail) ">
+                            <span class="next-btn-text verification-mob-icon "><img src="assets/images/edit-icon.svg " class="send-verification mr-8"></span>
+                            <span>Edit</span>
+                        </ion-button>
+                    </ion-item>
+                    <ion-item *ngIf="showEmailButton" class="ionitem-padding-remove ion-no-padding mt-16" lines="none ">
+                        <ion-button type="submit " class="button-native blue-bg-button width-100p next-button " fill="clear " full round (click)="sendVerifyEmail(fEmail) ">
+                            <span><img src="assets/images/verify.svg " class="send-verification mr-8 "> </span>
+                            <span>Verify</span>
+                        </ion-button>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding">
+            <ion-col size="12" class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="fEmails.form.valid" #fEmails="ngForm" novalidate>
+                    <ion-item lines="none" [ngClass]="{'validation-error': fEmails.submitted && resend.invalid || !resendErrMsg}" class="ionitem-padding-remove ion-no-padding" *ngIf="showVerifyEmail">
+                        <span class="h24"></span>
+                        <ion-label position="stacked" class="input-label">Enter the code in your verification email.
+                        </ion-label>
+                        <ion-input [clearInput]="true" name="emailCode" type="tel" inputmode="numeric" placeholder="" [(ngModel)]="emailCode" #resend="ngModel" [ngClass]="{ 'is-invalid': fEmails.submitted && emailCode}" class="contact-section-form mobile-reg custom-input" required
+                            minlength="5"></ion-input>
+                        <div *ngIf="fEmails.submitted && resend.invalid">
+                            <div *ngIf="resend.errors?.required" class="error-msg">Code is required.</div>
+                        </div>
+                        <div class="error-msg" [hidden]="resendErrMsg || resend.errors?.required">
+                            Invalid token, please try again.
+                        </div>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding mt-24 mb-16" lines="none" *ngIf="showVerifyEmail">
+                        <ion-button [disabled]="disableResendBtn" slot="end" ion-button full round class="resend-btn blue-border-button otp-resend" fill="clear" (click)="sendEmailResendToken(fEmails)">
+                            Resend Code
+                        </ion-button>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding" lines="none" *ngIf="showVerifyEmail">
+                        <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="verifyEmailToken(fEmails)">
+                  <span class=""><img src="assets/images/verify.svg" class="send-verification mr-8"></span>
+                  <span class="verify">Verify</span>
+                </button>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

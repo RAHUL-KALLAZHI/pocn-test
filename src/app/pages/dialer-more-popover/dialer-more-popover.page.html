@@ -1,0 +1,13 @@
+<ion-list class="edit-delete-popover">
+    <ion-item (click)="muteParticipant('mute')" lines="none" class="edit ion-no-padding" *ngIf="list.muted">
+        <ion-label class="mute-caller"><img src="assets/images/mute-caller.svg" class="editpopover-icon" /> Mute Caller</ion-label>
+    </ion-item>
+    <ion-item (click)="muteParticipant('unmute')" lines="none" class="edit ion-no-padding" *ngIf="!list.muted">
+        <ion-label class="unmute-caller"><img src=" assets/images/mute-caller.svg " class="editpopover-icon" /> Unmute Caller</ion-label>
+    </ion-item>
+
+    <ion-item (click)="disconnectParticipant() " lines="none " class=" delete ion-no-padding ">
+        <ion-label class="drop-caller"><img src="assets/images/delete-popover.svg " class="deletepopover-icon" /> Drop Caller</ion-label>
+    </ion-item>
+    <!-- edit ion-no-padding -->
+</ion-list>

@@ -1,0 +1,31 @@
+<ion-app>
+    <ion-content>
+        <ion-grid class="myprofile-header">
+            <ion-row class="settings-header-row ion-padding-vertical">
+                <ion-col size="4" class="">
+                    <img (click)="backNavigation()" src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <a href="/register"><img src="assets/images/logo-pocn.svg"></a>
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-grid class="faq-data">
+            <ion-list>
+
+                <ion-item lines="none" class="ion-no-padding ionitem-padding-remove delete-settings">
+                    <ion-text>
+                        We are sorry to see you go.<br><br> Please submit your request via email to <span>support@pocn.com</span> from the email account that you used to register for POCN. <br><br>We would appreciate if you can share your experiences
+                        with the community and specifically the reason for your decision.<br><br>Please let us know if there is a particular issue that you would like us to resolve that will help change your mind. <br><br>You will receive a confirmation
+                        email from POCN that all profile and related account information is deleted from the community.
+                    </ion-text>
+                </ion-item>
+
+            </ion-list>
+        </ion-grid>
+
+    </ion-content>
+</ion-app>

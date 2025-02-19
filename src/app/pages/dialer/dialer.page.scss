@@ -1,0 +1,49 @@
+.number-id ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+    width: 100%;
+}
+.dial-number-display ion-text{
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #000000;
+}
+.backspace {
+    position: relative;
+    top: 3px;
+    width: 24px;
+}
+span.letter {
+    display: block;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: #00A9E0;
+}
+.dialpad div {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #00A9E0;
+}
+.dialpad {
+    max-width: 80%;
+}
+img.dial-list {
+    position: relative;
+    top: 2px;
+    margin-left: 10px;
+    width: 18px;
+}
+.dialer-header img{
+    width: 115px;
+}

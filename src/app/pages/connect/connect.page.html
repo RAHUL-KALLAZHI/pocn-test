@@ -1,0 +1,1268 @@
+<ion-content [fullscreen]="true" class="swiper-no-swiping">
+    <div class="container">
+        <ion-row class="patient-connect-popover">
+            <ion-col class="ion-no-padding">
+                <ion-slides [options]="slideOpts" #slides>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card">
+                            <ion-card-header>
+                                <ion-card-title>Patient Connect Set Up
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                        <img src="assets/images/close.svg">
+                     </button>
+                                </ion-card-title>
+                            </ion-card-header>
+
+                            <ion-list no-lines class="steps-count steps-main">
+                                <ion-item class="item-background-color" lines="none">
+                                    <ion-text class="process-flow">
+                                        We need to set up Patient Connect. You will only need to complete this process once.
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  baaSigned==1,'step-upcoming':  baaSigned !==1}" lines="none" (click)="baaSigned !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>
+                                            Step 1(Tap to Start)
+                                            <img src="assets/images/next-step.svg" class="next-step">
+                                            <img src="assets/images/approve.svg" class="active-step">
+                                            <img src="assets/images/alert-onred.svg" class="error-step">
+                                        </span>
+                                        <p>Sign Business Associate Agreement (BAA)</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  emailVerified==1,'step-upcoming':  emailVerified !==1 && baaSigned==1}" lines="none" (click)="baaSigned==1 && emailVerified !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 2
+                                            <img src="assets/images/next-step.svg" class="next-step">
+                                            <img src="assets/images/approve.svg" class="active-step">
+                                            <img src="assets/images/alert-onred.svg" class="error-step">
+                                        </span>
+                                        <p>Verify your work email</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  hcpConsentVerified==1 && (this.hcpVerified == 1) && (this.hcpVerifiedStatus == 'Verified'),'step-upcoming':  (this.hcpVerifiedStatus == 'In progress' || this.hcpVerifiedStatus == '') && emailVerified==1, 'step-error': ( this.hcpVerifiedStatus == 'Denied'||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && emailVerified==1}"
+                                    lines="none" (click)="emailVerified==1 && (hcpConsentVerified !==1 || this.hcpVerifiedStatus == '' || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied' ||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 3
+                                            <img src="assets/images/next-step.svg" class="next-step">
+                                            <img src="assets/images/approve.svg" class="active-step">
+                                            <img src="assets/images/alert-onred.svg" class="error-step">
+                                        </span>
+                                        <p>Verify your credentials</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active': phoneLinked==1,'step-upcoming':this.hcpVerified == 1 && this.hcpVerifiedStatus == 'Verified' && phoneLinked!==1}" lines="none" (click)="this.hcpVerifiedStatus == 'Verified' && phoneLinked !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 4
+                                            <img src="assets/images/next-step.svg" class="next-step">
+                                            <img src="assets/images/approve.svg" class="active-step">
+                                            <img src="assets/images/alert-onred.svg" class="error-step">
+                                        </span>
+                                        <p>Register your mobile number </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 5
+                                            <img src="assets/images/next-step.svg" class="next-step">
+                                            <img src="assets/images/approve.svg" class="active-step">
+                                            <img src="assets/images/alert-onred.svg" class="error-step">
+                                        </span>
+                                        <p>Set up Patient Connect caller IDs</p>
+                                    </ion-text>
+                                </ion-item>
+                                <!-- <ion-item class="item-background-color" lines="none">
+                                    <button class="button-native blue-bg-button width-100p button-h40" fill="clear" ion-button full round (click)="stepNavigation()">Let’s Get Started!</button>
+                                </ion-item> -->
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                         src="assets/images/arrow-left.svg"></button> 1/5 - BAA
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                      <img src="assets/images/close.svg">
+                   </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <ion-text>
+                                        <p class="baa-description"> The Patient Connect feature is a HIPAA-compliant way to communicate with patients, caregivers, and other providers. In order to use the feature, HIPAA requires you to sign a Business Associate Agreement (BAA) with
+                                            POCN.
+                                            <br>Click here to view and sign the BAA. <br>
+                                            <br> Please <span class="faq" (click)="faqNavigation('connect')">visit our FAQ page</span> for more information on our Patient Connect feature and why a BAA is needed.
+                                            <br>
+                                            <br>
+                                        </p>
+                                    </ion-text>
+                                </ion-item>
+                                <!-- <ion-item class="item-background-color" lines="none">
+                                    <ion-text class="faq">Have questions? See our FAQ.</ion-text>
+                                </ion-item> -->
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="slides.slideNext()"><span class="next-btn-text">Next</span> <img
+                      src="assets/images/arrow-right.svg"></button>
+                                    <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                </ion-item>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                             src="assets/images/arrow-left.svg">
+                       </button> 1/5 - BAA
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                         <img src="assets/images/close.svg">
+                       </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+
+                                <!-- <ion-grid class="">
+                                    <ion-row class="">
+                                        <ion-col size="12" class="">
+                                            <p class="baa-title">Business Associate Agreement </p>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid> -->
+                                <ion-grid class="">
+                                    <ion-row class="width-100p ba-agreement">
+
+                                        <ion-col size="12">
+                                            <h2>Business Associate Agreement</h2>
+                                        </ion-col>
+
+
+                                        <ion-col size="12" class="align-left">
+                                            <ion-text>
+                                                This Business Associate Agreement (the "BAA") is entered into by and between Point of Care Network LLC ("POCN") and the applicable {{userFirstName}} {{userLastName}} that has agreed to POCN's Terms of Use ("Provider").The terms of this BAA apply only
+                                                if and solely to the extent that POCN receives, creates, maintains, or transmits Protected Health Information relating to patients of Provider in connection with the Covered Services (defined below) ("PHI")
+                                                that POCN, as a Business Associate, provides or performs for or on behalf of Provider as a Covered Entity. POCN, in its capacity as a Business Associate is referred to herein as "Business Associate," and
+                                                Provider, in his/her capacity as a Covered Entity, is referred to herein as "Covered Entity."
+                                            </ion-text>
+                                        </ion-col>
+
+
+                                        <ion-col size="12">
+                                            <h3>1. General Provisions:</h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li>
+                                                    <span class="underline">a. Effect. </span>To the extent that it is determined that Business Associate receives PHI from or on behalf of Covered Entity to provide or perform services as set forth in Exhibit A to this Agreement (the "Covered Services"), the terms and provisions of this
+                                                    BAA will supersede any other conflicting or inconsistent terms or provisions to the extent such conflict or inconsistency exists.
+                                                </li>
+                                                <li>
+                                                    <span class="underline">b. Defined Terms.</span> Capitalized terms used in this BAA without definition will have the respective meanings assigned to such terms under HIPAA, including but not limited to the HIPAA Privacy Rule, HIPAA Security Rule and HIPAA Breach Notification Rule.
+                                                </li>
+                                                <li>
+                                                    <span class="underline">c. No Third Party Beneficiaries.</span> The Parties have not created and do not intend to create by this Agreement any third party rights upon any person or entity that is not a party to this BAA, including, but not limited to, patients of the Covered Entity.
+                                                </li>
+                                                <li>
+                                                    <span class="underline">d. HIPAA Amendments.</span> The Parties acknowledge and agree that the Health Information Technology for Economic and Clinical Health Act and its implementing regulations impose requirements with respect to privacy,
+                                                    security and breach notification applicable to Business Associates (collectively, the "HITECH BA Provisions"). The HITECH BA Provisions and any other future amendments to HIPAA affecting Business Associate
+                                                    Agreements are hereby incorporated by reference into this BAA as if set forth in this BAA in their entirety, effective on the later of the effective date of this BAA or such subsequent date as may be
+                                                    specified by HIPAA.
+                                                </li>
+                                                <li>
+                                                    <span class="underline">e. Regulatory References.</span> A reference in this BAA to a section in HIPAA means the section as it may be amended from time-to-time.
+                                                </li>
+                                            </ion-text>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <h3>2. Business Associate's Obligations: </h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li>
+                                                    <span class="underline">a. Use and Disclosure of PHI.</span> Business Associate may use and disclose PHI as permitted or required under this BAA for the Covered Services or as Required by Law, but will not otherwise use or disclose any PHI. To the extent Business Associate carries
+                                                    out any of Covered Entity's obligations under the HIPAA Privacy Rule, Business Associate will comply with the requirements of the HIPAA Privacy Rule that apply to Covered Entity in the performance of
+                                                    such obligations. Without limiting the generality of the foregoing, Business Associate is permitted to use or disclose PHI as follows:
+                                                </li>
+                                                <li>(1) internally for Business Associate's proper management and administration or to carry out its legal responsibilities;</li>
+                                                <li>(2) to a third party for Business Associate's proper management and administration, provided that the disclosure is Required by Law or Business Associate obtains reasonable assurances from the third party
+                                                    to whom the PHI is to be disclosed that the third party will (i) protect the confidentiality of the PHI, (ii) only use or further disclose the PHI as Required by Law or for the purpose for which the
+                                                    PHI was disclosed to the third party, and (iii) notify Covered Entity of any instances of which the third party is aware in which the confidentiality of the PHI has been breached; </li>
+                                                <li>(3) to provide Data Aggregation services relating to the Health Care Operations of Covered Entity if required or permitted under the Agreement between the parties as set forth in Exhibit A;</li>
+                                                <li>(4) to create de-identified health information in accordance with HIPAA's de-identification requirements;</li>
+                                                <li>(5) to contact individuals to obtain an authorization that complies with 45 CFR § 164.508, and use and disclose PHI in accordance with any such executed authorization; and</li>
+                                                <li>(6) for the purpose of research pursuant to a waiver of the authorization requirement by an institutional review board or privacy board that is issued in accordance with 45 C.F.R. § 164.512(i)(2) and that
+                                                    Covered Entity affirms in writing to Business Associate.</li>
+
+
+
+
+
+                                                <li><span class="underline">b. Safeguards.</span> Business Associate will use appropriate safeguards to prevent the use or disclosure of PHI other than as permitted or required by this BAA. In addition, Business Associate will implement Administrative
+                                                    Safeguards, Physical Safeguards and Technical Safeguards that reasonably and appropriately protect the confidentiality, integrity and availability of PHI transmitted or maintained that it creates, receives,
+                                                    maintains or transmits on behalf of Covered Entity in accordance with the HIPAA Security Rule.</li>
+
+                                                <li><span class="underline">c. Minimum Necessary Standard.</span> To the extent required by the "minimum necessary" requirements of HIPAA, Business Associate will only request, use and disclose the minimum amount of PHI necessary to accomplish
+                                                    the purpose of the request, use or disclosure in furtherance of the Covered Services. </li>
+
+                                                <li><span class="underline">d. Mitigation.</span> Business Associate will take reasonable steps to mitigate, to the extent practicable, any harmful effect (that is known to Business Associate) of a use or disclosure of PHI by Business Associate
+                                                    in violation of this BAA.</li>
+
+                                                <li><span class="underline">e. Subcontractors.</span> Business Associate will enter into a written agreement meeting the requirements of 45 C.F.R. § 164.504(e) and 164.314(a)(2) with each Subcontractor (including, without limitation, a Subcontractor
+                                                    that is an agent under applicable law) that creates, receives, maintains or transmits PHI on behalf of Business Associate. Business Associate will ensure that the written agreement with each Subcontractor
+                                                    obligates the Subcontractor to comply with restrictions and conditions that are at least as restrictive as the restrictions and conditions that apply to Business Associate under this BAA.</li>
+
+                                                <li><span class="underline">f. Reporting Requirements.</span> </li>
+
+
+                                                <li>(1) If Business Associate becomes aware of a use or disclosure of PHI in violation of this BAA by Business Associate or a third party to which Business Associate disclosed PHI, Business Associate will report
+                                                    the use or disclosure to Covered Entity without unreasonable delay. </li>
+                                                <li>(2) Business Associate will report any Security Incident involving PHI of which it becomes aware in the following manner: (i) any actual Security Incident will be reported to Covered Entity in writing without
+                                                    unreasonable delay, and (ii) notice is hereby deemed provided, and no further notice will be given, with respect to unsuccessful attempts at unauthorized access to PHI or electronic protected health
+                                                    information, as defined by the HIPAA rule as PHI that is produced, saved, transferred or received in electronic form ("EPHI"), such as pings and other broadcast attacks on firewalls, denial of service
+                                                    attacks, failed login attempts, and port scans. If the HIPAA security regulations are amended to remove the requirement to report unsuccessful attempts at unauthorized access, the requirement hereunder
+                                                    to report such unsuccessful attempts will no longer apply as of the effective date of the amendment.</li>
+                                                <li>(3) Business Associate will, following the discovery of a Breach of Unsecured PHI, notify Covered Entity of the Breach in accordance with 45 C.F.R. § 164.410 without unreasonable delay and in no case later
+                                                    than 60 days after discovery of the Breach. </li>
+
+
+                                                <li><span class="underline">g. Access to PHI.</span> Within 10 business days of a request by Covered Entity for access to PHI about an Individual contained in any Designated Record Set of Covered Entity maintained by Business Associate, Business
+                                                    Associate will make available to Covered Entity such PHI for so long as Business Associate maintains such information in the Designated Record Set. If Business Associate receives a request for access
+                                                    to PHI directly from an Individual, Business Associate will forward such request to Covered Entity within 10 business days. Covered Entity will have the sole responsibility to make decisions regarding
+                                                    whether to approve a request for access to PHI.</li>
+                                                <li><span class="underline">h. Availability of PHI for Amendment.</span> Within 10 business days of receipt of a request from Covered Entity for the amendment of an Individual's PHI contained in any Designated Record Set of Covered Entity
+                                                    maintained by Business Associate, Business Associate will provide such information to Covered Entity for amendment and incorporate any such amendments in the PHI (for so long as Business Associate maintains
+                                                    such information in the Designated Record Set) as required by 45 C.F.R.§ 164.526. If Business Associate receives a request for amendment to PHI directly from an Individual, Business Associate will forward
+                                                    such request to Covered Entity within 10 business days. Covered Entity will have the sole responsibility to make decisions regarding whether to approve a request for an amendment to PHI. </li>
+                                                <li><span class="underline">i. Accounting of Disclosures.</span> Within 10 business days of notice by Covered Entity to Business Associate that it has received a request for an accounting of disclosures of PHI (other than disclosures to which
+                                                    an exception to the accounting requirement applies), Business Associate will make available to Covered Entity such information that is in Business Associate's possession and is required for Covered Entity
+                                                    to make the accounting required by 45 C.F.R. § 164.528. If Business Associate receives a request for an accounting directly from an Individual, Business Associate will forward such request to Covered
+                                                    Entity within 10 business days. Covered Entity will have the sole responsibility to provide an accounting of disclosures to the Individual.</li>
+                                                <li><span class="underline">j. Availability of Books and Records.</span> Business Associate will make its internal practices, books and records relating to the use and disclosure of PHI received from, or created or received by Business Associate
+                                                    on behalf of, Covered Entity available to the Secretary of Health and Human Services (the "Secretary") for purposes of determining Covered Entity's compliance with HIPAA.</li>
+
+                                            </ion-text>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <h3>3. Covered Entity's Obligations: </h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li><span class="underline">a. Permissible Requests.</span> Covered Entity will not request that Business Associate use or disclose PHI in any manner that would not be permissible under HIPAA, specifically subpart E or 45 CFR part 164, if
+                                                    done directly by Covered Entity, except as provided in Sections 2(a) of this BAA. </li>
+                                                <li><span class="underline">b. Minimum Necessary PHI.</span> When Covered Entity discloses PHI to Business Associate, Covered Entity will provide the minimum amount of PHI necessary for the accomplishment of Business Associate's purpose pursuant
+                                                    to the terms of its Agreement for Covered Services. </li>
+                                                <li><span class="underline">c. Permissions; Restrictions.</span> Covered Entity warrants that it will obtain any consents, authorizations and/or other legal permissions required under HIPAA and other applicable law for the disclosure of PHI
+                                                    to Business Associate. Covered Entity will notify Business Associate of any changes in, or revocation of, the permission by an Individual to use or disclose his or her PHI, to the extent that such changes
+                                                    may affect Business Associate's use or disclosure of PHI. Covered Entity will not agree to any restriction on the use or disclosure of PHI under 45 C.F.R.§ 164.522 that restricts Business Associate's
+                                                    use or disclosure of PHI under this BAA unless such restriction is Required By Law or Business Associate grants its written consent to such restriction, which consent shall not be unreasonably withheld.</li>
+                                                <li><span class="underline">d. Notice of Privacy Practices.</span> Except as Required By Law, with Business Associate's consent, or as set forth in this BAA, Covered Entity will not include any limitation in its notice of privacy practices
+                                                    that limits Business Associate's use or disclosure of PHI under this BAA.</li>
+                                                <li><span class="underline">e. Marketing.</span> Covered Entity represents and warrants that it has obtained any necessary authorization(s) from Individuals for any use or disclosure of PHI for its marketing in connection with the Covered
+                                                    Services, unless the related communication without any form of remuneration is used: (i) to describe medical services or products, (ii) for treatment of the Individual; or (iii) for case management or
+                                                    care coordination for the Individual or to direct or recommend alternative treatments therapies, providers, or settings.</li>
+                                            </ion-text>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <h3>4. Indemnification:</h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li>
+                                                    Covered Entity shall indemnify and hold harmless Business Associate and any of its affiliates, directors, officers, employees and agents from any fines or penalties, including but not limited to, reasonable associated attorney's fees and any costs, imposed
+                                                    upon Business Associate by the Secretary or a state Attorney General, which proceeding or action results directly from any non-permitted use or disclosure of PHI by Covered Entity in violation of the
+                                                    HIPAA Rules or other breach of this BAA by Covered Entity or any of its affiliates, directors, officers, employees, agents or subcontractors.
+                                                </li>
+                                            </ion-text>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <h3>5. Term and Termination of this Agreement:</h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li><span class="underline">a. Effective Date.</span> This BAA shall be effective from the Effective Date that Covered Entity agrees to POCN's Terms of Use by electronically registering as a user of the Covered Services and shall continue
+                                                    in effect for as long as Covered Entity is registered or until all PHI provided by or created for Covered Entity or Business Associate is destroyed or returned to Covered Entity, whichever is later,
+                                                    or until this Agreement is terminated as provided by this Section 5.</li>
+                                                <li><span class="underline">b. Termination Upon Breach of this BAA.</span> Any other provision of this BAA notwithstanding, either Party may terminate this BAA upon 30 days advance written notice to the other Party in the event that the breaching
+                                                    Party materially breaches this BAA and such breach is not cured to the reasonable satisfaction of the non-breaching Party within such 30-day period. Upon termination of this BAA, Business Associate may
+                                                    immediately terminate Provider's use of the Covered Services..</li>
+                                                <li><span class="underline">c. Return or Destruction of PHI upon Termination.</span> Upon expiration or earlier termination of the Services Agreement or this BAA, Business Associate will either return or destroy all PHI received from Covered
+                                                    Entity or created or received by Business Associate on behalf of Covered Entity and which Business Associate still maintains in any form. Notwithstanding the foregoing, to the extent that Business Associate
+                                                    reasonably determines that it is not feasible to return or destroy such PHI, the terms and provisions of this BAA will survive termination of this BAA and such PHI will be used or disclosed solely for
+                                                    such purpose or purposes which prevented the return or destruction of such PHI.</li>
+                                            </ion-text>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <h3>6. Miscellaneous:</h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li><span class="underline">a. Waiver.</span> No change, waiver or discharge of any liability or obligation hereunder on any one or more occasions shall be deemed a waiver of performance of any continuing or other obligation, or shall prohibit
+                                                    enforcement of any obligation. Any waiver of any provision of this BAA shall be in writing and signed by the Party against whom it is sought to be enforced.</li>
+                                                <li><span class="underline">b. Severability.</span> The provisions of this BAA shall be severable, and in the event that any provision of this BAA is held by a court of competent jurisdiction to be invalid, void, or unenforceable in whole
+                                                    or in part, the remainder of the provisions of this BAA shall remain in full force and effect.</li>
+                                                <li><span class="underline">c. Amendment.</span> The Parties agree to negotiate in good faith as is necessary to amend this BAA from time to time as necessary for Business Associate and/or Covered Entity to comply with the HIPAA Rule. All
+                                                    amendments or modifications shall be in writing and signed by both Parties.</li>
+                                                <li><span class="underline">d. Notice.</span> Any notice to the other Party shall be deemed provided if provided in writing and delivered by hand, email or sent by a nationally recognized overnight mail delivery service.
+                                                </li>
+                                                <li class="forpocn-li">
+                                                    <ul class="forpocn">
+                                                        <li><span>For POCN:</span> Point of Care Network LLC <br> 716 Main Street,<br> Boonton, NJ 07005<br> Attention:
+                                                            <br>
+                                                        </li>
+                                                        <li>
+                                                            <span>For Provider:</span> [to be completed for Provider]
+                                                        </li>
+                                                    </ul>
+                                                </li>
+
+                                                <li><span class="underline">e. Governing Law.</span> To the extent that federal law does not apply, this Agreement shall be governed in all respects by the laws of the State of New Jersey without regard to principles of conflicts of laws.</li>
+                                                <li><span class="underline">f. Counterparts.</span> This BAA may be executed in counterparts with the same effect as if the signatures on such counterparts appeared on one document, and each such counterpart, when executed, shall be deemed
+                                                    to be an original, and such counterparts shall together constitute and be one and the same instrument.</li>
+                                                <li>IN WITNESS WHEREOF, the Parties have executed this BAA as of the Effective Date as specified above.</li>
+                                            </ion-text>
+                                        </ion-col>
+
+                                    </ion-row>
+
+                                    <ion-row class="specified">
+                                        <ion-col size="6">
+                                            <ion-text>
+                                                <li class="title">POCN</li>
+                                                <li>By:</li>
+                                                <li>Print: </li>
+                                                <li>Title: </li>
+                                            </ion-text>
+                                        </ion-col>
+                                        <ion-col size="6">
+                                            <ion-text>
+                                                <li class="title">PROVIDER</li>
+                                                <li>By:</li>
+                                                <li>Print: </li>
+                                                <li>Title: </li>
+                                            </ion-text>
+                                        </ion-col>
+                                    </ion-row>
+
+                                    <ion-row class="ba-agreement">
+                                        <ion-col size="12">
+                                            <h3>Exhibit A</h3>
+                                        </ion-col>
+
+                                        <ion-col size="12">
+                                            <ion-text>
+                                                <li>
+                                                    This BAA applies to use of the POCN Patient Connect feature (the "Feature") in accordance with the Terms and Conditions of POCN, found at,<a href="{{privacyLink}}">{{privacyLink}}</a> . The Feature shall
+                                                    be used to communicate with patients, patient caregivers, or other healthcare providers, and shall include the use of voice or video calling, SMS or text messages, direct messaging, fax, or any other
+                                                    means of communication through the Feature. The Feature is a vehicle to enable these communications, but individual (HCP) users remain responsible for use of the Feature in accordance with all applicable
+                                                    laws and regulations, including but not limited to, the Health Insurance Portability and Accountability Act of 1996 ("HIPAA"), including amendments thereto pursuant to the Health Information Technology
+                                                    for Economic and Clinical Health Act ("HITECH"), the Telephone Consumer Protection Act ("TCPA"), and applicable state laws related to the practice of healthcare, including but not limited to laws and
+                                                    regulations regarding telehealth and telemedicine, individual prescribing ability, and individual terms of license to practice, and applicable insurance and state privacy laws.
+                                                </li>
+                                            </ion-text>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                                <ion-grid class="">
+                                    <ion-row [ngClass]="{ 'validation-error':!showError}">
+                                        <ion-col size="12" class="">
+                                            <div class="signature" #signBaa>
+                                                <ion-label>Sign to Accept</ion-label>
+                                                <button class="close sign-close" (click)="onClear()" fill="clear">
+                              <img src="assets/images/clear-lite-blue.svg" class="sign-clear-blue">
+                              <img src="assets/images/clear-error.svg" class="sign-clear-red">
+                           </button>
+                                                <div class="signature-pad">
+                                                    <signature-pad [options]="signaturePadOptions"></signature-pad>
+                                                </div>
+                                                <div [hidden]="showError" class="error-msg">Please sign above.</div>
+                                                <ion-text>Use your finger in this box to add your signature.</ion-text>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                                <ion-list no-lines class="steps-count steps-main mt-16">
+                                    <ion-item class="item-background-color" lines="none">
+                                        <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="saveSignBaa(f)">
+                         <span class="next-btn-text">Next</span>
+                         <span><img src="assets/images/arrow-right.svg"></span>
+                         <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                       </button>
+                                    </ion-item>
+                                </ion-list>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card">
+                            <ion-card-header>
+                                <ion-card-title>
+                                    <!-- <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                     src=" assets/images/arrow-left.svg"></button> -->
+                                    1/5 – BAA
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                                  <img src="assets/images/close.svg">
+                                 </button>
+                                </ion-card-title>
+                            </ion-card-header>
+
+                            <ion-list no-lines class="steps-count steps-main">
+                                <ion-item class="item-background-color strip ion-no-padding ionitem-padding-remove" lines="none" *ngIf="baaSuccessStatus">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['tablinks/post-detail-page']">
+                                            <span class="strip-img">
+                                                <img src="assets/images/accept-request.svg" class="mr-8">
+                                            </span>
+                                            <span class="strip-cnt">
+                                                <ion-text>BAA signed</ion-text>
+                                            </span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  baaSigned==1,'step-upcoming':  baaSigned !==1}" lines="none" (click)="baaSigned !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>
+                                          Step 1
+                                          <img src="assets/images/next-step.svg" class="next-step">
+                                          <img src="assets/images/approve.svg" class="active-step">
+                                      </span>
+                                        <p>Sign Business Associate Agreement (BAA)</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  emailVerified==1,'step-upcoming':  emailVerified !==1 && baaSigned==1}" lines="none" (click)="baaSigned==1 && emailVerified !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 2
+                                          <img src="assets/images/next-step.svg" class="next-step">
+                                          <img src="assets/images/approve.svg" class="active-step">
+                                      </span>
+                                        <p>Verify your work email</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  hcpConsentVerified==1 && (this.hcpVerified == 1) && (this.hcpVerifiedStatus == 'Verified') ,'step-upcoming':  (this.hcpVerified !== 1 || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied'||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && emailVerified==1}"
+                                    lines="none" (click)="emailVerified==1 && (hcpConsentVerified !==1 || this.hcpVerifiedStatus == '' || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied' ||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 3
+                                          <img src="assets/images/next-step.svg" class="next-step">
+                                          <img src="assets/images/approve.svg" class="active-step">
+                                      </span>
+                                        <p>Verify your credentials</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active': phoneLinked==1,'step-upcoming':this.hcpVerified == 1 && this.hcpVerifiedStatus == 'Verified' && phoneLinked!==1}" lines="none" (click)="this.hcpVerifiedStatus == 'Verified' && phoneLinked !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 4
+                                          <img src="assets/images/next-step.svg" class="next-step">
+                                          <img src="assets/images/approve.svg" class="active-step">
+                                      </span>
+                                        <p>Register your mobile number </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 5
+                                          <img src="assets/images/next-step.svg" class="next-step">
+                                          <img src="assets/images/approve.svg" class="active-step">
+                                      </span>
+                                        <p>Set up Patient Connect caller IDs</p>
+                                    </ion-text>
+                                </ion-item>
+                                <!-- <ion-item class="item-background-color" lines="none">
+                                  <button class="button-native blue-bg-button width-100p button-h40" fill="clear" ion-button full round (click)="stepNavigation()">Let’s Get Started!</button>
+                              </ion-item> -->
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card" no-lines>
+                            <ion-card-header>
+                                <ion-card-title>
+                                    <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                           src=" assets/images/arrow-left.svg"></button> 2/5 – Verify Work Email
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                                        <img src="assets/images/close.svg">
+                                       </button>
+                                </ion-card-title>
+                            </ion-card-header>
+                            <ion-list no-lines class="steps-main">
+                                <ion-item *ngIf="successEmailResendMsg" class="strip ion-no-padding ionitem-padding-remove">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                                            <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                                            <span class="strip-cnt">
+                                            <ion-text>Code sent successfully.</ion-text>
+                                            </span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <form name="form" (ngSubmit)="fEmail.form.valid" #fEmail="ngForm" novalidate>
+                                    <ion-item [disabled]="disableEmail" [ngClass]="{ 'validation-error': fEmail.submitted && !emailType?.valid || !showEmailError }" lines="none" class="paddingstart-ionitem padding-11">
+                                        <ion-label position="stacked" class="input-label">
+
+                                            <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Please confirm your work email address <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                                        <ion-input class="custom-input" [clearInput]="true" name="email" mailto:placeholder="johndoe@umchealth.com" [(ngModel)]="email" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && email}" required></ion-input>
+                                        <span class="phone-number-hint mt-8"> You must link your work email address to your POCN account to be able to use Patient Connect.</span>
+
+                                        <!-- <div *ngIf="fEmail.submitted && !emailType?.valid">
+                                            <div *ngIf="emailType.errors?.required" class="error-msg">Email is required</div>
+                                        </div> -->
+                                        <div [hidden]="showEmailError || emailType.errors?.required" class="error-msg">Please enter a valid email.</div>
+                                        <!-- <div [hidden]="showEmailVerified || emailType.errors?.required " class="error-msg">Email Already Verified.</div> -->
+                                        <!-- <div class="error-msg">{{verifyEmailErr}}</div> -->
+                                        <ion-text [hidden]="showVerifyEmail" class="have-questions">Have questions? See our <span class=" faq" (click)="faqNavigation('connect')">FAQ</span>.</ion-text>
+                                    </ion-item>
+                                    <ion-item [hidden]="showVerifyEmail" class="item-background-color paddingstart-ionitem padding-11" lines="none">
+                                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="sendVerifyEmail(fEmail)">
+                                            <span class="connect-left-icon"><img src="assets/images/send-email.svg" class="send-verification"> </span>
+                                            <span>Send Verification Email</span>
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </ion-button>
+                                    </ion-item>
+                                </form>
+                                <form name="form" (ngSubmit)="fEmails.form.valid" #fEmails="ngForm" novalidate>
+                                    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding" *ngIf="showVerifyEmail">
+                                        <span class="instruction-msg">
+                                            We sent a code to the work email address that you provided.
+                                            <br>
+                                            <br>
+                                            Enter the verification code from the email in the space below.
+                                            <br>
+                                            <br>
+                                            If you do not receive an email, please check your Spam or Junk folders. If the email is in the Spam or Junk folders, select the message and click “Not Spam/Junk,” which will allow all future messages from POCN to go directly to your inbox.
+                                        </span>
+                                    </ion-item>
+
+                                    <ion-item lines="none" [ngClass]="{ 'validation-error': fEmails.submitted && resend.invalid || !resendErrMsg}" class="padding-11 paddingstart-ionitem" *ngIf="showVerifyEmail">
+                                        <!-- <span class="h24"></span> -->
+                                        <div class="text-width">
+
+                                            <ion-input [clearInput]="true" type="tel" name="emailCode" placeholder="" inputmode="numeric" [(ngModel)]="emailCode" #resend="ngModel" [ngClass]="{ 'is-invalid': fEmails.submitted && emailCode}" class="contact-section-form mobile-reg
+  custom-input" required minlength="5"></ion-input>
+
+
+
+                                            <!-- <div *ngIf="fEmails.submitted && resend.invalid">
+                                            <div *ngIf="resend.errors?.required" class="error-msg">Code is required</div>
+                                        </div> -->
+                                            <div class="error-msg width-100p" [hidden]="resendErrMsg || resend.errors?.required">
+                                                The code you entered is not valid. Please review and try again.
+                                            </div>
+                                        </div>
+                                    </ion-item>
+                                    <!-- <ion-item>
+                                        <div class="error-msg" [hidden]="resendErrMsg || resend.errors?.required">
+                                            Not a valid code The code you entered is not valid. Please review and try again.
+                                        </div>
+                                    </ion-item> -->
+                                    <!--<ion-item lines="none" [ngClass]="{ 'validation-error': fEmails.submitted && resend.invalid || !resendErrMsg}" class="padding-11 paddingstart-ionitem" *ngIf="showVerifyEmail">
+
+
+                                        <div *ngIf="fEmails.submitted && resend.invalid">
+                                            <div *ngIf="resend.errors?.required" class="error-msg">Code is required</div>
+                                        </div>
+                                        <div class="error-msg" [hidden]="resendErrMsg || resend.errors?.required">
+                                            Not a valid code The code you entered is not valid. Please review and try again.
+                                        </div>
+                                    </ion-item>-->
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem mt-24 mb-16" lines="none" *ngIf="showVerifyEmail">
+                                        <ion-button slot="end" [disabled]="disableResendBtn" ion-button full round class="resend-btn blue-border-button otp-resend" fill="clear" (click)="sendEmailResendToken(fEmails)">
+                                            <img src="assets/images/resend.svg" class="mr-8">Resend Code
+                                        </ion-button>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none" *ngIf="showVerifyEmail">
+                                        <ion-text class="have-questions">Have questions? See our <span class="faq" (click)="faqNavigation('connect')">FAQ</span>.</ion-text>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none" *ngIf="showVerifyEmail">
+                                        <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="verifyEmailToken(fEmails)">
+                                        <span class="connect-left-icon"><img src="assets/images/verify.svg" class="send-verification"></span>
+                                        <span class="verify">Verify Code</span>
+                                        <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                      </button>
+                                    </ion-item>
+                                </form>
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card">
+                            <ion-card-header>
+                                <ion-card-title>
+                                    <!-- <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                   src=" assets/images/arrow-left.svg"></button>  -->
+                                    2/5 – Email Verification
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                                <img src="assets/images/close.svg">
+                               </button>
+                                </ion-card-title>
+                            </ion-card-header>
+
+                            <ion-list no-lines class="steps-count steps-main">
+                                <ion-item class="strip ion-no-padding ionitem-padding-remove" lines="none" *ngIf="emailSuccessStatus">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                                            <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                                            <span class="strip-cnt"><ion-text>{{email}} is verified</ion-text></span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  baaSigned==1,'step-upcoming':  baaSigned !==1}" lines="none" (click)="baaSigned !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>
+                                        Step 1
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Sign Business Associate Agreement (BAA)</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  emailVerified==1,'step-upcoming':  emailVerified !==1 && baaSigned==1}" lines="none" (click)="baaSigned==1 && emailVerified !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 2
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your work email</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  hcpConsentVerified==1 && (this.hcpVerified == 1) && (this.hcpVerifiedStatus == 'Verified') ,'step-upcoming':  (this.hcpVerified !== 1 || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied'||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && emailVerified==1}"
+                                    lines="none" (click)="emailVerified==1 && (hcpConsentVerified !==1 || this.hcpVerifiedStatus == '' || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied' ||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 3
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your credentials</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active': phoneLinked==1,'step-upcoming':this.hcpVerified == 1 && this.hcpVerifiedStatus == 'Verified' && phoneLinked!==1}" lines="none" (click)="this.hcpVerifiedStatus == 'Verified' && phoneLinked !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 4
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Register your mobile number </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 5
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Set up Patient Connect caller IDs</p>
+                                    </ion-text>
+                                </ion-item>
+                                <!-- <ion-item class="item-background-color" lines="none">
+                                <button class="button-native blue-bg-button width-100p button-h40" fill="clear" ion-button full round (click)="stepNavigation()">Let’s Get Started!</button>
+                            </ion-item> -->
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                           src="assets/images/arrow-left.svg"></button> 3/5 – HCP Verification
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                        <img src="assets/images/close.svg">
+                     </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none" [ngClass]="{ 'validation-error': consentErrMSg}">
+                                    <ion-text>
+                                        <p class="baa-description">Because the Patient Connect feature is HIPAA-compliant, we must verify your professional identity and credentials before you can use it.
+                                            <br><br> All information that you provide to POCN and our third-party vendor partner will be used only for verification purposes. All information will be encrypted and stored securely.
+                                            <br><br> Please visit our FAQ page for more information on POCN Patient Connect, additional user set up, and our user verification process.
+                                        </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item lines="none" class="padding-11 paddingstart-ionitem">
+                                    <ion-label class="align-right agree-toggle">I Agree</ion-label>
+                                    <ion-toggle class="custom-input" slot="end" [(ngModel)]="hcpStatus" [ngModelOptions]="{standalone: true}"></ion-toggle>
+                                </ion-item>
+                                <ion-item class="item-background-color" lines="none">
+                                    <ion-text class="have-questions mt-16">Have questions? See our <span class="faq" (click)="faqNavigation('connect')">FAQ</span>.</ion-text>
+                                </ion-item>
+                                <ion-item lines="none" [hidden]="consentErrMSg">
+                                    <div class="error-msg">Please Agree</div>
+                                </ion-item>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="hcpAgreeConsent()"><span class="next-btn-text">Next</span> <img
+                        src="assets/images/arrow-right.svg"></button>
+                                </ion-item>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide class="steps-main" *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                           src="assets/images/arrow-left.svg"></button> 3/5 – HCP Verification
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                        <img src="assets/images/close.svg">
+                     </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <ion-text>
+                                        <p class="baa-description">You can verify your credentials electronically via our third-party verification providers, or you can submit your documents to POCN for manual verification. This may take up to 2 business days.</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <ion-row class="connection-subtab-section history-settings-main">
+                                        <ion-col class="electric-manual">
+                                            <ion-segment [(ngModel)]="tabType" [ngModelOptions]="{standalone: true}" color="dark" mode="md">
+                                                <ion-segment-button class="electronic-gray" disabled (click)="verifyElectronic()" value="electronic">
+                                                    <div class="tab-container">
+                                                        <ion-icon></ion-icon>
+                                                        <span> Electronic</span>
+                                                    </div>
+                                                </ion-segment-button>
+                                                <ion-segment-button (click)="verifyManual()" value="manual">
+                                                    <div class="tab-container">
+                                                        <ion-icon></ion-icon>
+                                                        <span>Manual</span>
+                                                    </div>
+                                                </ion-segment-button>
+                                            </ion-segment>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <br>
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" [ngClass]="{ 'validation-error':f.submitted && idData.invalid }" lines="none" *ngIf="showIdSelect">
+                                    <ion-label position="stacked" class="input-label"> <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> ID <span class="required-star"><img src="assets/images/required.svg"></span>
+                                    </ion-label>
+
+                                    <!-- <ion-select idlDefault placeholder="Please Select *" name="idProof" [(ngModel)]="connectDataId" #idData="ngModel" [ngClass]="{ 'is-invalid': f.submitted && idData.invalid}" required (ionChange)="triggerEvent($event)" class="contact-section-form custom-input">
+                                        <ion-select-option *ngFor="let documentType of connectId" value="{{ documentType.id }}">{{ documentType.title }}</ion-select-option>
+                                    </ion-select> -->
+                                    <ionic-selectable class="custom-input ion-no-padding toi" placeholder="Please select" name="idProof" [(ngModel)]="connectDataId" #idData="ngModel" [ngClass]="{ 'is-invalid': f.submitted && idData.invalid}" required [items]="connectId" itemValueField="id"
+                                        itemTextField="title" [ngClass]="{ 'is-invalid': f.submitted && idData.invalid}" required [canSearch]="true" [isMultiple]="false" (onChange)="triggerEvent($event)" [canClear]="true" clearButtonText="Clear" [canClear]="false"
+                                        closeButtonText="Close" searchPlaceholder="">
+                                        <ng-template ionicSelectableHeaderTemplate>
+                                            <ion-row class="searchmodule-header">
+                                                <ion-col size="2"></ion-col>
+                                                <ion-col size="8">
+                                                    <ion-title>
+                                                        ID
+                                                    </ion-title>
+                                                </ion-col>
+                                                <ion-col size="2">
+                                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                                        <img src="assets/images/close.svg">
+                                                    </ion-buttons>
+                                                </ion-col>
+                                            </ion-row>
+                                        </ng-template>
+                                    </ionic-selectable>
+                                    <div *ngIf="f.submitted && idData.invalid">
+                                        <div *ngIf="idData.errors.required" class="error-msg">ID is required</div>
+                                    </div>
+                                </ion-item>
+                                <ion-item [ngClass]="{'validation-error':!showUpload || errorMsg }" lines="none" *ngIf="showIdproofUpload" class="padding-11 paddingstart-ionitem">
+                                    <span class="h24"></span>
+                                    <!-- <ion-row class="contact-form-row contact-form-titlesection upload-proof">
+                                        <ion-col>
+                                            <ion-label position="stacked" class="input-label"> <span class="required-star"><img src="assets/images/required.svg"></span><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Upload the Id Proof</ion-label>
+                                        </ion-col>
+                                    </ion-row> -->
+                                    <div class="file-upload-area">
+                                        <ion-row class="contact-form-row">
+                                            <ion-col class="manual-fileupload">
+                                                <ion-item lines="none" class="delete ion-no-padding uploaded-image-section">
+                                                    <div class="uploaded-image" [hidden]="hideImg || showRename">
+                                                        <img class="user-img" src="{{ uploadImageFile }}">
+                                                    </div>
+                                                    <div class="uploaded-imge-details">
+                                                        <div class="uploaaded-filename" [hidden]="showRename">
+                                                            <p class="filename">{{ myIdproofName}}</p>
+                                                            <span class="file-delete" [hidden]="showRename" (click)="removeFile()">
+                                                                <img src="assets/images/trash-blue.svg" class="deletepopover-icon"/>
+                                                            </span>
+                                                        </div>
+                                                        <div class="filedetails-tag" [hidden]="showRename">
+                                                            <span class="resume-name">{{ date | date: 'dd/MM/yyyy'}}</span>
+                                                            <span class="resume-name">{{ fileSize}}</span>
+                                                            <span class="resume-name">{{ fileType}}</span>
+                                                        </div>
+                                                    </div>
+                                                </ion-item>
+                                            </ion-col>
+
+                                        </ion-row>
+                                        <ion-row class="file-upload-section mb-16">
+                                            <ion-col class="manual-fileupload">
+                                                <input type="file" id="takeInput" name="file" style="display:none;" (change)="getVerificationFileContent($event)" #manualInputSelector>
+                                                <label class="blue-border-button upload-btn hcp-btn-upload" (click)="selectFile()"><img src="assets/images/file-upload.svg" class="editpopover-icon mr-8"/>Upload Pictures of Your ID</label>
+                                                <span *ngIf="idfileErrorStatus">
+                                                     <span  class="error-msg" >{{ errorMsg }}</span>
+                                                </span>
+                                                <span [hidden]="showUpload" class="error-msg">Please Upload file</span>
+                                            </ion-col>
+                                        </ion-row>
+                                    </div>
+                                </ion-item>
+                                <!-- <ion-item class="padding-11 paddingstart-ionitem" lines="none">
+                                    <div [hidden]="idSelectErrMsg" class="error-msg">ID is required</div>
+                                </ion-item> -->
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <ion-button [hidden]="hideHcpButton" type="submit" [ngClass]="{ 'remove-disable': idfileErrorStatus == true}" class="button-native blue-bg-button width-100p next-button mt-16" fill="clear" ion-button full round (click)="manualUploadVerification(f)">
+                                        <span class="mr-8">Submit</span>
+                                        <span><img src="assets/images/verify.svg"></span>
+                                        <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                    </ion-button>
+                                </ion-item>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card hcpverification-card">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                               src="assets/images/arrow-left.svg"></button> 3/5 – HCP Verification
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                            <img src="assets/images/close.svg">
+                         </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+
+
+                                <ion-card-content>
+                                    <ion-col class="item-background-color" lines="none">
+                                        <div class="email-verification-image"><img src="assets/images/documents-sent.svg" class="complete"></div>
+                                        <div class="email-verification-success mt-24">
+                                            <ion-text class="thankyou">Thank you, {{userFirstName}}.
+                                            </ion-text>
+                                            <ion-text class="thankyou mt-8">We have received your documents. The manual verification process may take up to 2 business days. You may be contacted by the POCN team via the work email or phone number associated with your profile if additional
+                                                information or clarification is needed.</ion-text>
+                                            <ion-text class="thankyou mt-8"> We appreciate your patience during this process.</ion-text>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-item [hidden]="hideUploadButton" class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <button class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="slides.slideNext()">
+                                            <span class="next-btn-text mr-8">Next</span>
+                                            <span><img src="assets/images/verify.svg"></span>
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </button>
+                                    </ion-item>
+                                </ion-card-content>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card">
+                            <ion-card-header>
+                                <ion-card-title>
+
+                                    3/5 – HCP Verification
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                                <img src="assets/images/close.svg">
+                               </button>
+                                </ion-card-title>
+                            </ion-card-header>
+
+                            <ion-list no-lines class="steps-count steps-main">
+                                <ion-item class="strip ion-no-padding ionitem-padding-remove" lines="none" *ngIf="hcpSuccessStatus">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                                            <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                                            <span class="strip-cnt"><ion-text>Documents uploaded</ion-text></span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  baaSigned==1,'step-upcoming':  baaSigned !==1}" lines="none" (click)="baaSigned !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>
+                                        Step 1
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Sign Business Associate Agreement (BAA)</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  emailVerified==1,'step-upcoming':  emailVerified !==1 && baaSigned==1}" lines="none" (click)="baaSigned==1 && emailVerified !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 2
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your work email</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  hcpConsentVerified==1 && (this.hcpVerified == 1) && (this.hcpVerifiedStatus == 'Verified') ,'step-upcoming':  (this.hcpVerifiedStatus == 'In progress' || this.hcpVerifiedStatus == '') && emailVerified==1, 'step-error': ( this.hcpVerifiedStatus == 'Denied'||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && emailVerified==1}"
+                                    lines="none" (click)="emailVerified==1 && (hcpConsentVerified !==1 || this.hcpVerifiedStatus == '' || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied' ||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 3
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your credentials</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active': phoneLinked==1,'step-upcoming':this.hcpVerified == 1 && this.hcpVerifiedStatus == 'Verified' && phoneLinked!==1}" lines="none" (click)="this.hcpVerifiedStatus == 'Verified' && phoneLinked !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 4
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Register your mobile number </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 5
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Set up Patient Connect caller IDs</p>
+                                    </ion-text>
+                                </ion-item>
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card" [hidden]="hideElectronic">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                             src="assets/images/arrow-left.svg"></button> 3/5 - HCP Verification
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                          <img src="assets/images/close.svg">
+                       </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+
+                                <!-- HCP verification  -->
+                                <ion-col class="item-background-color" lines="none">
+                                    <div class="email-verification-image"><img src="assets/images/hcp-verification.svg"></div>
+                                    <div class="email-verification-success">
+                                        <ion-text class="thankyou"> The HCP Verification process is complete.<br> <br>You're almost ready to begin using POCN Patient Connect.<br> <br> There are just a couple more steps to complete your setup. </ion-text>
+                                    </div>
+                                </ion-col>
+                                <!-- HCP verification  -->
+                                <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <button class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="slides.slideNext()">
+                                      <span class="next-btn-text mr-8">Submit</span>
+                                      <span><img src="assets/images/verify.svg"></span>
+                                      <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                  </button>
+                                </ion-item>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card" no-lines>
+                            <ion-card-header>
+                                <ion-card-title>
+                                    <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                               src="assets/images/arrow-left.svg"></button> 4/5 – Mobile Verification Registration
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                            <img src="assets/images/close.svg">
+                         </button>
+                                </ion-card-title>
+                            </ion-card-header>
+                            <ion-list no-lines class="steps-main">
+                                <ion-item *ngIf="successPhoneResendMsg" class="strip ion-no-padding ionitem-padding-remove">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                                            <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                                            <span class="strip-cnt"><ion-text>Code sent successfully.</ion-text></span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <form name="form" (ngSubmit)="fNum.form.valid" #fNum="ngForm" novalidate>
+                                    <ion-item [disabled]="disableNumber" [ngClass]="{ 'validation-error':(fNum.submitted && phoneNumber.invalid)|| !showCallCountryError || !showNumber}" lines="none" class="padding-11 paddingstart-ionitem">
+                                        <ion-label position="stacked" class="input-label"><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Please provide your mobile number <span class="required-star"><img src="assets/images/required.svg"></span>
+
+                                        </ion-label>
+                                        <ion-input [clearInput]="true" type="tel" name="mobilePhoneNumber" inputmode="numeric" [(ngModel)]="mobilePhoneNumber" #phoneNumber="ngModel" [ngClass]="{ 'is-invalid': fNum.submitted && phoneNumber.invalid && phoneNumber.dirty}" class="contact-section-form mobile-reg textinput custom-input"
+                                            required maxlength="16" placeholder=""></ion-input>
+                                        <div *ngIf="fNum.submitted && phoneNumber.invalid">
+                                            <div *ngIf="phoneNumber.errors?.required" class="error-msg">Phone Number is required</div>
+                                        </div>
+                                        <div [hidden]="showCallCountryError || phoneNumber.errors?.required" class="error-msg">Please enter a valid mobile number</div>
+                                        <div [hidden]="showNumber || phoneNumber.errors?.required" class="error-msg">Please enter numeric values</div>
+                                        <ion-item lines="none" class="ion-no-padding ionitem-padding-remove contact-cont mobile-alert">
+                                            <span class="span-left"></span>
+                                            <ion-item lines="none" class="span-right ion-no-padding ionitem-padding-remove mt-8">
+                                                <span class="phone-number-hint"> Enter numbers without dashes.
+                                                    <br>
+                                                    You must link your mobile number to your POCN account to use Patient Connect.
+                                                </span>
+                                            </ion-item>
+
+
+                                        </ion-item>
+                                        <ion-text class="have-questions mb-16">Have questions? See our <span class="faq" (click)="faqNavigation( 'connect')">FAQ</span>.</ion-text>
+                                    </ion-item>
+                                    <ion-item [hidden]="showVerifyNumber" class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="clickVerifyNumber(fNum)">
+                                            <span class="next-btn-text verification-mob-icon"><img src="assets/images/cellphone-white.svg" class="send-verification"></span>
+                                            <span>Send Verification Code</span>
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </ion-button>
+                                        <!-- <span *ngIf="setLoader" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span> -->
+                                    </ion-item>
+                                </form>
+                                <form name="form" (ngSubmit)="fNums.form.valid" #fNums="ngForm" novalidate>
+                                    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding" *ngIf="showVerifyNumber">
+                                        <span class="instruction-msg">
+                                            We sent a code to the mobile number you provided.
+                                            <br>
+                                            <br>
+                                            Enter the verification code in the space below.
+                                            <br>
+                                            <br>
+                                            If you do not receive a text, click the button below to resend the code.
+                                        </span>
+                                    </ion-item>
+                                    <ion-item [ngClass]="{ 'validation-error':(fNums.submitted && otp.invalid)|| !verifyMessage}" lines="none" *ngIf="showVerifyNumber" class="padding-11 paddingstart-ionitem">
+                                        <div class="text-width">
+                                            <ion-input [clearInput]="true" type="tel" name="otpNumber" inputmode="numeric" [(ngModel)]="otpNumber" #otp="ngModel" [ngClass]="{ 'is-invalid': fNums.submitted && otp.invalid }" class="contact-section-form mobile-reg textinput
+                                        custom-input" required minlength="6" placeholder=""></ion-input>
+                                            <div *ngIf="fNums.submitted && !otp.valid">
+                                                <div *ngIf="otp.errors?.required" class="error-msg" [hidden]="hideErrorMsg">OTP Number is required</div>
+                                            </div>
+                                            <div [hidden]="verifyMessage || otp.errors?.required" class="error-msg mt-8">The code you entered is not valid. Please review and try again.</div>
+                                            <div [hidden]="verifyExpireMessage || otp.errors?.required" class="error-msg mt-8">The code you entered has expired. Please resend a new code and try again.</div>
+                                        </div>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem mt-24" lines="none" *ngIf="showVerifyNumber">
+                                        <ion-button [disabled]="disableResendBtn" slot="end" ion-button full round class="resend-btn blue-border-button otp-resend" fill="clear" (click)="sendNumberResendCode(fNums)">
+                                            <img src="assets/images/resend-mobile.svg" class="mr-8">Resend Code
+                                        </ion-button>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none" *ngIf="showVerifyNumber">
+                                        <ion-text class="have-questions mt-16">Have questions? See our <span class="faq" (click)="faqNavigation( 'connect')">FAQ</span>.</ion-text>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none" *ngIf="showVerifyNumber">
+                                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" full round (click)="clickVerifyOtp(fNums)">
+                                            <span><img src="assets/images/verify.svg" class="send-verification mr-8"> </span>
+                                            <span>Verify Code</span>
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </ion-button>
+                                    </ion-item>
+                                </form>
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card">
+                            <ion-card-header>
+                                <ion-card-title>
+                                    <!-- <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                   src=" assets/images/arrow-left.svg"></button>  -->
+                                    4/5 – Mobile Verification
+                                    <button class="close" (click)="dismiss()" fill="clear">
+                                <img src="assets/images/close.svg">
+                               </button>
+                                </ion-card-title>
+                            </ion-card-header>
+
+                            <ion-list no-lines class="steps-count steps-main">
+                                <ion-item class="strip ion-no-padding ionitem-padding-remove" lines="none" *ngIf="phoneSuccessStatus">
+                                    <ion-row class="ion-no-padding-vertical accept-request width-100p">
+                                        <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                                            <span class="strip-img"><img src="assets/images/accept-request.svg" class="mr-8"></span>
+                                            <span class="strip-cnt"><ion-text>{{mobilePhoneNumber}} verified</ion-text></span>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  baaSigned==1,'step-upcoming':  baaSigned !==1}" lines="none" (click)="baaSigned !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>
+                                        Step 1
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Sign Business Associate Agreement (BAA)</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  emailVerified==1,'step-upcoming':  emailVerified !==1 && baaSigned==1}" lines="none" (click)="baaSigned==1 && emailVerified !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 2
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your work email</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active':  hcpConsentVerified==1 && (this.hcpVerified == 1) && (this.hcpVerifiedStatus == 'Verified') ,'step-upcoming':  (this.hcpVerified !== 1 || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied'||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && emailVerified==1}"
+                                    lines="none" (click)="emailVerified==1 && (hcpConsentVerified !==1 || this.hcpVerifiedStatus == '' || this.hcpVerifiedStatus == 'In progress' ||  this.hcpVerifiedStatus == 'Denied' ||  this.hcpVerifiedStatus == 'Cancelled' ||  this.hcpVerifiedStatus == 'Need More Info') && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 3
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Verify your credentials</p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{'step-active': phoneLinked==1,'step-upcoming':this.hcpVerified == 1 && this.hcpVerifiedStatus == 'Verified' && phoneLinked!==1}" lines="none" (click)="this.hcpVerifiedStatus == 'Verified' && phoneLinked !==1 && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 4
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Register your mobile number </p>
+                                    </ion-text>
+                                </ion-item>
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                    <ion-text class="steps">
+                                        <span>Step 5
+                                        <img src="assets/images/next-step.svg" class="next-step">
+                                        <img src="assets/images/approve.svg" class="active-step">
+                                    </span>
+                                        <p>Set up Patient Connect caller IDs</p>
+                                    </ion-text>
+                                </ion-item>
+                                <!-- <ion-item class="item-background-color" lines="none">
+                                <button class="button-native blue-bg-button width-100p button-h40" fill="clear" ion-button full round (click)="stepNavigation()">Let’s Get Started!</button>
+                            </ion-item> -->
+                            </ion-list>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card" no-lines>
+                            <form name="form" (ngSubmit)="fCall.form.valid" #fCall="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img src="assets/images/arrow-left.svg"></button> 5/5 - Caller ID
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                            <img src="assets/images/close.svg">
+                         </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+                                <ion-list no-lines class="steps-main">
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <ion-text>
+                                            You’re almost there.
+                                            <br>
+                                            <br> Adding the Patient Connect Caller ID is the last step in your user set up process.
+                                            <br>
+                                            <br> Instead of showing your mobile number, this step allows you to customize the number that is displayed to your patient when you call them.
+                                            <br>
+                                            <br> The Patient Connect Caller ID MUST be a valid phone number and preferably your work phone number, where your patients can reach you. </ion-text>
+                                    </ion-item>
+                                    <ion-item [ngClass]="{'validation-error':(fCall.submitted &&  name.invalid)|| !callNameWhiteSpaceCheck}" lines="none" class="padding-11 paddingstart-ionitem mt-24">
+                                        <ion-label position="stacked" class="input-label"><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Name to Display on Caller ID <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                                        <ion-input [clearInput]="true" type="text" name="userName" [(ngModel)]="userProfileName" #name="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  name.invalid}" class="contact-section-form textinput custom-input" required></ion-input>
+                                        <span class="phone-number-hint mt-8">Please provide a descriptive name that you can use to identify your caller ID. Patients will not see this name.</span>
+                                        <div [hidden]="callErrName" class="error-msg">Name is required</div>
+                                        <div [hidden]="callNameWhiteSpaceCheck" class="error-msg">Please enter valid User Name</div>
+                                    </ion-item>
+                                    <ion-item [ngClass]="{'validation-error':(fCall.submitted && workPhoneNumber.invalid)|| !showWorkNumber || !ShowConnectErrPhone || !showWorkCountryError || !callVerifyErr}" class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <ion-label position="stacked" class="input-label"><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Phone number to display on Caller ID <span class="required-star"><img src="assets/images/required.svg"></span>
+                                        </ion-label>
+                                        <ion-input [clearInput]="true" type="tel" class="textinput custom-input" inputmode="numeric" name="workPhoneNumber" [(ngModel)]="workNumber" #workPhoneNumber="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  workPhoneNumber.invalid }" required maxlength="14"
+                                            placeholder=""></ion-input>
+                                        <!-- <div *ngIf="fCall.submitted && workPhoneNumber.invalid">
+                                            <div *ngIf="workPhoneNumber.errors?.required" class="error-msg">Phone Number is required</div>
+                                        </div> -->
+                                        <div [hidden]="showWorkCountryError || workPhoneNumber.errors?.required" class="error-msg">Please enter a valid mobile number</div>
+                                        <div [hidden]="showWorkNumber || workPhoneNumber.errors?.required" class="error-msg">Please enter numeric values</div>
+                                        <div [hidden]="ShowConnectErrPhone || workPhoneNumber.errors?.required" class="error-msg">Phone number already exists</div>
+                                        <div [hidden]="callVerifyErr" class="error-msg">Not verified, Please try again</div>
+                                        <ion-item lines="none" class="ion-no-padding ionitem-padding-remove contact-cont mobile-alert">
+                                            <span class="span-left"></span>
+                                            <ion-item lines="none" class="span-right ion-no-padding ionitem-padding-remove">
+                                                <span class="phone-number-hint mt-8">Enter numbers without dashes.</span>
+                                            </ion-item>
+                                        </ion-item>
+                                        <ion-text class="have-questions mb-16">Have questions? See our <span class="faq" (click)="faqNavigation('connect')">FAQ</span>.</ion-text>
+                                    </ion-item>
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="clickCallerConfirm(fCall)">
+                                            <span class="mr-8">Next</span>
+                                            <span><img src="assets/images/arrow-right.svg" class="send-verification"></span>
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </ion-button>
+                                    </ion-item>
+                                </ion-list>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader == false">
+                        <ion-card class="patient-connect-card" no-lines>
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>Setup Complete!</ion-card-title>
+                                </ion-card-header>
+                                <ion-list no-lines class="steps-main">
+                                    <!-- Setup Complete  -->
+                                    <ion-col class="item-background-color" lines="none">
+                                        <div class="email-verification-image"><img src="assets/images/success.svg" class="complete"></div>
+                                        <div class="email-verification-success mt-24">
+                                            <ion-text class="thankyou">You have completed setting up Patient Connect. Happy calling!</ion-text>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Setup Complete  -->
+                                    <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                        <ion-button class="button-native blue-border-button width-100p next-button" fill="clear" ion-button full round (click)="clickDialerScreen()">Done
+                                            <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+                                        </ion-button>
+                                        <!-- <span *ngIf="setLoader" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span> -->
+                                    </ion-item>
+                                </ion-list>
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                    <ion-slide *ngIf="setLoader==false">
+                        <ion-card class="patient-connect-card" [hidden]="hideManual">
+                            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <button (click)="slidePrev()" class="back-btn" fill="clear"><img
+                             src="assets/images/arrow-left.svg"></button> 3/5 – HCP Verification
+                                        <button class="close" (click)="dismiss()" fill="clear">
+                          <img src="assets/images/close.svg">
+                       </button>
+                                    </ion-card-title>
+                                </ion-card-header>
+
+                                <!-- HCP verification  -->
+                                <ion-col class="item-background-color" lines="none">
+                                    <div class="email-verification-image"><img src="assets/images/something-wrong.svg" class="complete"></div>
+                                    <div class="email-verification-success mt-24">
+                                        <ion-text class="thankyou">Unfortunately, we were unable to verify your professional credentials.
+                                        </ion-text>
+                                        <ion-text class="thankyou mt-8 reason">Reason: {{rejectReason}}</ion-text>
+                                        <ion-text class="thankyou mt-8">If you would like to appeal the decision, please contact us at admin_user@pocn.com.
+                                        </ion-text>
+                                    </div>
+                                </ion-col>
+                                <!-- HCP verification  -->
+                                <!--  <ion-item [hidden]="hideUploadButton" class="item-background-color padding-11 paddingstart-ionitem" lines="none">
+                                    <button class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="slides.slideNext()">
+                                    <span class="next-btn-text mr-8">Next</span>
+                                      <span><img src="assets/images/verify.svg"></span>
+                                  </button>
+                                </ion-item>-->
+                            </form>
+                        </ion-card>
+                    </ion-slide>
+                </ion-slides>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-content>

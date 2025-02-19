@@ -1,0 +1,431 @@
+
+// .registration-form ion-label{
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 16px;
+//   line-height: 110%;
+//   display: flex;
+//   align-items: center;
+//   letter-spacing: -0.01em;
+//   color: #616161;
+//   margin-bottom: 5px;
+// }
+.registration-form ion-item{
+    min-height: 1px;
+  }
+  .registration-form ion-input, 
+  .registration-form ion-select{
+    // margin-bottom: 17px;
+  }
+
+  .welcome-banner-bg{
+    text-align: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-logo-top {
+    text-align: center;
+    /* max-height: 120px; */
+    padding: 28px 0 40px 0 !important;
+}
+.register-btn{
+  margin-bottom: 25px;
+}
+  
+  .blue-border-button{
+    border: 2px solid #00A9E0;
+    border-radius: 4px;
+    height: 36px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    color: #00A9E0;
+  }
+  .blue-bg-button{
+    background: #00A9E0;
+    border-radius: 4px;
+    height: 36px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    color: #fff;
+  }
+  .registration-acknowledge ion-text{
+    font-size: 12px;
+    color: #000;
+    padding-top: 0px;
+  }
+  .lookup-button{
+    min-height: 1px !important;
+    width: 100%;
+  }
+  .login-btn{
+    float: right;
+  }
+  .login-btn {
+    position: relative;
+    top: -10px;
+  }
+  // span.required-star img {
+  //   width: 12px;
+  //   position: relative;
+  //   top: 1px;
+  //   margin-right: 8px;
+  // }
+  .lookup-button ion-button {
+    position: relative;
+    top: 23px;
+    height: 40px;
+    margin-left: 5px;
+  }
+  span.npi-search img {
+    width: 19px;
+    position: relative;
+    top: 3px;
+    margin-left: 10px;
+  }
+  .lookup ion-col{
+    padding-left: 0;
+  }
+  .passwordhint-sec{
+    min-height: 75px !important;
+  }
+  .password-sec{
+    min-height: 75px !important;
+  }
+  .registration-acknowledge a{
+    color: #00A9E0;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  ion-col {
+    padding: 0;
+  }
+  .lookup-button {
+    padding-left: 15px !important;
+    position: relative;
+    top: 28px;
+  }
+  .lookup-button button {
+    height: 40px !important;
+    margin-top: 5px;
+  }
+  .button-loader{
+    position: relative;
+    top: 3px;
+  }
+  
+  
+  
+  .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+    
+    .ios .container {
+      height: 100% !important;
+    }
+    
+    .background-opts {
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      box-shadow: inset 0 0 0 1000pt rgba(0, 0, 0, 0.3);
+      --background: transparent;
+      max-height: 50%;
+    }
+    
+    ion-header ion-toolbar {
+      --background: transparent;
+    }
+    
+    h1.title {
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--ion-color-dark);
+      margin-bottom: 8px;
+    }
+    
+    ion-text {
+      font-weight: 400;
+      font-size: 14px;
+    }
+    
+    .action-button {
+      --border-radius: 8px;
+      --box-shadow: none !important;
+      min-height: 48px;
+      box-shadow: none !important;
+    
+      span {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        text-transform: initial;
+      }
+    }
+    
+    .white {
+      background: #ffffff;
+      border-radius: 16px 16px 0 0;
+      position: absolute;
+      bottom: 0;
+    }
+    
+    ion-grid {
+      width: 100%;
+    }
+    
+    ion-item {
+      --inner-padding-end: 0 !important;
+      min-height: 104px;
+    }
+  
+    
+  
+    
+    .caption {
+      color: #151522;
+    }
+    
+    .link {
+      text-decoration: none;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 20px;
+    }
+    
+    .errors-container {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ion-color-danger);
+      margin-top: 4px;
+      animation: fadeIn 0.5s;
+    }
+    
+    .back-btn {
+      background: rgba(36, 42, 56, 0.4);
+      border-radius: 50%;
+    
+      ion-icon {
+        font-size: 24px;
+        color: #ffffff;
+      }
+    }
+    
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    .error-msg {
+      font-size: 11px;
+      color: red;
+      font-weight: 400;
+      line-height: 11px;
+      padding-top: 3px;
+    }
+    .donate-now {
+      list-style-type: none;
+      margin: 0 0 17px 0;
+      padding: 0;
+      width: 100%;
+      float: left;
+      border: 2px solid #00A9E0;
+      display: flex;
+      border-radius: 5px;
+    }
+    .validation-error .donate-now {
+      border: 2px solid #DF1642 !important;
+    }
+    .validation-error .donate-now label{
+      border-right:2px solid #DF1642 !important;
+      color:  #DF1642 !important;
+    }
+    .validation-error .lookup-button button {
+      margin-top: 10px;
+  }
+  .validation-error .donate-now li:last-child label{
+    border-right: 0 !important;
+  }
+  .donate-now li {
+      float: left;
+      height: 38px;
+      position: relative;
+      text-align: center;
+      flex-basis: 100%;
+      text-align: center;
+  }
+  .donate-now li:last-child label{
+    border-right: 0;
+    border-radius: 0 3px 3px 0;
+  }
+  .donate-now li:first-child label{
+    border-radius: 3px 0 0 3px;
+    margin-left: -1px;
+  }
+    
+    .donate-now label,
+    .donate-now input {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    
+    .donate-now input[type="radio"] {
+      opacity: 0.01;
+      z-index: 100;
+    }
+    
+    .donate-now input[type="radio"]:checked+label,
+    .Checked+label {
+      background: #00A9E0;
+      color: #fff;
+    }
+    
+    .donate-now label {
+      padding: 8px 3px 3px 3px;
+    border-right: 2px solid #00A9E0;
+    cursor: pointer;
+    z-index: 90;
+    height: 40px;
+    color: #00A9E0;
+    font-size: 15px;
+    margin-top: -1px;
+    font-weight: 500;
+    }
+    
+    // .donate-now label:hover {
+    //   background: #DDD;
+    // }
+    .red-color{
+      font-size: 16px;
+      color: red
+    }
+    .login-reg-button ul{
+      margin: 0 0 24px 0;
+      padding: 0;
+  }
+  .login-reg-button{
+      text-align: center;
+  }
+  .login-reg-button li{
+      display: inline-block;
+      padding: 0 12px 6px 12px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: #616161;
+      font-family: 'Poppins', sans-serif;
+  }
+  .login-reg-button li.active{
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: #001B32;
+      border-bottom: 2px solid #95D120;
+  }
+  .remember-toggle {
+    position: relative;
+    top: 10px;
+    margin-left: 5px;
+}
+.remember-me ion-label{
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  color: #00A9E0 !important;
+  padding-left: 0;
+}
+.forgot-pass button{
+  background: none;
+  padding-left: 0;
+}
+.forgot-pass button a{
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  color: #00A9E0;
+  text-decoration: none;
+}
+.remember-me {
+  min-height: 1px !important;
+  height: 50px;
+}
+.login-button-sec ion-button {
+  margin-left: 0;
+  margin-right: 0;
+}
+.login-error-panel{
+  padding: 12px 16px;
+  background: #DF1642;
+  flex: inherit;
+  width: 100% !important;
+  float: left;
+  position: absolute;
+  z-index: 9;
+}
+.login-error-panel p {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 110%;
+  color: rgb(252 232 236);
+  margin: 0;
+}
+.error-panel-icon{
+  width: 12%;
+  float: left;
+}
+.error-panel-text{
+  width: 88%;
+  float: left;
+}
+
+.password-sec ion-input{
+  position: relative;
+}
+.passwordIcon{
+  position: absolute;
+    right: 45px;
+    top: 41px;
+    z-index: 9;
+    color: #00A9E0;
+}
+
+.regPasswordIcon{
+  position: absolute;
+    right: 45px;
+    top: 41px;
+    z-index: 9;
+    color: #00A9E0;
+}
+.confirmPasswordIcon{
+  position: absolute;
+    right: 45px;
+    top: 41px;
+    z-index: 9;
+    color: #00A9E0;
+}
+ion-text.pass-hint {
+  color: rgb(0 0 0);
+  font-size: 13px;
+}
+.forgot-pass button {
+  padding: 0 !important;
+}

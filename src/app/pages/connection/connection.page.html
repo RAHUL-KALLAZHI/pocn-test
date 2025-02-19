@@ -1,0 +1,493 @@
+<!-- <app-headers></app-headers> -->
+<ion-grid class="myprofile-header width-100p ion-no-padding">
+    <!-- Accepted -->
+  
+    <!-- Accepted -->
+    <!-- Ignored -->
+  
+    <!-- Ignored -->
+    <ion-content [fullscreen]="true" scroll="true" padding="false" class="connection">
+
+        <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+            <ion-col size="4" class="align-left">
+                <button class="back" *ngIf="showSearch==true && connectionTabType=='myNetwork'" (click)="backClose('network')" fill="clear"><img src="assets/images/arrow-left.svg"></button>
+                <button class="back" *ngIf="showRecSearch==true && connectionTabType=='recommended'" (click)="backClose('recomand')" fill="clear"><img src="assets/images/arrow-left.svg"></button>
+                <!-- <img src="assets/images/settings.svg" class="settings"> -->
+            </ion-col>
+            <ion-col size="4" class="align-center">
+
+                <img [routerLink]="['/tablinks/my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="header-logo">
+            </ion-col>
+            <ion-col size="4" class="align-right video-audio-calls">
+                <img src="assets/images/audio-call.svg" (click)="statusConnectCalls('audio')" class="mr-24 audiocall">
+                <img src="assets/images/video-call.svg" class="" (click)="statusConnectCalls('video')">
+
+            </ion-col>
+        </ion-row>
+
+        <ion-row class="lr-padd-5" *ngIf="showSearch==true && connectionTabType=='myNetwork'">
+            <ion-col size="12" class="align-right">
+                <button class="close" (click)="close()" fill="clear">
+                    <img src="assets/images/close.svg">
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row class="lr-padd-5" *ngIf="showRecSearch==true && connectionTabType=='recommended'">
+                <ion-col size="12" class="align-right">
+                    <button class="close" (click)="closeSearch()" fill="clear">
+                        <img src="assets/images/close.svg">
+                    </button>
+                </ion-col>
+            </ion-row>
+        <ion-row class="ion-no-padding-vertical accept-request" *ngIf="acceptRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/accept-request.svg" class="mr-8">
+                <!-- <ion-text>You ACCEPTED {{ApproveConnectionName}} connection request</ion-text> -->
+                <ion-text>You have accepted {{ApproveConnectionName}}’s request</ion-text>  
+            </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="ignoreRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <!-- You ACCEPTED Leslie’s request.  -->
+                <ion-text>You have ignored {{ignoreConnectionName}}’s request</ion-text>
+            </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="cancelRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <!-- You IGNORED Leslie’s request.  -->
+                <ion-text>You have canceled {{cancelConnectionName}}’s request</ion-text>
+            </ion-col>
+        </ion-row>
+        
+        <ion-row class="myprofile-innertab lr-padd-5">
+            <ion-col class="bottom-maintab">
+                <ion-segment [hidden]="(showSearch==true && connectionTabType=='myNetwork') || (showRecSearch==true && connectionTabType=='recommended')" [(ngModel)]="connectionTabType" color="light" mode="md" (click)="setTab($event)" class="connection-pagetab">
+                    <ion-segment-button value="myNetwork" class="active ion-no-padding" (click)="connClick()">
+                        <div class="tab-container">
+                            <span class="tab-icon network"></span>
+                            <span>My Network</span>
+                        </div>
+                    </ion-segment-button>
+                    <ion-segment-button value="recommended" class="ion-no-padding exp-tab" (click)="recommendClick()">
+                        <div class="tab-container">
+                            <span class="tab-icon stream"></span>
+                            <span>Recommended</span>
+                        </div>
+                    </ion-segment-button>
+
+                    <ion-segment-button value="connectionRequest" class="ion-no-padding" (click)="connectionRequestClick()">
+                        <div class="tab-container">
+                            <span class="tab-icon groups"></span>
+                            <span>Connection Request</span>
+                        </div>
+                    </ion-segment-button>
+                </ion-segment>
+
+                <div [ngSwitch]="connectionTabType">
+
+                    <!-- My Network -->
+                    <ion-row *ngSwitchCase="'myNetwork'" class="ion-no-padding mynetwork tab-cont" [hidden]="showSearch==true && connectionTabType=='myNetwork'">
+                        <ion-list lines="none">
+                            <ion-label *ngIf="myConnectionMessage">
+                                <h1 class="home-text no-connection-msg">No Connection Found</h1>
+                            </ion-label>
+                            <ion-item class="ionitem-padding-remove ion-no-padding myconnections-main" *ngFor="let myConnection of myConnectionData, let i=index">
+                                <!-- <img src="assets/images/user-demo-image.jpg" 
+                                (click)="basicProfileClick(myConnection,'myConnections')" class="mr-8 mynetwork-img"> -->
+                                <!-- {{myConnection.fileExtension}} -- {{myConnection.childUserId}} -- {{myConnection.parentUserId}} -->
+                                <ion-col size="2">
+                                    
+                                        <!-- <img *ngIf="myConnection.fileExtension" src="{{myConnection.profileImgUrl}}" class="connection-request-img"
+                                        (click)="basicProfileClick(myConnection,'myConnections')">
+                                        <img *ngIf="!myConnection.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+                                        (click)="basicProfileClick(myConnection,'myConnections')"> -->
+                                    <!-- <img src="assets/images/user-demo-image.jpg" (click)="basicProfileClick(myConnection,'myConnections')" class="connection-request-img"> -->
+                                    <img *ngIf="!myConnectionMessage" src="{{myConnection.profileImgUrl}}" (error)="onImgError($event)" class="connection-request-img"
+                                    (click)="basicProfileClick(myConnection,'myConnections')">
+                                  
+                                    <img src="assets/images/verified.png" class="verified-png">
+                                </ion-col>
+                                <!-- <ion-col size="10" class="request-data-right"> -->
+                                <ion-label (click)="basicProfileClick(myConnection,'myConnections')">{{myConnection.firstName | titlecase}} {{myConnection.lastName | titlecase}}</ion-label>
+                                <span class="my-network-chip">
+                            <div class="chip-content">
+                                <ion-chip [outline]="true" *ngIf="myConnection.specialtyName" class="custom-chip truncate speciality-tag">
+                                    {{myConnection.specialtyName | replace:'(i.e., a specialty other than those appearing above)':''}}</ion-chip>
+                                <ion-chip [outline]="true" *ngIf="myConnection.state" class="custom-chip tag-limit">{{myConnection.degreeCode}}</ion-chip>
+                            </div>
+                        </span>
+                        <!-- </ion-col> -->
+                    </ion-item>
+                
+                  
+              </ion-list>             
+           </ion-row>
+           
+           <!-- My Network -->
+
+           <!-- Recommended -->
+        <ion-row *ngSwitchCase="'recommended'" class="ion-no-padding tab-cont recommended" [hidden]="showRecSearch == true">
+            <ion-list lines="none" class="recommended-title">
+                <h2 class="mt-16">POCN Recommends </h2>
+            </ion-list>
+            <span *ngIf="pocnLoaderStatus" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <ion-label *ngIf="connectionUserPocnMessage">
+                <h1 class="no-connection-msg">No POCN Recommendations Found</h1>
+            </ion-label>
+            <ion-list lines="none" class="recommended-content ion-no-padding">
+                <ion-col class="ion-no-padding" *ngFor="let userRecommendations of pocnUserRecommendations">
+                   <img *ngIf="!connectionUserPocnMessage" (error)="onImgError($event)" src="{{imageUrl}}{{userRecommendations.userId}}.{{userRecommendations.fileExtension}}" 
+                        (click)="showMdmMemberProfile(userRecommendations,'pocnUser')" class="recommended-img">
+                        <img *ngIf = "userRecommendations.userId !=null" src="assets/images/verified.png" class="verified-png">
+                    <div class="recommended-person-details">
+                        <h3 (click)="showMdmMemberProfile(userRecommendations,'pocnUser')">{{userRecommendations.firstName | titlecase}} {{userRecommendations.lastName | titlecase}} </h3>
+                        <p>{{userRecommendations.hcpLocality}}</p>
+                    </div>
+                </ion-col>
+            </ion-list>
+            <ion-list lines="none" class="recommended-title mt-24" *ngIf="showSpeciality">
+                <h2 class="mt-16">People who share similar interests</h2>
+            </ion-list>
+            <span *ngIf="specialityLoaderStatus" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <!-- <ion-label *ngIf="connectionRecommendationMessage" class="ion-no-padding">
+                <h1 class="no-connection-msg">No Connection Recommendations Found in Speciality</h1>
+            </ion-label> -->
+            <ion-list lines="none" class="recommended-content ion-no-padding" *ngIf="showSpeciality">
+                <!-- <ion-title *ngIf="connectionRecommendationMessage">
+                    <h1 class="no-connection-msg">No Connection Recommendations Found</h1>
+                </ion-title> -->
+                <ion-col class="ion-no-padding" *ngFor="let myConnection of myConnectionRecommendationData">
+                      <!-- <img src="{{myConnection.fileExtension ? imageUrl+myConnection.userId + '.' + myConnection.fileExtension : defaultImg}}"  (click)="showMdmMemberProfile(myConnection,'speciality')"
+                        class="recommended-img"> -->
+                    <!-- <img *ngIf="myConnection.fileExtension" src="{{imageUrl}}{{myConnection.userId}}.{{myConnection.fileExtension}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(myConnection,'speciality')">
+                    <img *ngIf="!myConnection.fileExtension" src="{{defaultImg}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(myConnection,'speciality')"> -->
+                    <img *ngIf="!connectionRecommendationMessage" (error)="onImgError($event)" src="{{imageUrl}}{{myConnection.userId}}.{{myConnection.fileExtension}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(myConnection,'speciality')">
+                        <img *ngIf = "myConnection.userId !=null" src="assets/images/verified.png" class="verified-png">
+                    <div class="recommended-person-details">
+                        <h3 (click)="showMdmMemberProfile(myConnection,'speciality')">{{myConnection.firstName | titlecase}} {{myConnection.lastName | titlecase}}</h3>
+                        <p>{{myConnection.primarySpecialityDesc | replace:'(i.e., a specialty other than those appearing above)':''}}</p>
+                    </div>
+                </ion-col>
+            </ion-list>
+        
+            <ion-list lines="none" class="recommended-title mt-24" *ngIf="showLocation">
+                <h2 class="mt-16">People who are nearby</h2>
+            </ion-list>
+            <span *ngIf="cityLoaderStatus" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <ion-label *ngIf="connectionCityMessage">
+                <h1 class="no-connection-msg">No Connection Recommendations Found in Location</h1>
+            </ion-label>
+            <ion-list lines="none" class="recommended-content ion-no-padding" *ngIf="showLocation">
+                <ion-col class="ion-no-padding" *ngFor="let location of locationCityConnections">
+                    <!-- <img src="{{location.fileContent ? location.fileContent : defaultImg}}" (click)="showMdmMemberProfile(location,'location')"
+                        class="recommended-img"> -->
+                        <!-- <img *ngIf="location.fileExtension" src="{{imageUrl}}{{location.userId}}.{{location.fileExtension}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(location,'location')">
+                    <img *ngIf="!location.fileExtension" src="{{defaultImg}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(location,'location')"> -->
+                    <img *ngIf="showLocation" (error)="onImgError($event)" src="{{imageUrl}}{{location.userId}}.{{location.fileExtension}}" class="recommended-img"
+                    (click)="showMdmMemberProfile(location,'location')">
+                        <img *ngIf = "location.userId !=null" src="assets/images/verified.png" class="verified-png">
+                    <div class="recommended-person-details">
+                        <h3 (click)="showMdmMemberProfile(location,'location')"> {{location.firstName | titlecase}} {{location.lastName | titlecase}}</h3>
+                        <p>{{location.hcpLocality}}</p>
+                    </div>
+                </ion-col>
+            </ion-list>
+            <ion-list lines="none" class="recommended-title mt-24" *ngIf="connectionEducationMessage">
+                <h2 class="mt-16">Colleagues from your past schools</h2>
+            </ion-list>
+            <span *ngIf="educationLoaderStatus" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <!-- <ion-label *ngIf="connectionEducationMessage">
+                <h1 class="no-connection-msg">No Connection Recommendations Found in Education</h1>
+            </ion-label> -->
+            <ion-list lines="none" class="recommended-content ion-no-padding" *ngIf="connectionEducationMessage">
+                <ion-col class="ion-no-padding" *ngFor="let education of educationConnections">
+                    <!-- <img src="{{education.fileContent ? education.fileContent : defaultImg}}"  (click)="showMdmMemberProfile(education,'education')"
+                        class="recommended-img"> -->
+                        <!-- <img *ngIf="education.fileExtension" src="{{imageUrl}}{{education.userId}}.{{education.fileExtension}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(education,'education')">
+                        <img *ngIf="!education.fileExtension" src="{{defaultImg}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(education,'education')"> -->
+                        <img *ngIf="connectionEducationMessage" (error)="onImgError($event)" src="{{imageUrl}}{{education.userId}}.{{education.fileExtension}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(education,'education')">
+                        <img *ngIf = "education.userId !=null" src="assets/images/verified.png" class="verified-png">
+                    <div class="recommended-person-details">
+                        <h3 (click)="showMdmMemberProfile(education,'education')"> {{education.firstName | titlecase}} {{education.lastName | titlecase}}</h3>
+                        <p>{{education.hcpLocality}}</p>
+                    </div>
+                </ion-col>
+            </ion-list>
+            <ion-list lines="none" class="recommended-title mt-24" *ngIf="connectionWorkMessage">
+                <h2 class="mt-16">Recommendations based on your work history</h2>
+            </ion-list>
+            <span *ngIf="workLoaderStatus" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <!-- <ion-label *ngIf="connectionWorkMessage">
+                <h1 class="no-connection-msg">No Connection Recommendations Found in Work History</h1>
+            </ion-label> -->
+            <ion-list lines="none" class="recommended-content ion-no-padding" *ngIf="connectionWorkMessage">
+                <ion-col class="ion-no-padding" *ngFor="let workHistory of workHistoryConnections">
+                    <!-- <img src="assets/images/user-demo-image.jpg" (click)="showMdmMemberProfile(workHistory,'workHistory')"
+                        class="recommended-img"> -->
+                        <!-- <img src="{{workHistory.fileContent ? workHistory.fileContent : defaultImg}}" (click)="showMdmMemberProfile(workHistory,'workHistory')"
+                        class="recommended-img"> -->
+                        <!-- <img *ngIf="workHistory.fileExtension" src="{{imageUrl}}{{workHistory.userId}}.{{workHistory.fileExtension}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(workHistory,'workHistory')">
+                        <img *ngIf="!workHistory.fileExtension" src="{{defaultImg}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(workHistory,'workHistory')"> -->
+                        <img *ngIf="connectionWorkMessage" (error)="onImgError($event)" src="{{imageUrl}}{{workHistory.userId}}.{{workHistory.fileExtension}}" class="recommended-img"
+                        (click)="showMdmMemberProfile(workHistory,'workHistory')">
+                        <img *ngIf = "workHistory.userId !=null" src="assets/images/verified.png" class="verified-png">
+                    <div class="recommended-person-details">
+                        <h3 (click)="showMdmMemberProfile(workHistory,'workHistory')">{{workHistory.firstName | titlecase}} {{workHistory.lastName | titlecase}}</h3>
+                        <p>{{workHistory.hcpLocality}}</p>
+                    </div>
+                </ion-col>
+            </ion-list>
+        </ion-row>
+        <!-- Recommended -->
+        
+        <!-- Connection Request -->
+        <ion-row *ngSwitchCase="'connectionRequest'" class="ion-no-padding tab-cont connection-request">
+            <ion-row class="requests-row">
+                <ion-list lines="none" class="recommended-title">
+                    <h2>Connection Invitations</h2>
+                </ion-list>
+                <span *ngIf="incomingReqLoaderStatus" class="loader-npi"><img
+                        src="./../assets/images-pocn/ajax-loader.gif"></span>
+                <ion-label *ngIf="connectionRequestMessage">
+                    <h1 class="home-text no-connection-msg">No Incoming Request Found</h1>
+                </ion-label>
+                <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request"
+                    *ngFor="let requestConnection of myRequestConnectionData, let i = index">
+                    <ion-col size="2">
+                        <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img" (click)="basicProfileClick(requestConnection,'incomingRequest')" > -->
+                        <!-- <img *ngIf="requestConnection.fileExtension" src="{{imageUrl}}{{requestConnection.targetImageUserId}}.{{requestConnection.fileExtension}}" class="connection-request-img"
+                        (click)="basicProfileClick(requestConnection,'incomingRequest')">
+                        <img *ngIf="!requestConnection.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+                        (click)="basicProfileClick(requestConnection,'incomingRequest')"> -->
+                        <img *ngIf="!connectionRequestMessage" src="{{imageUrl}}{{requestConnection.targetImageUserId}}.{{requestConnection.fileExtension}}" (error)="onImgError($event)" class="connection-request-img"
+                        (click)="basicProfileClick(requestConnection,'incomingRequest')">
+                        <img *ngIf ="requestConnection.registered==true" src="assets/images/verified.png" class="verified-png">
+                    </ion-col>
+                    <ion-col size="10" class="request-data-right">
+                        <h2 (click)="basicProfileClick(requestConnection,'incomingRequest')">{{requestConnection.destFirstName | titlecase}} {{requestConnection.destLastName | titlecase}} <img src="assets/images/thin-arrow-right.svg"
+                                 class="request-right-arrow">
+                        </h2>
+                        <div class="chip-content request-chip">
+                            <ion-chip [outline]="true" class="custom-chip" *ngIf="requestConnection.destHcpDegreeGroupCode">
+                                {{requestConnection.destHcpDegreeGroupCode}}</ion-chip>
+                            <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="requestConnection.destState">
+                                {{requestConnection.destCity}}<span
+                                    *ngIf="requestConnection.destCity">,</span>{{requestConnection.destState}}</ion-chip>
+                            <ion-chip [outline]="true" class="custom-chip tag-limit"
+                                *ngIf="requestConnection.destSpecialtyName">{{ requestConnection.destSpecialtyName | replace:'(i.e., a specialty other than those appearing above)':''}}</ion-chip>
+                        </div>
+                        <p>
+                            {{requestConnection.profileTagLine}}
+                            <!-- Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor ist amet palleque quo. -->
+                        </p>
+                        <div class="ignore-accept align-right">
+                            <ion-button fill="clear" slot="end" [disabled] = "showDecline[i]" (click)="rejectRequest(requestConnection,'incomingRequest',i)"
+                                class="orange-bg-button">Decline</ion-button>
+                            <ion-button fill="clear" slot="end" [disabled] = "showAccept[i]" (click)="submitApproveConnectionRequest(requestConnection,i)"
+                                class="blue-bg-button">Accept</ion-button>
+                        </div>
+                    </ion-col>
+                </ion-item>
+            </ion-row>
+        
+            <ion-row class="requests-row">
+                <ion-list lines="none" class="recommended-title mt-24">
+                    <h2>Sent Invitations</h2>
+                </ion-list>
+                <span *ngIf="outgoingReqLoaderStatus" class="loader-npi"><img
+                        src="./../assets/images-pocn/ajax-loader.gif"></span>
+                <ion-label *ngIf="connectionPendingRequestMessage">
+                    <h1 class="home-text no-connection-msg">No Outgoing Request Found</h1>
+                </ion-label>
+                <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request"
+                    *ngFor="let myPendingRequest of myPendingConnectionsData, let i = index">
+                    <ion-col size="2">
+                        <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img" (click)="basicProfileClick(myPendingRequest,'outgoingRequest')"> -->
+                        <!-- <img *ngIf="myPendingRequest.fileExtension" src="{{imageUrl}}{{myPendingRequest.targetImageUserId}}.{{myPendingRequest.fileExtension}}" class="connection-request-img"
+                        (click)="basicProfileClick(myPendingRequest,'outgoingRequest')">
+                        <img *ngIf="!myPendingRequest.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+                        (click)="basicProfileClick(myPendingRequest,'outgoingRequest')"> -->
+                        
+                        <img  *ngIf="!connectionPendingRequestMessage" src="{{imageUrl}}{{myPendingRequest.targetImageUserId}}.{{myPendingRequest.fileExtension}}" (error)="onImgError($event)" class="connection-request-img"
+                        (click)="basicProfileClick(myPendingRequest,'outgoingRequest')">
+                        <img *ngIf ="myPendingRequest.registered==true" src="assets/images/verified.png" class="verified-png">
+                    </ion-col>
+                    <ion-col size="10" class="request-data-right">
+                        <h2 (click)="basicProfileClick(myPendingRequest,'outgoingRequest')">{{myPendingRequest.destFirstName | titlecase}} {{myPendingRequest.destLastName | titlecase}} <img src="assets/images/thin-arrow-right.svg"
+                        class="request-right-arrow">
+                        </h2>
+                        <div class="chip-content request-chip">
+                            <ion-chip [outline]="true" class="custom-chip" *ngIf="myPendingRequest.destHcpDegreeGroupCode">
+                                {{myPendingRequest.destHcpDegreeGroupCode}}</ion-chip>
+                            <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="myPendingRequest.destState!='' && myPendingRequest.destState!='null'">
+                                {{myPendingRequest.destState}}<span
+                                    *ngIf="myPendingRequest.destCity!='' && myPendingRequest.destCity!='null'">,</span>{{myPendingRequest.destCity}}</ion-chip>
+                            <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="myPendingRequest.destSpecialtyName">
+                                {{ myPendingRequest.destSpecialtyName | replace:'(i.e., a specialty other than those appearing above)':''}}</ion-chip>
+        
+                        </div>
+                        <div class="ignore-accept align-right">
+                            <ion-button fill="clear" slot="end"
+                                (click)="withdrawConnectionRequest(myPendingRequest,'outgoingRequest',i)" [disabled] = "showWithdrawAccept[i]" class="blue-bg-button">
+                                Cancel Request</ion-button>
+                        </div>
+                    </ion-col>
+                </ion-item>
+            </ion-row>
+        
+        </ion-row>
+           <!-- Connection Request -->
+
+           </div>
+        </ion-col>
+       
+      </ion-row>
+      <ion-grid class="myprofile-header connection-loader" *ngIf="showSearch ==true && connectionTabType=='myNetwork'">
+            <span *ngIf="searchLoaderStatus" class="loader-npi"><img
+                src="./../assets/images-pocn/ajax-loader.gif"></span>
+        <ion-row class="ion-padding-horizontal search-title" [hidden]="showPocnUser==true">
+          <ion-col size="12" class="" [hidden]= "searchLoaderStatus==true">
+              <h2>POCN Community <span class="more" (click)="moreClick('pocn')" *ngIf="searchData && searchData.length == 10">More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span></h2>
+          </ion-col>
+      </ion-row>
+      <ion-label class="ion-no-padding" *ngIf="pocnStatusMessage && !searchLoaderStatus">
+        <h1 class="no-connection-msg">No result found</h1>
+      </ion-label>
+      <ion-row class="ion-padding-horizontal mynetwork mt-8" [hidden]="showPocnUser==true">
+           
+        <ion-item class="ionitem-padding-remove ion-no-padding search-datas"  lines="none" *ngFor="let data of searchData">
+          <!-- <img src="assets/images/user-demo-image.jpg" *ngIf="!searchLoaderStatus" class="mr-8 mynetwork-img" 
+            (click)="showMdmMemberProfile(data,'search')" > -->
+          <ion-col size="2" *ngIf="!pocnStatusMessage && !searchLoaderStatus">
+                <!-- <img *ngIf="!searchLoaderStatus && data.fileExtension" src="{{imageUrl}}{{data.userId}}.{{data.fileExtension}}" class="connection-request-img"
+                (click)="showMdmMemberProfile(data,'search')">
+               
+                <img *ngIf="!searchLoaderStatus && !data.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+                (click)="showMdmMemberProfile(data,'search')"> -->
+                <img src="{{imageUrl}}{{data.userId}}.{{data.fileExtension}}" (error)="onImgError($event)" class="connection-request-img"
+                (click)="showMdmMemberProfile(data,'search')">
+            <img *ngIf="!searchLoaderStatus" src="assets/images/verified.png" class="verified-png">
+        </ion-col>
+          <ion-label *ngIf="!searchLoaderStatus" (click)="showMdmMemberProfile(data,'search')">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+          <span class="my-network-chip" *ngIf="!searchLoaderStatus">
+              <div class="chip-content" >
+                  <ion-chip class="custom-chip truncate speciality-tag" *ngIf="data.primarySpecialtyDesc">
+                    {{ data.primarySpecialtyDesc | replace:'(i.e., a specialty other than those appearing above)':''}}</ion-chip>
+                  <ion-chip class="custom-chip" *ngIf="data.providerType">{{data.providerType}}</ion-chip>
+              </div>
+          </span>
+      </ion-item>
+    </ion-row>
+    <ion-row class="ion-padding-horizontal search-title" [hidden]="showMdmUser==true">
+        <ion-col size="12" class="" [hidden]= "searchLoaderStatus==true">
+            <h2>Invite Your Peers to Join POCN <span class="more" (click)="moreMdmClick('mdm')" *ngIf="mdmConnection && mdmConnection.length == 10">More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span></h2>
+        </ion-col>
+    </ion-row>
+    <ion-label class="ion-no-padding" *ngIf="mdmStatusMessage && !searchLoaderStatus" >
+        <h1 class="no-connection-msg">No result found</h1>
+      </ion-label>
+    <ion-row class="ion-padding-horizontal mynetwork mt-8" [hidden]="showMdmUser==true">
+      <ion-item class="ionitem-padding-remove ion-no-padding search-datas"  lines="none" *ngFor="let data of mdmConnection">
+            <ion-col size="2">
+                    <img src="{{defaultImg}}" *ngIf="!searchLoaderStatus" class="connection-request-img" (click)="showMdmMemberProfile(data,'search')">
+                    </ion-col>
+        <ion-label *ngIf="!searchLoaderStatus" (click)="showMdmMemberProfile(data,'search')">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+        <span class="my-network-chip" *ngIf="!searchLoaderStatus">
+            <div class="chip-content">
+                <ion-chip class="custom-chip truncate speciality-tag" *ngIf="data.primarySpecialtyDesc">
+                    {{ data.primarySpecialtyDesc | replace:'(i.e., a specialty other than those appearing above)':''}}
+                </ion-chip>
+                <ion-chip class="custom-chip" *ngIf="data.providerType">{{data.providerType}}</ion-chip>
+            </div>
+        </span>
+    </ion-item>
+    
+    </ion-row>
+    </ion-grid>
+    <ion-grid class="myprofile-header connection-loader" *ngIf="showRecSearch ==true && connectionTabType=='recommended'">
+        <span *ngIf="searchLoaderStatus" class="loader-npi"><img
+            src="./../assets/images-pocn/ajax-loader.gif"></span>
+    <ion-row class="ion-padding-horizontal search-title" [hidden]="showPocnUser==true">
+      <ion-col size="12" class="" [hidden]= "searchLoaderStatus==true">
+          <h2>POCN Community <span class="more" (click)="moreClick('pocn')" *ngIf="searchData && searchData.length == 10">More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span></h2>
+      </ion-col>
+  </ion-row>
+  <ion-label class="ion-no-padding" *ngIf="pocnStatusMessage && !searchLoaderStatus">
+    <h1 class="no-connection-msg">No result found</h1>
+  </ion-label>
+  <ion-row class="ion-padding-horizontal mynetwork mt-8" [hidden]="showPocnUser==true">
+       
+    <ion-item class="ionitem-padding-remove ion-no-padding search-datas"  lines="none" *ngFor="let data of searchData">
+      <!-- <img src="assets/images/user-demo-image.jpg" *ngIf="!searchLoaderStatus" 
+      class="mr-8 mynetwork-img" (click)="showMdmMemberProfile(data,'search')" > -->
+      <ion-col size="2"  *ngIf="!pocnStatusMessage && !searchLoaderStatus">
+            <!-- <img *ngIf="!searchLoaderStatus && data.fileExtension" src="{{imageUrl}}{{data.userId}}.{{data.fileExtension}}" class="connection-request-img"
+            (click)="showMdmMemberProfile(data,'search')">
+            <img *ngIf="!searchLoaderStatus && !data.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+            (click)="showMdmMemberProfile(data,'search')"> -->
+            <img src="{{imageUrl}}{{data.userId}}.{{data.fileExtension}}" (error)="onImgError($event)" class="connection-request-img"
+            (click)="showMdmMemberProfile(data,'search')">
+        <img *ngIf="!searchLoaderStatus" src="assets/images/verified.png" class="verified-png">
+    </ion-col>
+      <ion-label *ngIf="!searchLoaderStatus" (click)="showMdmMemberProfile(data,'search')">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+      <span class="my-network-chip" *ngIf="!searchLoaderStatus">
+          <div class="chip-content" >
+              <ion-chip class="custom-chip truncate speciality-tag" *ngIf="data.primarySpecialtyDesc">
+                {{ data.primarySpecialtyDesc | replace:'(i.e., a specialty other than those appearing above)':''}}</ion-chip>
+              <ion-chip class="custom-chip" *ngIf="data.providerType">{{data.providerType}}</ion-chip>
+          </div>
+      </span>
+  </ion-item>
+</ion-row>
+<ion-row class="ion-padding-horizontal search-title" [hidden]="showMdmUser==true">
+    <ion-col size="12" class="" [hidden]= "searchLoaderStatus==true">
+        <h2>Invite Your Peers to Join POCN <span class="more" (click)="moreMdmClick('mdm')" *ngIf="mdmConnection && mdmConnection.length == 10">More <img src="assets/images/arrow-next-right.svg" class="more-icon"></span></h2>
+    </ion-col>
+</ion-row>
+<ion-label class="ion-no-padding" *ngIf="mdmStatusMessage && !searchLoaderStatus" >
+    <h1 class="no-connection-msg">No result found</h1>
+  </ion-label>
+<ion-row class="ion-padding-horizontal mynetwork mt-8" [hidden]="showMdmUser==true">
+  <ion-item class="ionitem-padding-remove ion-no-padding search-datas"  lines="none" *ngFor="let data of mdmConnection">
+    <ion-col size="2">
+    <img src="{{defaultImg}}" *ngIf="!searchLoaderStatus" class="connection-request-img" (click)="showMdmMemberProfile(data,'search')">
+    </ion-col>
+    <ion-label *ngIf="!searchLoaderStatus" (click)="showMdmMemberProfile(data,'search')">{{data.firstName | titlecase}} {{data.lastName | titlecase}}</ion-label>
+    <span class="my-network-chip" *ngIf="!searchLoaderStatus">
+        <div class="chip-content">
+            <ion-chip class="custom-chip truncate speciality-tag" *ngIf="data.primarySpecialtyDesc">
+                {{ data.primarySpecialtyDesc | replace:'(i.e., a specialty other than those appearing above)':''}}
+            </ion-chip>
+            <ion-chip class="custom-chip" *ngIf="data.providerType">{{data.providerType}}</ion-chip>
+        </div>
+    </span>
+</ion-item>
+
+</ion-row>
+</ion-grid>
+    </ion-content>
+    <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" *ngIf="connectionTabType=='myNetwork'" lines="none">
+        <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchClick(searchText,'myNetwork')" inputmode="search"
+         class="network-searchbar"></ion-searchbar>
+      </ion-item>
+      <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" *ngIf="connectionTabType=='recommended'" lines="none">
+        <ion-searchbar placeholder="" [(ngModel)]="searchText1" enterkeyhint="go" (search)="searchClick(searchText1,'recommended')" inputmode="search"
+         class="network-searchbar"></ion-searchbar>
+      </ion-item>
+</ion-grid>
+<!-- (keyup.enter)="searchClick(searchText)" -->
+<!--<app-main-tabs></app-main-tabs>-->

@@ -1,0 +1,42 @@
+<ion-content class="call-engaged workhistory-slide">
+    <ion-header class="edit-delete-header">
+        <h2>
+            <button fill="clear" class="previous-btn"><img src="assets/images/arrow-left.svg"></button> Invite Participant <button class="close" (click)="close()" fill="clear">
+        <img src="assets/images/close.svg">
+      </button>
+        </h2>
+    </ion-header>
+    <ion-grid class="video-room-code mt-24 padding-11">
+        <ion-row class="">
+            <ion-col size="12" class="ion-no-padding">
+                <ion-text>Video Room Code: <span class="room-code">rew-gre-thj-whv <img src="assets/images/copy-icon.svg"></span></ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <form name="form" (ngSubmit)="fEmail.form.valid" #fEmail="ngForm" novalidate>
+        <ion-grid class="email-or-phone mt-16 padding-11">
+            <ion-row class="" [ngClass]="{ 'validation-error': fEmail.submitted && !emailType?.valid || !showEmailError }">
+                <ion-col size="12" class="ion-no-padding">
+                    <ion-label class="input-label" position="stacked">
+
+                        <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Email or Phone Number to Invite <span class="required-star"><img src="assets/images/required.svg"></span>
+                    </ion-label>
+                    <ion-input class="custom-input" [clearInput]="true" name="emailPhone" placeholder="beatrix@uhome.com" [(ngModel)]="emailPhone" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && emailPhone}" required></ion-input>
+                    <div *ngIf="fEmail.submitted && !emailType?.valid">
+                        <div *ngIf="emailType.errors?.required" class="error-msg">Email/Phone is required</div>
+                    </div>
+                    <div [hidden]="showEmailError || emailType.errors?.required" class="error-msg">Please enter a valid email.</div>
+                    <div [hidden]="showCallCountryError || emailType.errors?.required" class="error-msg">Please enter a valid number</div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid class="video-room-code invite-button padding-11">
+            <ion-row class="">
+                <ion-col size="12" class="ion-no-padding">
+                    <!-- <ion-col (click)="inviteLinkPopOver()">View Invitation Message</ion-col> -->
+                    <ion-button type="submit" [disabled]="disableLinkBtn" fill="clear" class="blue-bg-button" (click)="sendVerifyEmailPhone(fEmail)">Invite</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
+</ion-content>

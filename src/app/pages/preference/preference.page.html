@@ -1,0 +1,355 @@
+<ion-content class="preference-page">
+  <ion-grid class="myprofile-header">
+    <ion-row class="settings-header-row ion-padding-vertical">
+        <ion-col size="4" class="">
+            <img routerLink="/settings" src="assets/images/arrow-left.svg" class="previous-icon">
+        </ion-col>
+        <ion-col size="4" class="align-center">
+            <img (click)="backBtnClick()" src="assets/images/myprofile-pocn-logo.svg" class="header-logo">
+        </ion-col>
+        <ion-col size="4" class="align-right audio-video-call">
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-row class="preference-success-msg p-16"> 
+    <ion-row class="ion-no-padding-vertical accept-request" *ngIf="showUpdateMessage">
+      <ion-col size="12" class="">
+          <img src="assets/images/accept-request.svg" class="mr-8">
+          <ion-text> {{ updateMessage }} </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="showUpdateErrorMessage && !emailErrorStatus && !showPhoneDiv">
+      <ion-col size="12" class="">
+          <img src="assets/images/ignore-icon.svg" class="mr-8">
+          <ion-text>Error Occured while updating Preferences</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+
+  <ion-row class="personalization-profile-section p-16">
+    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding">
+      <div class="item-content">
+        <h2>Profile Details</h2>
+      </div>
+    </ion-item>
+    <ion-item lines="none" class="ccp-title ionitem-padding-remove ion-no-padding">
+      <div class="item-content">
+        <ion-label>How Would You Like to Communicate?</ion-label>
+      </div>
+    </ion-item>
+    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate class="preference-form">
+      <ion-grid class="ccp-grid">
+        <ion-row lines="none" class="preference-checkbox-section ionitem-padding-remove ion-no-padding ccp-section-top" *ngFor="let channel of channels">
+          <ion-col size="12" class="ccp-section-inner">
+            <ion-checkbox (click)="channelClicked($event, channel.name)" [(ngModel)]="channel.isChecked"  name="{{channel.name}}"></ion-checkbox>
+            <ion-label>{{ channel.name }}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item lines="none" class="disclaimer mb-16 mt-8 ionitem-padding-remove ion-no-padding">
+        <ion-text>By submitting this form and signing up for text messaging, you consent to receive app-related text alerts and notifications from POCN.</ion-text>
+      </ion-item>
+      <ion-item lines="none" class="mb-16 ionitem-padding-remove ion-no-padding save-button">
+        <ion-button fill="clear" type="submit" (click)="updateChannelPreferences()" class="blue-bg-button">Save</ion-button>
+      </ion-item>
+      <ion-item lines="none" class="ccp-title topic-interest ionitem-padding-remove ion-no-padding">
+          <ion-label>Areas of Interest <span>(Choose maximum of 3 Areas of Interest)</span></ion-label>
+      </ion-item>
+      <ion-item lines="none" class="specialty-select ionitem-padding-remove ion-no-padding">
+        <ion-col size="10">
+          <!--
+            <ion-select idlDefault (ionChange)="onSelectChange($event)" [disabled]="interestSelectionLimit" class="custom-input"
+            placeholder="Please select" [multiple]="false" name="selectedArea" [(ngModel)]="selectedArea">
+            <ion-select-option *ngFor="let source of specialityType; let j = index;" value="{{ source.specialtyCode }}"
+              disabled="{{ specialityTypeEnabled[j] }}">{{ source.specialtyName }}</ion-select-option>
+          </ion-select>
+          -->
+            <ionic-selectable class="custom-input ion-no-padding toi"
+              confirmButtonText="Select" 
+              placeholder="Please select" 
+              name="selectedArea" 
+              ngDefaultControl  
+              [(ngModel)]="areaDetailsTemp"
+              [items]="specialityType" 
+              itemValueField="specialtyCode" 
+              itemTextField="specialtyName" 
+              [canSearch]="true" 
+              [isMultiple]="false"
+              (onChange)="onSelectChange($event)" 
+              [canClear]="true" 
+              [disabledItems]="areaDetails"
+              clearButtonText="Clear"
+              [canClear]="false"
+              closeButtonText="Close"
+              searchPlaceholder="">
+              <ng-template ionicSelectableHeaderTemplate>
+                  <ion-row class="searchmodule-header">
+                  <ion-col size="2"></ion-col>
+                  <ion-col size="8">
+                    <ion-title>
+                      Areas of Interest
+                    </ion-title>
+                  </ion-col>
+                  <ion-col size="2">
+                    <ion-buttons class="close" (click)="close()" fill="clear">
+                        <img src="assets/images/close.svg">
+                    </ion-buttons>
+                  </ion-col>
+                  </ion-row>
+                </ng-template>
+            </ionic-selectable>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button fill="clear"  (click)="addAreaOfInterest($event)"
+            class="add-specialty">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-item>
+      <ion-row class="primary-specialty-section" lines="none" *ngFor="let area of areaDetails;  let i = index;">
+        <div *ngIf="area.specialtyName" class="primary-specialty-select" [attr.data-index]="i">
+          <p>{{area.specialtyName}} 
+            <span class="align-right delete-icon">
+              <button  (click)="removeAreaInterest(area)" fill="clear"
+            class="add-icon delete remove-specialty ion-no-padding">
+            <ion-icon name="trash-outline" class="trash"></ion-icon>
+            </button>
+          </span>
+        </p>
+          <span class="primary-specialty-checkbox">
+            <span class="primary-checkbox-pref">
+              <ion-radio-group name="areaPrimary_{{i}}" value="{{area.isPrimary}}"
+                (ionChange)="updatePrimaryAreaNew(i,$event)">
+                <ion-row>
+                  <ion-item  lines="none" class="ionitem-padding-remove ion-no-padding">
+                    <ion-radio value="1" [disabled]="areaInterestSelectedRadioValue"></ion-radio>
+                    <ion-label>Primary</ion-label>
+                  </ion-item>
+                  <ion-item  lines="none" class="ionitem-padding-remove ion-no-padding">
+                    <ion-radio value="2" [disabled]="areaInterestSelectedRadioValue2"></ion-radio>
+                    <ion-label>Secondary</ion-label>
+                  </ion-item>
+                  <ion-item lines="none" class="ionitem-padding-remove ion-no-padding">
+                    <ion-radio value="3" [disabled]="areaInterestSelectedRadioValue3"></ion-radio>
+                    <ion-label>Tertiary</ion-label>
+                  </ion-item>
+                </ion-row>
+              </ion-radio-group>
+            </span>
+          </span>
+        </div>
+      </ion-row>
+
+      <ion-item lines="none" class="ionitem-padding-remove ion-no-padding mb-16 mt-8 save-button">
+        <ion-button fill="clear" type="submit" (click)="updateAreaInterestPreferences()" class="blue-bg-button">Save</ion-button>
+      </ion-item>
+
+      <ion-row lines="none" class="topicsofinterest-outer mt-24">
+        <ion-item lines="none" class="ccp-title topic-interest ionitem-padding-remove ion-no-padding">
+          <ion-label>Topics of Interest <span>(Choose maximum of 10 Topics of Interest)</span></ion-label>
+        </ion-item>
+        <ion-item class="topicsofinterest ionitem-padding-remove ion-no-padding" lines="none">
+          <ionic-selectable class="custom-input ion-no-padding toi"
+            placeholder="Please select" 
+            name="interestedTopics" 
+            ngDefaultControl
+            [(ngModel)]="topicAreaListTemp"
+            [items]="topicsOfInterestList" 
+            itemValueField="title" 
+            itemTextField="title" 
+            [canSearch]="true" 
+            [isMultiple]="true"
+            (onChange)="onSelectMultiple($event)" 
+            [canClear]="true" 
+            clearButtonText="Clear" 
+            closeButtonText="Close"
+            searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                  <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                      Topics of Interest
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+
+          </ionic-selectable>
+        </ion-item>
+      </ion-row>
+      <ion-row class="primary-specialty-section" lines="none" *ngFor="let dataTopic of topicAreaListTemp; let i = index;">
+        <div class="primary-specialty-select">
+          <p>{{dataTopic.title}}
+            <span class="align-right delete-icon">
+              <button (click)="removeTopic(dataTopic)" fill="clear"
+                class="add-icon delete remove-specialty ion-no-padding">
+                <ion-icon name="trash-outline" class="trash"></ion-icon>
+              </button>
+            </span>
+            <!-- <button fill="clear" class="remove-specialty" (click)="presentAlert(dataTopic,'removeTopic')">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button> -->
+          </p>
+        </div>
+      </ion-row>
+      <!-- <ion-row class="primary-specialty-section" lines="none">
+      <div class="primary-specialty-select">
+        <p>TV</p>
+        <span class="primary-specialty-checkbox">
+          <ion-button fill="clear" class="remove-specialty"><ion-icon name="trash-outline"></ion-icon></ion-button>
+        </span>
+      </div>
+      <div class="primary-specialty-select">
+        <p>Radio</p>
+        <span class="primary-specialty-checkbox">
+          <ion-button fill="clear" class="remove-specialty"><ion-icon name="trash-outline"></ion-icon></ion-button>
+        </span>
+      </div>
+    </ion-row> -->
+      <!-- <ion-row class="opportunities-title">
+        <ion-col class="">
+          <h2>Opportunities</h2>
+        </ion-col>
+      </ion-row> -->
+      <!-- <ion-row class="">
+        <ion-col class="">
+
+          <div class="opportunity-area mt-16">
+            <h3>{{masterOpportunitiesData1}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of liveOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData2}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of webinarOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData3}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox-section">
+                <div class="opportunities-checkbox" lines="none" *ngFor="let item of emailOpps ; let i = index;">
+                  <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                  <ion-label>{{ item.name }}</ion-label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData4}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of marketOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData5}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of eduOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData6}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of authoringOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData7}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of socialOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+          <div class="opportunity-area">
+            <h3>{{masterOpportunitiesData8}}</h3>
+            <div class="opportunities-checkbox-section">
+              <div class="opportunities-checkbox" lines="none" *ngFor="let item of clinicalOpps ; let i = index;">
+                <ion-checkbox [(ngModel)]="item.isChecked" name="{{item.name}}"></ion-checkbox>
+                <ion-label>{{ item.name }}</ion-label>
+              </div>
+            </div>
+          </div>
+
+        </ion-col>
+      </ion-row> -->
+      <ion-item lines="none" class="ionitem-padding-remove ion-no-padding mb-16 mt-8 save-button">
+        <ion-button fill="clear" type="submit" (click)="updateTopicPreferences()" class="blue-bg-button">Save</ion-button>
+      </ion-item>
+      <ion-row class="opportunities-title">
+        <ion-col class="">
+          <h2>Profile Public View Settings</h2>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="show-hide-section">
+        <ion-item class="ionitem-padding-remove ion-no-padding">
+          <div class="item-content show-hide-content">
+            <h3 class="ps-title">About</h3>            
+          </div>
+        </ion-item>
+      </ion-row>
+      <div *ngFor="let item of userPrivilegeData, let i = index">
+        <ion-row *ngIf="item.titleType == 'sub' && item.title!=null" class="show-hide-section">
+          <ion-list class="show-hide-list">
+            <ion-label>{{ item.title }}</ion-label>
+            <ion-toggle (ionChange)="toggleProfileSettings($event, i)" checked="{{ item.status }}" checked="true" color="primary"></ion-toggle>
+          </ion-list>
+        </ion-row>
+        <ion-row *ngIf="item.titleType == 'main' && item.title!=null" class="show-hide-section main-title">
+          <ion-list class="show-hide-list">
+            <ion-label>{{ item.title }}</ion-label>
+            <ion-toggle (ionChange)="toggleProfileSettings($event, i)" checked="{{ item.status }}" checked='true' color="primary"></ion-toggle>              
+          </ion-list>
+        </ion-row>
+        <!-- <ion-row *ngIf="item.titleType == 'main'" class="show-hide-section">
+          <ion-item class="ionitem-padding-remove ion-no-padding">
+            <div class="item-content show-hide-content">
+              <h3 class="ps-title">{{ item.title }}</h3>
+              <div class="d-flex user-profile-toggle">              
+                <ion-toggle (ionChange)="toggleProfileSettings($event, i)" checked="{{ item.status }}" slot="end" checked='true' color="primary"></ion-toggle>              
+              </div>
+            </div>
+          </ion-item>
+        </ion-row> -->
+      </div>
+      
+      <!--<ion-row class="mt-24 mb-24">
+        <ion-col class="ion-padding-vertical">
+          <ion-button type="submit" class="blue-bg-button" (click)="updatePreference()">Update
+          </ion-button>  
+        </ion-col>
+        <ion-col class="ion-padding-vertical"></ion-col>
+      </ion-row>-->
+
+    </form>
+  </ion-row>
+
+</ion-content>

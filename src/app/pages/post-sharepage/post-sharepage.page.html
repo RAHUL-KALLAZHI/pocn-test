@@ -1,0 +1,123 @@
+<!-- <app-headers></app-headers> -->
+<ion-app class="post-share">
+    <ion-content [fullscreen]="true" class="post-page">
+        <!-- <ion-app class="post-page"> -->
+        <ion-grid>
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left settings">
+                    <button fill="clear" [routerLink]="['/tablinks/post']"><img src="assets/images/arrow-left.svg " class="previous-icon"></button>
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <img [routerLink]="['/tablinks//my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                    <img src="assets/images/video-call.svg" class="mr-24" (click)="patientConnectStatusCalls('video')">
+                    <img src="assets/images/audio-call.svg" (click)="patientConnectStatusCalls('audio')">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Post starts-->
+        <ion-grid class="ion-padding-horizontal">
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img src="assets/images/user-demo-image.jpg" class="mr-8 mynetwork-img">
+                        <ion-label>Chris Nhat</ion-label>
+                        <span class="my-network-chip">
+                          <div class="chip-content">
+                              <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">Cardiac</ion-chip>
+                              <ion-chip [outline]="true" class="custom-chip tag-limit">PA</ion-chip>
+                          </div>
+                          <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                            <ion-checkbox slot="start"></ion-checkbox>
+                          </ion-item>
+                      </span>
+                    </ion-item>
+
+
+                </ion-list>
+            </ion-row>
+
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img src="assets/images/user-demo-image.jpg" class="mr-8 mynetwork-img">
+                        <ion-label>Chris Nhat</ion-label>
+                        <span class="my-network-chip">
+                            <div class="chip-content">
+                                <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">Cardiac</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">PA</ion-chip>
+                            </div>
+                            <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                              <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </span>
+                    </ion-item>
+
+
+                </ion-list>
+            </ion-row>
+
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img src="assets/images/user-demo-image.jpg" class="mr-8 mynetwork-img">
+                        <ion-label>Chris Nhat</ion-label>
+                        <span class="my-network-chip">
+                            <div class="chip-content">
+                                <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">Cardiac</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">PA</ion-chip>
+                            </div>
+                            <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                              <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </span>
+                    </ion-item>
+
+
+                </ion-list>
+            </ion-row>
+
+            <ion-row class="ion-no-padding mynetwork tab-cont width-100p">
+                <ion-list lines="none" class="width-100p">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p">
+                        <img src="assets/images/user-demo-image.jpg" class="mr-8 mynetwork-img">
+                        <ion-label>Chris Nhat</ion-label>
+                        <span class="my-network-chip">
+                            <div class="chip-content">
+                                <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">Cardiac</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">PA</ion-chip>
+                            </div>
+                            <ion-item class="ionitem-padding-remove ion-no-padding" lines="none">
+                              <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </span>
+                    </ion-item>
+
+
+                </ion-list>
+            </ion-row>
+        </ion-grid>
+
+
+    </ion-content>
+
+
+
+    <ion-grid class="post-search width-100p">
+        <ion-row class="width-100p">
+            <ion-col size="9">
+                <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+                    <ion-searchbar placeholder="" class="network-searchbar" (ionInput)="filterItems($event)"></ion-searchbar>
+                </ion-item>
+            </ion-col>
+            <ion-col size="3">
+                <ion-button fill="clear" class="grey-bg-button">Share</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-app>
+
+
+<!--<app-main-tabs></app-main-tabs>-->

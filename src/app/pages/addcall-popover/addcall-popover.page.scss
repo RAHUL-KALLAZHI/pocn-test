@@ -1,0 +1,74 @@
+.contact-edit-popover {
+    width: 100%;
+}
+
+.edit-delete-header button {
+    background: none;
+    float: right;
+    position: absolute;
+    right: 10px;
+}
+
+.edit-delete-header h2 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+}
+
+.number-id ion-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+    width: 100%;
+}
+.dial-number-display ion-text{
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: #000000;
+}
+.backspace {
+    position: relative;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    max-width: 24px;
+}
+span.letter {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: rgb(93 191 236);
+}
+.dialpad div {
+    font-weight: 500;
+    font-size: 35px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: rgb(0 123 181);
+}
+.dialpad {
+    max-width: 80%;
+    width: 80%;
+}
+img.dial-list {
+    position: relative;
+    top: 2px;
+    margin-left: 10px;
+}
+img.call-start {
+    width: 64px;
+}
+ion-grid.dial-number-display {
+    width: 95%;
+}

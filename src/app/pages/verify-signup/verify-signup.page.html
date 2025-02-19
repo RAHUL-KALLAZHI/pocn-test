@@ -1,0 +1,26 @@
+<ion-app>
+  <ion-content class="reset-pass">
+    <ion-grid class="myprofile-header">
+      <ion-row class="settings-header-row ion-padding-vertical">
+          <ion-col size="4" class="">
+              <img routerLink="/register" src="assets/images/arrow-left.svg" class="previous-icon">
+          </ion-col>
+          <ion-col size="4" class="align-center">
+            <a href="/register"><img src="assets/images/logo-pocn.svg"></a>
+          </ion-col>
+          <ion-col size="4" class="align-right audio-video-call">
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid class="reset-pass mt-16 ion-padding-horizontal" *ngIf="showInvalidTokenMesg">
+      <ion-row class="">
+        <ion-col size="12" class="">
+          <ion-text>The token URL you have given is either expired or invalid.</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-content>
+  </ion-app>
+  

@@ -1,0 +1,107 @@
+
+<ion-content>
+    <ion-header class="edit-delete-header">
+
+        <h2>Admin details<button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+        
+        
+      </ion-header>
+
+      <ion-row class="ion-no-padding-vertical accept-request" *ngIf="ownerGrpRequest">
+        <ion-col size="12" class="">
+            <img src="assets/images/accept-request.svg" class="mr-8">
+            <ion-text>Ownership transferred successfully. You are no longer a member of this group.</ion-text>
+        </ion-col>
+    </ion-row>
+
+   <ion-row class="ion-padding-horizontal mynetwork tab-cont">
+        <!-- <ion-row *ngIf="showMsg" class="ion-padding-horizontal">
+                <ion-label >
+                    <h1 class="home-text no-connection-msg">No details Found</h1>
+                </ion-label>
+              </ion-row> -->
+              <ion-list *ngIf="showMsg" class="width-100p">
+                    <ion-label>
+                        <h1 class="home-text no-connection-msg">No details Found</h1>
+                    </ion-label>
+                  </ion-list>
+      <ion-list lines="none" class="width-100p">
+          <ion-item class="ionitem-padding-remove ion-no-padding myconnections-main member-details" *ngFor="let adminData of adminDetails, let i=index">
+              
+              <ion-col size="2">
+                  <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img"> -->
+                  <img *ngIf="adminData.fileExtension" src="{{imageUrl}}{{adminData.memberUserId}}.{{adminData.fileExtension}}" class="connection-request-img">
+                  <img *ngIf="!adminData.fileExtension" src="{{defaultImg}}" class="connection-request-img" >
+              </ion-col>
+        <ion-col size="10">
+            <h2>{{adminData.fullName | titlecase}}  </h2>
+            <div class="my-network-chip mt-8">
+                <!-- <div class="chip-content">
+                    <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">
+                        {{adminData.name | titlecase}}</ion-chip>
+                    <ion-chip [outline]="true"  class="custom-chip tag-limit">{{adminData.description | titlecase}}</ion-chip>
+                </div> -->
+                <div class="chip-content request-chip">
+                    <ion-chip [outline]="true" class="custom-chip" *ngIf="adminData.degreeGroupCode">
+                        {{adminData.degreeGroupCode}}</ion-chip>
+                    <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="adminData.addressCity">
+                        {{adminData.addressCity}}<span *ngIf="adminData.addressState">,</span>{{adminData.addressState}}</ion-chip>
+                    <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="adminData.primarySpecialtyDesc">{{ adminData.primarySpecialtyDesc}}</ion-chip>
+                </div>
+                <div class="group-btns mt-8">
+                  <ion-button fill="clear" [disabled]="disableRemove" class="blue-bg-button" (click)="makeGroupOwner(adminData)">Make Owner</ion-button>
+                </div>
+            </div>
+          </ion-col>
+  </ion-item>
+  
+  
+  </ion-list>             
+  </ion-row>
+<ion-row class="ion-padding-horizontal mynetwork tab-cont" *ngIf="showMsg">
+  <ion-list lines="none" class="recommended-title width-100p">
+      <h2 class="mt-16">Member details </h2>
+  </ion-list>
+  <ion-list *ngIf="showMemebrMsg" class="ion-padding-horizontal width-100p">
+    <ion-label>
+        <h1 class="home-text no-connection-msg">No details Found</h1>
+    </ion-label>
+  </ion-list>
+  <ion-list lines="none" class="width-100p">
+      
+      <ion-item class="ionitem-padding-remove ion-no-padding myconnections-main member-details" *ngFor="let memberData of memberDetails, let i=index">
+          
+          <ion-col size="2">
+              <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img"> -->
+              <img *ngIf="memberData.fileExtension" src="{{imageUrl}}{{memberData.memberUserId}}.{{memberData.fileExtension}}" class="connection-request-img" >
+              <img *ngIf="!memberData.fileExtension" src="{{defaultImg}}" class="connection-request-img" >
+              
+          </ion-col>
+          <ion-col size="10">
+            <h2>{{memberData.fullName | titlecase}} </h2>
+            <div class="my-network-chip mt-8">
+                <!-- <div class="chip-content">
+                    <ion-chip [outline]="true" class="custom-chip truncate speciality-tag">
+                        {{memberData.name | titlecase}}</ion-chip>
+                    <ion-chip [outline]="true"  class="custom-chip tag-limit">{{memberData.description | titlecase}}</ion-chip>
+                </div> -->
+                <div class="chip-content request-chip">
+                    <ion-chip [outline]="true" class="custom-chip" *ngIf="memberData.degreeGroupCode">
+                        {{memberData.degreeGroupCode}}</ion-chip>
+                    <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="memberData.addressCity">
+                        {{memberData.addressCity}}<span *ngIf="memberData.addressState">,</span>{{memberData.addressState}}</ion-chip>
+                    <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="memberData.primarySpecialtyDesc">{{ memberData.primarySpecialtyDesc}}</ion-chip>
+                </div>
+                <div class="group-btns mt-8">
+                  <ion-button fill="clear" [disabled]="disableRemove" class="blue-bg-button" (click)="makeGroupOwner(memberData)">Make Owner</ion-button>
+                </div>
+            </div>
+          </ion-col>
+          
+          
+</ion-item>
+
+
+</ion-list>             
+</ion-row>
+</ion-content>

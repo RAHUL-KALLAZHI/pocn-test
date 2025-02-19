@@ -1,0 +1,360 @@
+.audio-video-call img,
+.settings img {
+    width: 30px;
+}
+
+.pocn-header {
+    height: 30px;
+}
+
+.myprofile-header-row {
+    padding-top: 25px;
+}
+
+.audio-video-call {
+    padding-right: 11px;
+}
+
+.settings {
+    padding-left: 11px;
+}
+
+ion-grid,
+ion-col {
+    padding: 0;
+    width: 100%;
+}
+
+img.previous-icon {
+    width: 30px;
+}
+
+.settings-header-row {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.logout-btn {
+    margin: 0;
+}
+
+img.header-logo {
+    height: 30px;
+}
+
+.more {
+    float: right;
+}
+
+span.more {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0;
+    text-transform: capitalize;
+}
+
+img.more-icon {
+    width: 15px;
+    margin-left: 4px;
+    position: relative;
+    top: 1px;
+}
+
+.search-title h2 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #323232;
+}
+
+.mynetwork-img {
+    border: 2px solid #FFFFFF;
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 128px;
+    width: 32px;
+    height: 32px;
+    margin-left: 6px;
+}
+
+.speciality-tag,
+.dest-city {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.mynetwork ion-label {
+    margin: 0 !important;
+    position: relative;
+    top: 5px;
+    font-weight: 500;
+    font-size: 18px !important;
+    line-height: 120%;
+    color: rgb(50 50 50) !important;
+    padding: 0;
+}
+
+.search-datas {
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.post-user-description ion-text {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 120%;
+    color: #616161;
+}
+
+.duration ion-text {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 110%;
+    color: #616161;
+}
+
+.like-comment span {
+    width: 25%;
+    float: left;
+    text-align: right;
+}
+
+.post-page {
+    display: block !important;
+}
+
+span.like img,
+span.like i {
+    display: inline-block;
+}
+
+.like i {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 110%;
+    color: #00A9E0;
+    font-style: normal;
+    position: relative;
+    top: -7px;
+}
+
+.separator {
+    border-bottom: 1px solid #cdcdcd
+}
+
+.quote span {
+    background: #EEEEEE;
+    border-radius: 9px;
+    padding: 8px;
+    margin: 8px 0;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.quote ion-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #616161;
+}
+
+.quote {
+    width: 100%;
+}
+
+.settings button {
+    background: none;
+}
+
+ion-grid.post-bottom {
+    position: fixed;
+    bottom: 40px;
+    right: -5px !important;
+    width: 90px;
+    height: 90px;
+    z-index: 99;
+}
+
+ion-grid.post-search {
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.accept-request {
+    background: #424242;
+    padding: 12px 16px;
+}
+
+.ingore-request {
+    background: #FF8038;
+    padding: 12px 16px;
+}
+
+.undo {
+    float: right;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    position: relative;
+    top: 11px;
+}
+
+.accept-request ion-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #E0E0E0;
+    position: relative;
+    top: -5px;
+}
+
+.ingore-request ion-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 110%;
+    color: #FFFFFF;
+    position: relative;
+    top: -5px;
+}
+
+.read-more-data p {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 120%;
+    margin: 0;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    max-height: 200px;
+    white-space: normal;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: #616161;
+    word-break: break-word;
+}
+
+.remove-disable {
+    filter: grayscale(100%);
+}
+
+.likepost {
+    background-image: url(/assets/images/like.svg);
+    width: 30px;
+    height: 30px;
+    background-size: 25px;
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+.liked-post {
+    background-image: url(/assets/images/liked.svg);
+    width: 30px;
+    height: 30px;
+    background-size: 25px;
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+span.like-area .liked-post,
+span.like-area .likepost,
+span.like-area i {
+    display: inline-block;
+}
+
+span.like-area i {
+    position: relative;
+    top: -12px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 110%;
+    text-align: center;
+    color: #00A9E0;
+}
+
+span.like-area {
+    text-align: center !important;
+}
+
+.post-user-description img.media {
+    width: 100%;
+    object-fit: cover;
+}
+
+.faq {
+    // font-weight: 500;
+    // font-size: 16px;
+    // line-height: 100%;
+    // letter-spacing: -0.01em;
+    color: #00A9E0 !important;
+    // margin-top: 20px;
+    // margin-bottom: 20px;
+    // width: 100%;
+    // text-align: right;
+}
+
+//preview link
+.preview {
+    width: 350px;
+    background-color: #bdbdbd;
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+}
+
+.preview-text {
+    padding: 10px;
+}
+
+.author-text {
+    font-style: italic;
+}
+
+.title-text {
+    font-weight: 500!important;
+}
+
+.admin-title {
+    margin: 0 !important;
+    position: relative;
+    top: 5px;
+    font-weight: 500;
+    font-size: 18px !important;
+    line-height: 120%;
+    color: #323232 !important;
+    padding: 0;
+}
+.post-detail-description ion-text{
+    font-weight: 300 !important;
+    font-size: 16px;
+    line-height: 120%;
+    margin: 0;
+    color: #616161 !important;
+}
+.source-item{
+    min-height: 5px !important;
+    max-height: 22px !important;
+}
+.author-item{
+    margin-top: 16px;
+    min-height: 5px !important;
+    max-height: 22px;
+    margin-bottom: 15px;
+}
+
+video.media {
+    width: 100%;
+    max-height: 200px;
+}

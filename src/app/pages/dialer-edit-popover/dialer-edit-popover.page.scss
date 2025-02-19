@@ -1,0 +1,83 @@
+.contact-edit-popover {
+    width: 100%;
+}
+
+.edit-delete-header button {
+    background: none;
+    float: right;
+    position: absolute;
+    right: 14px;
+}
+
+.edit-delete-header h2 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+}
+
+.primary-checkbox ion-label {
+    position: relative;
+    top: -8px;
+    margin-left: 10px;
+}
+
+ion-row.contact-form-row {
+    margin-bottom: 5px;
+}
+
+.update-buttons {
+    margin-top: 13px;
+}
+
+.select-caller-id {
+    background: rgb(245 245 245);
+    border-radius: 9px;
+}
+
+.calleridnumber {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    color: #00A9E0;
+    margin-bottom: 6px;
+}
+
+.location {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 110%;
+    color: rgb(97 97 97);
+}
+
+.select-caller-id {
+    background: rgb(245 245 245);
+    border-radius: 9px;
+    padding: 8px 8px;
+}
+
+.dialer-popover {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.dialer-delete button {
+    background: none;
+}
+
+.dialer-delete button {
+    background: none;
+    width: 24px;
+    position: relative;
+    top: 15px;
+}
+
+.dialer-edit-main {
+    margin-top: 16px;
+}
+
+#scroll-list {
+    height: 200px;
+}

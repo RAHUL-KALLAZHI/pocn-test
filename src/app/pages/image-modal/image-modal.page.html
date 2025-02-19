@@ -1,0 +1,56 @@
+<div class="background-opts contact-edit-popover delete-popover" [ngStyle]="background">  
+  <!-- <ion-row class="width-100p">
+    <ion-button  (click)="dismissModal()" class="modal-close" fill="clear">
+      <img src="assets/images/close.svg">
+    </ion-button>
+  </ion-row> -->
+  <ion-row class="edit-delete-header">
+    <ion-col class="">
+        <h2>Update Profile Image<button class="close" (click)="dismissModal()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+    </ion-col>
+</ion-row>
+<ion-row class="width-100p">
+  <span *ngIf="fileLoader" class="update-message-success"><img class="cropped-image-save" img src="assets/images-pocn/ajax-loader.gif" /></span>
+</ion-row>
+  <span *ngIf="profileImgStatus">
+  <input type="file" style="display: none;" accept="image/*"  #profileImageUpdate/>
+  <!--<ion-button (click)="selectImage()" class="login_button">Pick an image</ion-button>-->
+  <!--<div *ngIf="myImage">
+    <img [src]="myImage | async" width="200px" height="200px" alt="" />
+    <br><br>
+    <ion-button (click)="profileImageSave()" class="login_button">Save</ion-button>  
+  </div>-->
+  <ion-row class="ion-no-padding graduation-details image-upload-section">
+    <ion-col class="ion-padding-vertical">
+      <span *ngIf="imgErrorStatus" class="update-message-error">{{ errorMsg }}</span>
+      <image-cropper 
+      #cropper
+      class="image-cropper"
+      [imageBase64]="pickedImage && pickedImage"
+      [imageChangedEvent]="imageChangedEvent"
+      [hideResizeSquares]="isMobile"
+      [roundCropper] ='true'
+      [cropper]="cropperPosition"
+      format="jpeg"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+      [autoCrop]="true"
+      [imageQuality]="50"
+      ></image-cropper>
+      <div class="image-preview" *ngIf="croppedImage">
+        <img [src]="croppedImage" #croppedImg/>
+          
+        <ion-button fill="clear" *ngIf="!fileLoader" (click)="profileImageSave()" class="cropped-image-save blue-bg-button">Save</ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-row class="ion-no-padding graduation-details" *ngIf="croppedImage">
+    <ion-col class="ion-padding-vertical">  
+      <img [src]="croppedImage" #croppedImg width="100" height="75"/>
+      <ion-button (click)="profileImageSave()" class="login_button">Save</ion-button>
+    </ion-col>
+  </ion-row> -->
+  </span>
+</div>

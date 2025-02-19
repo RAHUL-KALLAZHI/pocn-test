@@ -1,0 +1,117 @@
+<ion-grid class="contact-form-section contact-profile edit-form contact-edit-popover" >
+
+  <ion-header class="edit-delete-header">
+
+    <h2>Licenses / Certifications <button class="close" (click)="close()" fill="clear"><img src="assets/images/close.svg"></button></h2>
+    
+    
+  </ion-header>
+  <div *ngIf="setLoader" class="loading-section">
+    <div class="update-message-success"><img src="assets/images-pocn/ajax-loader.gif" /></div>
+  </div>
+
+    <ion-content zooming="true" direction="xy" style="height:500px">
+    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+      
+      <ion-row class="contact-form-row">
+        <ion-col class="">
+          <div id="content" >
+            <div id="contentInside" *ngFor="let license of licenseList; let i = index;">
+                <div *ngIf="key1==i">
+              <ion-row class="contact-form-row">
+                <ion-col class="">
+                  <ion-label>
+                    <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                    Certification Name <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                  <ion-input class="blue-border-input custom-input" name="certificateName_{{i}}"  [(ngModel)]="license.certificateName" #certificateName="ngModel"  placeholder="" [pattern]="noSpacesRegex" required></ion-input>
+                  <div *ngIf="f.submitted && certificateName.invalid">
+                    <div *ngIf="certificateName.errors.required" class="error-msg">Please enter valid certification name</div>
+                    <div *ngIf="certificateName.errors.pattern" class="error-msg">Please enter valid certification name</div>
+                  </div>
+                </ion-col>
+
+              </ion-row>
+              <ion-row class="contact-form-row" [ngClass]="{ 'validation-error': f.submitted && specialtyName.invalid}">
+                <ion-col class="" >
+                  <ion-label>
+                    <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                    Please select speciality <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+                 <!-- <ion-select idlDefault name="speciality_{{i}}" placeholder=""
+                  [(ngModel)]="license.speciality" #specialtyName="ngModel" class="blue-border-input custom-input"
+                   [ngClass]="{ 'is-invalid': f.submitted && license.speciality.invalid }" required>
+                    <ion-select-option *ngFor="let source of specialityType" value="{{ source.specialtyName }}">{{ source.specialtyName }}</ion-select-option>
+                  </ion-select> -->
+
+                  <ionic-selectable 
+                  class="contact-section-form blue-border-input mb-5 state-selectbox custom-input" 
+                  name="speciality_{{i}}" 
+                  [(ngModel)]="temp[i]"
+                  #specialtyName="ngModel" 
+                  [ngClass]="{ 'is-invalid': f.submitted && license.speciality.invalid }"
+                  required 
+                  [items]="specialityType" 
+                  itemValueField="specialtyCode" 
+                  itemTextField="specialtyName" 
+                  [canSearch]="true" 
+                  [isMultiple]="false" 
+                  closeButtonText="Close"
+                  searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                  <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                      Speciality
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+                  </ionic-selectable>
+
+
+                  <div *ngIf="f.submitted && specialtyName.invalid">
+                    <div *ngIf="specialtyName.errors.required" class="error-msg"></div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="contact-form-row">
+                <ion-col class="">
+                  <ion-label>Institution Name</ion-label>
+                  <ion-input class="blue-border-input"
+                    name="institutionName_{{i}}" [(ngModel)]="license.institutionName" placeholder=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <!-- <ion-row class="contact-form-row update-buttons">
+                <ion-col class="">
+                  <ion-button (click)="presentAlert(license,'removeLicense')"  fill="clear" class="add-icon delete">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row> -->
+            </div>
+            </div>
+          </div>
+          <ion-row class="contact-form-row update-buttons" *ngIf="!setLoader">
+            <ion-col class="">
+              <ion-button (click)="close()" fill="clear" class="blue-border-button width-100p"><span
+                  class="save-btn-text">Cancel</span>
+              </ion-button>
+            </ion-col>
+            <ion-col class="">
+              <ion-button type="submit" (click)="updateLicense(f)" fill="clear" class="blue-bg-button width-100p"><span
+                  class="save-btn-text">Save</span>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <!-- <span class="load-page" *ngIf="setLoader"></span> -->
+    </form>
+    </ion-content>
+  </ion-grid>

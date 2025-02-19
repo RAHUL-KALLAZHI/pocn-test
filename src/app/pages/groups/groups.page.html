@@ -1,0 +1,995 @@
+<!-- <app-headers></app-headers> -->
+<!-- <ion-app> -->
+    <ion-content [fullscreen]="true">
+        
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left">
+                    <button class="back" *ngIf="showSearch == true" (click)="backClose()" fill="clear"><img src="assets/images/arrow-left.svg"></button>
+                    <!-- <button class="back" *ngIf="showRecSearch==true && connectionTabType=='recommended'" (click)="backClose('recomand')" fill="clear"><img src="assets/images/arrow-left.svg"></button> -->
+                    <!-- <img src="assets/images/settings.svg" class="settings"> -->
+                </ion-col>
+                <!-- <ion-col size="4" class="align-left settings">
+                    <img src="assets/images/settings.svg">
+                </ion-col> -->
+        <ion-col size="4" class="align-center">
+            <img [routerLink]="['/tablinks/my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+        </ion-col>
+        <ion-col size="4" class="align-right audio-video-call">
+            <img src="assets/images/audio-call.svg" (click)="statusConnectCalls('audio')" class="audiocall mr-24">
+            <img src="assets/images/video-call.svg" class="" (click)="statusConnectCalls('video')">
+
+        </ion-col>
+    </ion-row>
+    <!-- <ion-row class="lr-padd-5" *ngIf="showSearch">
+                <ion-col size="12" class="align-right">
+                    <button class="close" (click)="close()" fill="clear">
+                        <img src="assets/images/close.svg">
+                    </button>
+                </ion-col>
+            </ion-row> -->
+                <!-- <ion-row class="ion-no-padding-vertical accept-request" *ngIf="showNotification">
+                    <ion-col size="12" class="">
+                        <img src="assets/images/accept-request.svg" class="mr-8">
+                        <ion-text>You have received connection request from {{requestorNames}}. <span
+                                [routerLink]="['/tablinks/connection/request']" class="click-here">Click here</span> to see the request
+                        </ion-text>
+                        <ion-button class="blue-bg-button dismiss-button" (click)="dismiss()">Dismiss</ion-button>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="ion-no-padding-vertical accept-request" *ngIf="showConNotification">
+                    <ion-col size="12" class="">
+                        <img src="assets/images/accept-request.svg" class="mr-8">
+                        <ion-text>You have received connection request from {{notificationName}} and {{countData}} others. <span
+                                [routerLink]="['/tablinks/connection/request']" class="click-here">Click here</span> to see the request
+                        </ion-text>
+                        <ion-button class="blue-bg-button dismiss-button" (click)="dismiss()">Dismiss</ion-button>
+                    </ion-col>
+                </ion-row> -->
+        <ion-row class="ion-no-padding-vertical accept-request" *ngIf="createGrpRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/accept-request.svg" class="mr-8">
+                <ion-text>Group Created Successfully</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical accept-request" *ngIf="acceptInvitRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/accept-request.svg" class="mr-8">
+                <ion-text>Invitation Accepted Successfully</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="rejectInvitRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <ion-text>Invitation Rejected Successfully</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="rejectRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <ion-text>Request Rejected Successfully</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical accept-request" *ngIf="acceptJoinRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/accept-request.svg" class="mr-8">
+                <ion-text>Join Request Accepted</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="rejectJoinRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <ion-text>Join Request Rejected</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="withdrawJoinRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <ion-text>Cancelled Join Request</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="errorBtn">
+            <ion-col size="12" class="">
+                <img src="assets/images/accept-request.svg" class="mr-8">
+                <ion-text>{{ msgForm }}</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding-vertical ingore-request" *ngIf="withdrawInvitRequest">
+            <ion-col size="12" class="">
+                <img src="assets/images/ignore-icon.svg" class="mr-8">
+                <ion-text>Cancelled invitation Request</ion-text>
+            </ion-col>
+        </ion-row>
+
+        <ion-grid class="connection-pagetab ion-no-padding" *ngIf="showSearch==false">
+            <ion-row class="myprofile-innertab">
+                <ion-col class="ion-padding-horizontal">
+                    <ion-segment [(ngModel)]="tabType" color="light" mode="md">
+                        <ion-segment-button value="subscribed" class="active ion-no-padding subs-tab" (click)="subClick()">
+                            <div class="tab-container">
+                                <span>Subscribed</span>
+                            </div>
+                        </ion-segment-button>
+                        <ion-segment-button value="pending" class="ion-no-padding" (click)="pendingClick()">
+                            <div class="tab-container">
+                                <span>Pending</span>
+                            </div>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="recommended" class="ion-no-padding exp-tab" (click)="recClick()">
+                            <div class="tab-container">
+                                <span>Recommended</span>
+                            </div>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="managed" class="ion-no-padding" (click)="managedClick()">
+                            <div class="tab-container">
+                                <span>Managed</span>
+                            </div>
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-col>
+            </ion-row>
+
+            <div [ngSwitch]="tabType" class="group-tab-content" [hidden]="(showSearch && tabType == 'subscribed')">
+                <ion-row *ngSwitchCase="'subscribed'" class="ion-no-padding">
+                    <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p" lines="none">
+                        <ion-col size="12" class="ion-padding-horizontal">
+                            <h2>Subscribed</h2>
+                        </ion-col>
+                    </ion-item> -->
+                    <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p align-center" lines="none"> -->
+                    <div *ngIf="mySubscribedGroupLoader" class="loader-npi"><img src="./../assets/images-pocn/ajax-loader.gif">
+                    </div>
+                    <!-- </ion-item> -->
+
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-24" lines="none" *ngIf="mySubscribedGroupEmptytMessage">
+                        <ion-label>
+                            <h1 class="home-text no-connection-msg">No Groups Found</h1>
+                        </ion-label>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none" *ngIf="!mySubscribedGroupEmptytMessage">
+
+                        <ion-col size="12" class="ion-no-padding subscribed-col">
+
+                            <div class="subscribed-card" *ngFor="let subGroup of mySubscribedGroups">
+                                <ion-card>
+                                    <img alt="" src="assets/images/green-badge.svg" class="badge" />
+                                    <!-- <img alt="" src="assets/images/groups-demo-img.jpg" /> -->
+                                    <img class="subscribed-image" [src]="subGroup.grpSubImageUrl" (error)="onImgError($event,subGroup.bannerFileName,subGroup.bannerExtension)" (click)="showGroupDetail(subGroup)">
+                                    <!-- <img src="{{subGroup.groupBanner ? subGroup.groupBanner : defaultImg}}" (click)="showGroupDetail(subGroup)"> -->
+                                    <ion-card-header [hidden]="subGroup.name === 'null'">
+                                        <p *ngIf="subGroup.name != 'null' || subGroup.name !=''" (click)="showGroupDetail(subGroup)">{{subGroup.name}}</p>
+                                    </ion-card-header>
+                                    <ion-card-header [hidden]="subGroup.description === 'null'">
+                                        <p *ngIf="subGroup.description != 'null' || subGroup.description !=''">
+                                            {{subGroup.description}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+                              </ion-col>
+                    </ion-item>
+
+                </ion-row>
+                <!-- <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" *ngIf="tabType=='subscribed'" lines="none">
+                                        <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'subscribed')" inputmode="search"
+                                         class="network-searchbar"></ion-searchbar>
+                                      </ion-item> -->
+            </div>
+
+            <div [ngSwitch]="tabType" class="group-tab-content mt-16 pendingtab">
+                <ion-row *ngSwitchCase="'pending'" class="ion-no-padding connection-request">
+
+                    <ion-row class="requests-row ion-padding-horizontal width-100p">
+
+                        <ion-list lines="none" class="recommended-title" *ngIf="showInviteSent">
+                            <h2>Invitations I sent </h2>
+                        </ion-list>
+                        <span *ngIf="invitationsSentLoader" class="loader-npi">
+                            <img src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-row *ngIf="sentInviteMsg" class="width-100p ion-padding-horizontal mt-16">
+                            <ion-label>
+                                <h1 class="home-text no-connection-msg">No Invitation Request I have Sent</h1>
+                            </ion-label>
+                        </ion-row>
+                        <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request mt-16" *ngFor="let sentInvite of sentInvitation">
+
+                            <ion-col size="2" class="pendingtab-images">
+                                <img [src]="sentInvite.grpSubImageUrl" (error)="onImgError($event,sentInvite.bannerFileName,sentInvite.bannerExtension)" class="pending-main-img">
+
+                                <img [src]="sentInvite.grpProfileImageUrl" (error)="onUserImgError($event)" class="admin-img">
+
+                                <!-- <img src="assets/images/groups-demo-img.jpg" class="pending-main-img">
+                                        <img src="assets/images/user-demo-image.jpg" class="admin-img"> -->
+                            </ion-col>
+                            <ion-col size="10" class="request-data-right">
+                                <!-- <h2>Humble Bundled Apple Crumble</h2>
+                                        <p>From Binar Onkel</p> -->
+                                <h2>{{sentInvite.name}}</h2>
+                                <p>To {{sentInvite.fullName | titlecase}}</p>
+                                <div class="ignore-accept align-right">
+                                    <ion-button fill="clear" slot="end" class="blue-bg-button" (click)="withdrawSentInvitationRequest(sentInvite)">Cancel Request</ion-button>
+                                    <!-- <ion-button fill="clear" slot="end" class="blue-bg-button">Resend</ion-button> -->
+                                </div>
+                            </ion-col>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="requests-row ion-padding-horizontal width-100p">
+
+                        <ion-list lines="none" class="recommended-title" *ngIf="showInviteRec">
+                            <h2>Invitations I Received</h2>
+                        </ion-list>
+                        <span *ngIf="invitationsRecLoader" class="loader-npi">
+                            <img src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-row *ngIf="recInviteMsg" class="width-100p ion-padding-horizontal mt-16">
+                            <ion-label>
+                                <h1 class="home-text no-connection-msg">No Invitation Received </h1>
+                            </ion-label>
+                        </ion-row>
+                        <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request mt-16" *ngFor="let recInvite of recInvitation">
+
+                            <ion-col size="2" class="pendingtab-images">
+                                <img [src]="recInvite.grpSubImageUrl" (error)="onImgError($event,recInvite.bannerFileName,recInvite.bannerExtension)" class="pending-main-img" (click)="showViewDetail(recInvite.groupUuid)">
+
+                                <img [src]="recInvite.grpProfileImageUrl" (error)="onUserImgError($event)" class="admin-img">
+
+                                <!-- <img *ngIf= "!sentInvite.memberImageExtension" src="{{defaultImg}}" class="admin-img"> -->
+                            </ion-col>
+                            <ion-col size="10" class="request-data-right">
+                                <h2 (click)="showViewDetail(recInvite.groupUuid)">{{recInvite.name}}</h2>
+                                <p>From {{recInvite.fullName | titlecase}}</p>
+                                <div class="ignore-accept align-right">
+                                    <ion-button fill="clear" slot="end" class="blue-border-button" (click)="rejectInvitationRequest(recInvite)">Decline</ion-button>
+                                    <ion-button fill="clear" slot="end" class="blue-bg-button" (click)="acceptInvitationRequest(recInvite)">Accept</ion-button>
+
+                                </div>
+                            </ion-col>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="requests-row ion-padding-horizontal">
+
+                        <ion-list lines="none" class="recommended-title" *ngIf="showRequestSent">
+                            <!-- <h2>Groups I Have Requested</h2> -->
+                            <h2>Request I Sent</h2>
+                        </ion-list>
+                        <span *ngIf="requestSentLoader" class="loader-npi">
+                            <img src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-row *ngIf="groupPendingRequestEmptyMessage" class="width-100p ion-padding-horizontal mt-16">
+                            <ion-label>
+                                <h1 class="home-text no-connection-msg">No Pending Request Found </h1>
+                            </ion-label>
+                        </ion-row>
+                        <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request mt-16" *ngFor="let group of myPendingRequestGroups">
+                            <ion-col size="2">
+                                <img [src]="group.grpImageUrl" (error)="onImgError($event,group.bannerFileName,group.bannerExtension)" class="pending-main-img">
+                                <!-- <img *ngIf= "group.fileExtension" src="{{group.joinReqBannerImgUrl}}" class="pending-main-img">
+                                            <img *ngIf= "!group.fileExtension" src="{{defaultImg}}" class="pending-main-img"> -->
+                            </ion-col>
+                            <ion-col size="10" class="request-data-right">
+                                <h2>{{group.name}} </h2>
+                                <!-- <img src="assets/images/thin-arrow-right.svg" class="request-right-arrow"> -->
+                                <!-- <div class="chip-content request-chip">
+                                            <ion-chip [outline]="true" class="custom-chip">PA</ion-chip>
+                                            <ion-chip [outline]="true" class="custom-chip tag-limit">PO</ion-chip>
+                                            <ion-chip [outline]="true" class="custom-chip tag-limit">Cardiac</ion-chip>
+                                        </div> -->
+                                <p>
+                                    {{ group.description}}
+                                </p>
+                                <div class="ignore-accept align-right">
+                                    <ion-button fill="clear" slot="end" class="blue-bg-button" (click)="withdrawGroupRequest(group)">Cancel Request</ion-button>
+                                    <!-- <ion-button fill="clear" slot="end" class="blue-bg-button">Label</ion-button> -->
+                                </div>
+                            </ion-col>
+                        </ion-item>
+                    </ion-row>
+                    <ion-row class="requests-row ion-padding-horizontal width-100p">
+
+                        <ion-list lines="none" class="recommended-title" *ngIf="showRequestRec">
+                            <h2>Request I Received</h2>
+                        </ion-list>
+                        <span *ngIf="requestRecLoader" class="loader-npi">
+                            <img src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-row *ngIf="groupPendingRequestApprovalEmptyMessage" class="width-100p ion-padding-horizontal mt-16">
+                            <ion-label>
+                                <h1 class="home-text no-connection-msg">No Pending Join Request Found </h1>
+                            </ion-label>
+                        </ion-row>
+                        <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request mt-16" *ngFor="let member of myPendingApprovalGroups">
+                            <ion-col size="2" class="pendingtab-images">
+                                <img [src]="member.grpImageUrl" (error)="onImgError($event,member.bannerFileName,member.bannerExtension)" class="pending-main-img" (click)="showViewDetail(member.groupUuid)">
+                                <img [src]="member.grpProfileImageUrl" (error)="onUserImgError($event)" class="admin-img">
+                            </ion-col>
+                            <!-- <ion-col size="2">
+                                        <img src="assets/images/user-demo-image.jpg" class="connection-request-img">
+                                    </ion-col> -->
+                            <ion-col size="10" class="request-data-right">
+                                <h2 (click)="showViewDetail(member.groupUuid)">{{ member.name}} </h2>
+                                <!-- <img src="assets/images/thin-arrow-right.svg" class="request-right-arrow"> -->
+                                <!-- <div class="chip-content request-chip">
+                                            <ion-chip [outline]="true" class="custom-chip">PA</ion-chip>
+                                            <ion-chip [outline]="true" class="custom-chip tag-limit">PO</ion-chip>
+                                            <ion-chip [outline]="true" class="custom-chip tag-limit">Cardiac</ion-chip>
+                                        </div> -->
+                                <p>From {{ member.firstName | titlecase}} {{ member.lastName | titlecase}}
+                                </p>
+                                <!-- <p>{{ member.description}}
+                                        </p> -->
+                                <div class="ignore-accept align-right">
+                                    <ion-button fill="clear" slot="end" class="blue-border-button" (click)="rejectGroupJoinRequest(member)">Decline</ion-button>
+                                    <ion-button fill="clear" slot="end" class="blue-bg-button" (click)="approveGroupJoinRequest(member)">Accept</ion-button>
+
+                                </div>
+                            </ion-col>
+                        </ion-item>
+                    </ion-row>
+
+
+                </ion-row>
+            </div>
+
+            <div [ngSwitch]="tabType" class="group-tab-content">
+                <ion-row *ngSwitchCase="'recommended'" class="ion-no-padding">
+
+                    <ion-col size="12" class="mynetwork ion-no-padding">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>POCN Recommends</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="pocnLoaderStatus" class="loader-npi"><img
+                                    src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none" *ngIf="connectionPocnMessage && !pocnLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No recommendation found</h1>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionPocnMessage">
+
+                            <div class="recommended-card groups-like" *ngFor="let recommendationByType of groupRecoPocn">
+                                <ion-card>
+                                    <div class="groups-img" (click)="showGroupDetailView(recommendationByType)">
+                                        <!-- <img alt="" src="assets/images/groups-demo-img.jpg"/> -->
+                                        <img alt="" class="subscribed-image" [src]="recommendationByType.grpSubImageUrl" (error)="onBannerImgError($event,recommendationByType.bannerFileName,recommendationByType.bannerExtension)" (click)="showGroupDetailView(recommendationByType)" />
+                                    </div>
+                                    <ion-card-header class="groups-like-header" (click)="showGroupDetailView(recommendationByType)">
+                                        <p>{{recommendationByType.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+
+                        </ion-item>
+                    </ion-col>
+
+                    <ion-col size="12" class="mynetwork ion-no-padding" *ngIf="!connectionRecommendationMessage">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Groups based on your specialty</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="specialityLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none"
+                         *ngIf="connectionRecommendationMessage && !specialityLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No recommendation found</h1>
+                            </ion-label>
+                        </ion-item> -->
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionRecommendationMessage">
+                            <div class="recommended-card" *ngFor="let recommendationBySpecialty of groupRecoSpecilality">
+                                <ion-card>
+                                    <img class="subscribed-image" alt="" [src]="recommendationBySpecialty.grpSubImageUrl" 
+                                    (error)="onImgError($event,recommendationBySpecialty.bannerFileName,recommendationBySpecialty.bannerExtension)" 
+                                    (click)="showGroupDetailView(recommendationBySpecialty)"
+                                    />
+                                    <!-- <img *ngIf="recommendationBySpecialty.fileExtension" src="{{imageUrl}}{{recommendationBySpecialty.ownerUserId}}.{{recommendationBySpecialty.fileExtension}}" class="connection-request-img"
+                                            >
+                                            <img *ngIf="!recommendationBySpecialty.fileExtension" src="{{defaultImg}}" class="connection-request-img"> -->
+                                    <ion-card-header>
+                                        <p>{{recommendationBySpecialty.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+                            <!-- <div class="recommended-card">
+                                        <ion-card>
+                                            <img alt="" src="assets/images/groups-demo-img.jpg" />
+                                            <ion-card-header>
+                                            <p>How to create SVG-ready icon symbols in Sketch</p>
+                                            </ion-card-header>
+                                        </ion-card>
+                                    </div>
+                                    <div class="recommended-card">
+                                        <ion-card>
+                                            <img alt="" src="assets/images/groups-demo-img.jpg" />
+                                            <ion-card-header>
+                                            <p>How to create SVG-ready icon symbols in Sketch</p>
+                                            </ion-card-header>
+                                        </ion-card>
+                                    </div>
+                                    <div class="recommended-card">
+                                        <ion-card>
+                                            <img alt="" src="assets/images/groups-demo-img.jpg" />
+                                            <ion-card-header>
+                                            <p>How to create SVG-ready icon symbols in Sketch</p>
+                                            </ion-card-header>
+                                        </ion-card>
+                                    </div> -->
+
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="12" class="mynetwork ion-no-padding" *ngIf="!connectionRecoMessageBytype">
+
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Groups for {{userBasicData}}</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="typeLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none" 
+                        *ngIf="connectionRecoMessageBytype && !typeLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No recommendation found</h1>
+                            </ion-label>
+                        </ion-item> -->
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionRecoMessageBytype">
+                            <div class="recommended-card" *ngFor="let recommendationByType of groupRecoType">
+                                <ion-card>
+                                    <img alt="" class="subscribed-image" [src]="recommendationByType.grpSubImageUrl"
+                                     (error)="onImgError($event,recommendationByType.bannerFileName,recommendationByType.bannerExtension)" 
+                                     (click)="showGroupDetailView(recommendationByType)" />
+                                    <!-- <img *ngIf="recommendationByType.fileExtension" src="{{imageUrl}}{{recommendationByType.ownerUserId}}.{{recommendationByType.fileExtension}}" class="connection-request-img"
+                                            >
+                                            <img *ngIf="!recommendationByType.fileExtension" src="{{defaultImg}}" class="connection-request-img"> -->
+                                    <ion-card-header>
+                                        <p>{{recommendationByType.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="12" class="mynetwork ion-no-padding"  *ngIf="!connectionLocationMessage">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Groups near you </h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="locationLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" 
+                            lines="none" *ngIf="connectionLocationMessage && !locationLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No Location found</h1>
+                            </ion-label>
+                        </ion-item> -->
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionLocationMessage">
+                            <div class="recommended-card" *ngFor="let recommendationBySpecialty of groupRecoLocation">
+                                <ion-card>
+                                    <img class="subscribed-image" alt="" [src]="recommendationBySpecialty.grpSubImageUrl" 
+                                    (error)="onImgError($event,recommendationBySpecialty.bannerFileName,recommendationBySpecialty.bannerExtension)" 
+                                    (click)="showGroupDetailView(recommendationBySpecialty)"
+                                    />
+                                    <!-- <img *ngIf="recommendationBySpecialty.fileExtension" src="{{imageUrl}}{{recommendationBySpecialty.ownerUserId}}.{{recommendationBySpecialty.fileExtension}}" class="connection-request-img"
+                                            >
+                                            <img *ngIf="!recommendationBySpecialty.fileExtension" src="{{defaultImg}}" class="connection-request-img"> -->
+                                    <ion-card-header>
+                                        <p>{{recommendationBySpecialty.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="12" class="mynetwork ion-no-padding"  *ngIf="!connectionTaMessage">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Groups based on your interests</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="taLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" 
+                            lines="none" *ngIf="connectionTaMessage && !taLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No Therapeutics Area found</h1>
+                            </ion-label>
+                        </ion-item> -->
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionTaMessage">
+                            <div class="recommended-card" *ngFor="let recommendationBySpecialty of groupRecoTa">
+                                <ion-card>
+                                    <img class="subscribed-image" alt="" [src]="recommendationBySpecialty.grpSubImageUrl" 
+                                    (error)="onImgError($event,recommendationBySpecialty.bannerFileName,recommendationBySpecialty.bannerExtension)" 
+                                    (click)="showGroupDetailView(recommendationBySpecialty)"
+                                    />
+                                    <!-- <img *ngIf="recommendationBySpecialty.fileExtension" src="{{imageUrl}}{{recommendationBySpecialty.ownerUserId}}.{{recommendationBySpecialty.fileExtension}}" class="connection-request-img"
+                                            >
+                                            <img *ngIf="!recommendationBySpecialty.fileExtension" src="{{defaultImg}}" class="connection-request-img"> -->
+                                    <ion-card-header>
+                                        <p>{{recommendationBySpecialty.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="12" class="mynetwork ion-no-padding" *ngIf="!connectionNameMessage">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Group recommendation by name</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="nameLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" 
+                            lines="none" *ngIf="connectionNameMessage && !nameLoaderStatus">
+                            <ion-label class="ion-padding-horizontal">
+                                <h1 class="no-connection-msg">No Recommendation found</h1>
+                            </ion-label>
+                        </ion-item> -->
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionNameMessage">
+                            <div class="recommended-card" *ngFor="let recommendationBySpecialty of groupRecoName">
+                                <ion-card>
+                                    <img class="subscribed-image" alt="" [src]="recommendationBySpecialty.grpSubImageUrl" 
+                                    (error)="onImgError($event,recommendationBySpecialty.bannerFileName,recommendationBySpecialty.bannerExtension)" 
+                                    (click)="showGroupDetailView(recommendationBySpecialty)"
+                                    />
+                                    <!-- <img *ngIf="recommendationBySpecialty.fileExtension" src="{{imageUrl}}{{recommendationBySpecialty.ownerUserId}}.{{recommendationBySpecialty.fileExtension}}" class="connection-request-img"
+                                            >
+                                            <img *ngIf="!recommendationBySpecialty.fileExtension" src="{{defaultImg}}" class="connection-request-img"> -->
+                                    <ion-card-header>
+                                        <p>{{recommendationBySpecialty.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+
+                        </ion-item>
+                    </ion-col>
+                    <!-- <ion-col size="12" class="mynetwork ion-no-padding" *ngIf="!connectionTagsMessage">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8" lines="none">
+                            <ion-col size="12" class="ion-padding-horizontal">
+                                <h2>Group recommendation by tags</h2>
+                            </ion-col>
+                        </ion-item>
+                        <span *ngIf="tagsLoaderStatus" class="loader-npi"><img
+                                src="./../assets/images-pocn/ajax-loader.gif"></span>
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none" *ngIf="!connectionTagsMessage">
+                            <div class="recommended-card" *ngFor="let recommendationBySpecialty of groupRecoTags">
+                                <ion-card>
+                                    <img class="subscribed-image" alt="" [src]="recommendationBySpecialty.grpSubImageUrl" 
+                                    (error)="onImgError($event,recommendationBySpecialty.bannerFileName,recommendationBySpecialty.bannerExtension)" 
+                                    (click)="showGroupDetailView(recommendationBySpecialty)"
+                                    />
+                                    <ion-card-header>
+                                        <p>{{recommendationBySpecialty.name}}</p>
+                                    </ion-card-header>
+                                </ion-card>
+                            </div>
+
+                        </ion-item>
+                    </ion-col> -->
+                </ion-row>
+            </div>
+
+            <div [ngSwitch]="tabType" class="group-tab-content managedtab-content" [hidden]="(showSearch && tabType == 'managed')">
+                <ion-row *ngSwitchCase="'managed'" class="ion-no-padding">
+                    <ion-col size="12" class="mynetwork ion-padding-horizontal">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p" lines="none">
+                            <ion-button fill="clear" class="blue-border-button width-100p create-newgroup" (click)="showGroupMethod()">
+                                <img alt="" src="assets/images/edit.svg" class="mr-8" />Create a New Group</ion-button>
+                        </ion-item>
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p" lines="none" [hidden]="showGroupForm" *ngIf="myCreatedGroupEmptytMessage">
+                            <ion-title class="">
+                                <h1 class="item-not-found-msg">No Groups Found</h1>
+                            </ion-title>
+                        </ion-item>
+                        <!-- Add New Group -->
+                        <form name="form" class="grp-style" (ngSubmit)="f.form.valid" #f="ngForm" novalidate class="group-form">
+                            <ion-row *ngIf="showGroupForm" class="create-group-form">
+                                <!-- <ion-col size="12" class="ion-padding-horizontal">
+                      <ion-list line="none" class="addnewgroup-title">
+                        <h2>Add New Group</h2>
+                      </ion-list>
+                      </ion-col> -->
+
+                                <ion-col size="12" class="add-new-group">
+                                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p add-group-banner" lines="none">
+                                        <div class="add-group-banner-area">
+                                            <img class="upload-banner" src="{{ attachmentTypeContent }}" />
+                                            <p>Add a Group Banner Image</p>
+                                            <!-- <button class="banner-edit"><img alt="" src="assets/images/edit-circle.svg"
+                                    class="groupbanner-edit" /></button> -->
+                                            <span class="user-image-edit">
+
+                                                <!-- <input type="file" style="display: none;" accept="image/*" (change)="manageProfileImage($event)" #profileImageUpdate/> -->
+                                                <input type="file" name="file" id="pickImageInput" style="display:none;"
+                                                    accept="image/*" [(ngModel)]="groupDetails.groupBanner" #pickImageInput (change)="postImageUploads($event)" />
+
+                                                <label (click)="selectFile()"><img src="assets/images/edit-icon.svg"
+                                                        class="editpopover-icon" /> </label>
+                                            </span>
+
+                                            <!-- <span class="upload-from-gallery">
+                                        <input type="file"  name="file" style="display:none;" #pickImageInput
+                                         (change)="postImageUploads($event)">
+                                    <label class="" (click)="selectFile()"><img src="assets/images/gallery-icon.svg" class="cam-gal-icon"/></label>
+
+                                    </span> -->
+                                        </div>
+                                    </ion-item>
+                                    <ion-item lines="none" class="error-text ion-no-padding ionitem-padding-remove width-100p" *ngIf="idfileErrorStatus || postImageErrorMsg">
+                                        <ion-col size="12">
+                                            <span *ngIf="idfileErrorStatus">
+                                  <span  class="error-msg" >{{ errorMsg }}</span>
+                                            </span>
+                                            <span *ngIf="postImageErrorMsg">
+                                   <span  class="error-msg" >{{ postErrorMsg }}</span>
+                                            </span>
+                                        </ion-col>
+                                    </ion-item>
+                                    <ion-item lines="none" class="ion-no-padding mt-24">
+                                        <ion-label class="input-label" position="stacked">Name</ion-label>
+                                        <ion-input class="custom-input name" [clearInput]="true" type="text" name="grpName" [(ngModel)]="groupDetails.groupName" #grpName="ngModel" required></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="f.submitted && grpName.invalid && showGrpName">
+                                        <div *ngIf="grpName.errors.required" class="error-msg">Group Name is required</div>
+                                        <div *ngIf="grpName.errors.pattern" class="error-msg">Please enter valid Group Name
+                                        </div>
+                                    </div>
+
+
+
+                                    <ion-item lines="none" class="ion-no-padding mt-24">
+                                        <ion-label class="input-label" position="stacked">Description</ion-label>
+                                        <ion-textarea class="custom-input textarea-style" placeholder="" [(ngModel)]="groupDetails.groupDescription" name="desc" #desc="ngModel" required>
+                                        </ion-textarea>
+                                    </ion-item>
+                                    <div *ngIf="f.submitted && desc.invalid && showGrpDesc">
+                                        <div *ngIf="desc.errors.required || grpDescWhiteSpaceCheck" class="error-msg">Group Description is required</div>
+                                        <!-- <div *ngIf="desc.errors.pattern" class="error-msg">Please enter valid Group Description
+                                    </div> -->
+                                    </div>
+                                    <ion-item lines="none" class="ion-no-padding mt-24">
+                                        <ion-label class="input-label" position="stacked">Tags</ion-label>
+                                        <ion-input class="custom-input taginput" autocapitalize="true" [clearInput]="true" type="text" [(ngModel)]="groupDetails.tags" name="tags" #tags="ngModel"></ion-input>
+                                    </ion-item>
+
+                                </ion-col>
+
+                                <ion-col class="ion-no-padding">
+                                    <ion-row>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16 details-title" lines="none">
+                                            <ion-label>
+                                                <h2>Details</h2>
+                                            </ion-label>
+                                        </ion-item>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                                            <span class="details-label">Enrollment</span>
+                                            <span class="details-right">
+                                                <ul class="donate-now">
+                                                    <li>
+                                                        <input type="radio" id="open" name="enrollment" value="open"
+                                                            [(ngModel)]="groupDetails.enrollment" #enrollment="ngModel"
+                                                            checked="npRadio" />
+                                                        <label for="np">Open</label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="private" name="enrollment" value="private"
+                                                            [(ngModel)]="groupDetails.enrollment" #enrollment="ngModel"
+                                                            checked="paRadio" />
+                                                        <label for="pa">Private</label>
+                                                    </li>
+                                                </ul>
+                                            </span>
+                                        </ion-item>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                                            <span class="details-label">Provider Type</span>
+                                            <span class="details-right">
+                                                <ul class="donate-now">
+                                                        <li>
+                                                            <input type="radio" required id="all" name="provideType" value="ALL" [(ngModel)]="groupDetails.provideType"
+                                                                #provideType="ngModel" checked="paRadio" />
+                                                            <label for="all">All</label>
+                                                        </li>
+                                                    <li>
+                                                        <input type="radio" required id="np" name="provideType" value="NP"
+                                                            [(ngModel)]="groupDetails.provideType" #provideType="ngModel"
+                                                            checked="paRadio" />
+                                                        <label for="pa">NP</label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" required id="pa" name="provideType" value="PA"
+                                                            [(ngModel)]="groupDetails.provideType" #provideType="ngModel"
+                                                            checked="paRadio" />
+                                                        <label for="pa">PA</label>
+                                                    </li>
+                                                </ul>
+                                            </span>
+
+                                        </ion-item>
+
+                                        <div *ngIf="f.submitted && provideType.invalid && showType">
+                                            <div *ngIf="f.submitted && provideType.invalid" class="error-msg">Provide Type is required
+                                            </div>
+                                        </div>
+
+                                        <ion-item line="none" class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                                            <span class="details-label">Speciality</span>
+                                            <span class="details-right speciality-details mb-8">
+                                                <!-- <p class="speciality">Oncology</p> -->
+                                                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                                                <ionic-selectable
+                                                    class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                                                    name="speciality" [(ngModel)]="groupDetails.speciality"
+                                                    #specialtyName="ngModel" required [items]="specialityType"
+                                                    itemValueField="specialtyCode" itemTextField="specialtyName"
+                                                    [canSearch]="true" [isMultiple]="false" closeButtonText="Close"
+                                                    (onClose)="getTherapeuticArea(groupDetails.speciality['specialtyCode'])"
+                                                    searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                   <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                        Speciality
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+
+                                                </ionic-selectable>
+                                            </span>
+                                        </ion-item>
+                                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                              <span class="details-label">Therapeutics</span>
+                              <span class="details-right speciality-details">
+                                 <p class="speciality">Lorem</p>
+                                 <img src="assets/images/arrow-next-right.svg" class="details-arrow">
+                              </span>
+                           </ion-item> -->
+                                        <ion-item line="none" class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                                            <span class="details-label">Therapeutics</span>
+                                            <span class="details-right speciality-details mb-8">
+                                                <!-- <p class="speciality">Oncology</p> -->
+                                                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                                                <ionic-selectable
+                                                    class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                                                    name="speciality" [(ngModel)]="groupDetails.therapeuticArea"
+                                                    #therapeuticArea="ngModel" required [items]="topicsOfInterestList"
+                                                    itemValueField="title" itemTextField="title" [canSearch]="true"
+                                                    [isMultiple]="false" closeButtonText="Close"
+                                                    searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                   <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                        Therapeutics
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+
+                                                </ionic-selectable>
+                                            </span>
+                                        </ion-item>
+                                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                              <span class="details-label">Location</span>
+                              <span class="details-right speciality-details">
+                                 <p class="speciality">Midwest</p>
+                                 <img src="assets/images/arrow-next-right.svg" class="details-arrow">
+                              </span>
+                           </ion-item> -->
+
+
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                                            <span class="details-label">Location</span>
+                                            <span class="details-right speciality-details mb-8">
+                                                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                                                <ionic-selectable
+                                                    class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                                                    name="groupScope" [(ngModel)]="groupDetails.groupScope"
+                                                    #groupScope="ngModel" required [items]="groupScopMasters"
+                                                    itemValueField="scopeId" itemTextField="scopeTitle" [canSearch]="true"
+                                                    [isMultiple]="false" closeButtonText="Close"
+                                                    searchPlaceholder="">
+
+                              <ng-template ionicSelectableHeaderTemplate>
+                                 <ion-row class="searchmodule-header">
+                                   <ion-col size="2"></ion-col>
+                                  <ion-col size="8">
+                                    <ion-title>
+                                        Location
+                                    </ion-title>
+                                  </ion-col>
+                                  <ion-col size="2">
+                                    <ion-buttons class="close" (click)="close()" fill="clear">
+                                       <img src="assets/images/close.svg">
+                                    </ion-buttons>
+                                  </ion-col>
+                                 </ion-row>
+                               </ng-template>
+                                                </ionic-selectable>
+                                            </span>
+                                        </ion-item>
+                                        <div *ngIf="f.submitted && groupScope.invalid && showLocation">
+                                            <div *ngIf="groupScope.errors.required" class="error-msg">Location is required</div>
+                                        </div>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" *ngIf="groupDetails.groupScope['scopeTitle']=='Regional'">
+                                            <span class="details-label">Region</span>
+                                            <span class="details-right speciality-details">
+                                                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                                                <ionic-selectable
+                                                    class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                                                    name="scope" [(ngModel)]="groupDetails.scope" #scope="ngModel" required
+                                                    [items]="regionalMasters" itemValueField="regionalId" itemTextField="title"
+                                                    [canSearch]="true" [isMultiple]="false" closeButtonText="Close">
+                                                </ionic-selectable>
+                                            </span>
+                                        </ion-item>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" *ngIf="groupDetails.groupScope['scopeTitle']=='Local'">
+                                            <span class="details-label">State</span>
+                                            <span class="details-right speciality-details">
+                                                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                                                <ionic-selectable
+                                                    class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                                                    name="scope" [(ngModel)]="groupDetails.scope" #scope="ngModel" required
+                                                    [items]="stateList" itemValueField="id" itemTextField="statename"
+                                                    [canSearch]="true" [isMultiple]="false" closeButtonText="Close">
+                                                </ionic-selectable>
+                                            </span>
+                                        </ion-item>
+                                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16 allow-toggle" lines="none">
+                                            <ion-col size="10" class="ion-no-padding">
+                                                <ion-label>Allow members to send invitations</ion-label>
+                                            </ion-col>
+                                            <ion-col size="2" class="align-right ion-no-padding">
+                                                <ion-toggle checked='true' color="primary"></ion-toggle>
+                                            </ion-col>
+                                        </ion-item>
+                                    </ion-row>
+                                </ion-col>
+
+                                <ion-grid class="invite-share-btns ion-no-padding">
+                                    <ion-row class="">
+                                        <ion-col size="6">
+                                            <ion-button fill="clear" (click)="cancelGroupCreation(groupDetails, f)" class="blue-border-button">Cancel</ion-button>
+                                        </ion-col>
+                                        <ion-col size="6">
+                                            <ion-button fill="clear" type="submit" class="blue-bg-button" [disabled]="hideGrpBtn" (click)="submitGroupFormMethod(groupDetails, f)">
+                                                <img src="assets/images/create-group.svg" class="mr-8 create-group"> Create
+                                            </ion-button>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-row>
+
+
+                        </form>
+                        <!-- Add New Group -->
+                    </ion-col>
+                    <!-- <span *ngIf="showMyGroupsLoader" class="loader-npi"><img
+                            src="./../assets/images-pocn/ajax-loader.gif"></span> -->
+
+                    <ion-col size="12" class="mynetwork ion-padding-horizontal" *ngIf="showManageTab">
+                        <ion-item class="ionitem-padding-remove ion-no-padding width-100p managed-content" lines="none" *ngFor="let group of myCreatedGroups">
+                            <div class="managed-image">
+                                <!-- <img alt="" src="assets/images/groups-demo-img.jpg" /> -->
+                                <!-- <img src="{{defaultImg}}" (click)="showGroupDetail(group)"> -->
+                                <!-- <img [src]="group.groupBanner" (error)="onImgError($event)"> -->
+                                <img [src]="group.grpImageUrl" (error)="onImgError($event,group.bannerFileName,group.bannerExtension)" (click)="showGroupDetail(group)">
+                                <!-- <img *ngIf = "group.groupBanner !='null' || group.groupBanner!=''" src="{{group.groupBanner}}" (click)="showGroupDetail(group)">  -->
+                            </div>
+                            <!-- <div class="managed-image" *ngIf = "group.groupBanner!='' || group.groupBanner != 'null'">
+                                        <img alt="" src="assets/images-pocn/group-default-thumbnail.svg" (click)="showGroupDetail(group)"/>
+                                    </div> -->
+                            <div class="managed-data">
+                                <h2 (click)="showGroupDetail(group)">{{group.name}}</h2>
+                                <div class="chip-content">
+                                    <ion-chip *ngIf="group.countPosts" [outline]="true" class="custom-chip truncate speciality-tag">{{group.countPosts}} Posts</ion-chip>
+                                    <ion-chip *ngIf="group.countMembers" [outline]="true" class="custom-chip">
+                                        {{group.countMembers}} Subscribers</ion-chip>
+                                </div>
+                            </div>
+                        </ion-item>
+
+                    </ion-col>
+
+                </ion-row>
+
+            </div>
+
+        </ion-grid>
+        <ion-row *ngIf="showSearch==true && (tabType == 'managed' || tabType == 'subscribed')">
+            <!-- <span *ngIf="mySubscribedGroupLoader" class="loader-npi"><img
+                    src="./../assets/images-pocn/ajax-loader.gif"></span> -->
+            <span *ngIf="mySearchGroupLoader" class="loader-npi"><img
+                        src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <ion-title *ngIf="searchGroupMessage" class="">
+                <h1 class="item-not-found-msg">No result found</h1>
+            </ion-title>
+            <ion-col size="12" class="mynetwork ion-no-padding">
+                <div class="recommended-card group-search-result" *ngFor="let searchData of searchGroupData">
+                    <ion-card>
+                        <img (error)="onImgError($event)" alt="" src="{{searchData.grpImageUrl}}" (click)="showGroupDetailSearch(searchData)" />
+                        <!-- <img *ngIf="searchData.groupBanner = '' || searchData.groupBanner = 'null'" alt=""  src="{{ defaultImg}}" (click)="showGroupDetailSearch(searchData)"/> -->
+                        <ion-card-header (click)="showGroupDetailSearch(searchData)">
+                            <p (click)="showGroupDetailSearch(searchData)">{{searchData.name}}</p>
+
+                        </ion-card-header>
+                        <ion-card-header>
+                            <p>{{searchData.description}}</p>
+                        </ion-card-header>
+                    </ion-card>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="showSearch==true && tabType == 'recommended'">
+            <!-- <span *ngIf="mySubscribedGroupLoader" class="loader-npi"><img
+                    src="./../assets/images-pocn/ajax-loader.gif"></span> -->
+            <span *ngIf="mySearchGroupLoader" class="loader-npi"><img
+                        src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <ion-title *ngIf="searchGroupMessage" class="">
+                <h1 class="item-not-found-msg">No result found</h1>
+            </ion-title>
+            <ion-col size="12" class="mynetwork ion-no-padding">
+                <div class="recommended-card group-search-result" *ngFor="let searchData of searchGroupData">
+                    <ion-card>
+                        <img (error)="onImgError($event)" alt="" src="{{searchData.grpImageUrl}}" (click)="showGroupDetailSearch(searchData)" />
+                        <!-- <img *ngIf="searchData.groupBanner = '' || searchData.groupBanner = 'null'" alt=""  src="{{ defaultImg}}" (click)="showGroupDetailSearch(searchData)"/> -->
+                        <ion-card-header (click)="showGroupDetailSearch(searchData)">
+                            <p (click)="showGroupDetailSearch(searchData)">{{searchData.name}}</p>
+
+                        </ion-card-header>
+                        <ion-card-header>
+                            <p>{{searchData.description}}</p>
+                        </ion-card-header>
+                    </ion-card>
+                </div>
+            </ion-col>
+        </ion-row>
+
+    </ion-content>
+    <ion-grid class="post-search" *ngIf="tabType=='managed' && !showGroupForm">
+        <ion-row class="width-100p">
+            <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+                <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'managed')" inputmode="search" class="network-searchbar"></ion-searchbar>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="post-search" *ngIf="tabType=='subscribed'">
+        <ion-row class="width-100p">
+            <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+                <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'subscribed')" inputmode="search" class="network-searchbar"></ion-searchbar>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="post-search" *ngIf="tabType=='recommended'">
+        <ion-row class="width-100p">
+            <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar width-100p" lines="none">
+                <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'recommended')" inputmode="search" class="network-searchbar"></ion-searchbar>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <!-- <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" *ngIf="tabType=='managed' && !showGroupForm" lines="none">
+        <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'managed')" inputmode="search"
+         class="network-searchbar"></ion-searchbar>
+      </ion-item> -->
+<!-- </ion-app> -->
+<!--<app-main-tabs></app-main-tabs>-->
+<!-- <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" *ngIf="tabType=='subscribed'" lines="none">
+                    <ion-searchbar placeholder="" [(ngModel)]="searchText" enterkeyhint="go" (search)="searchGroup(searchText,'subscribed')" inputmode="search"
+                     class="network-searchbar"></ion-searchbar>
+                  </ion-item> -->

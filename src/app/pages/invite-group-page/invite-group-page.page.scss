@@ -1,0 +1,115 @@
+.mynetwork-img {
+    border: 2px solid #FFFFFF;
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 128px;
+    width: 32px;
+    height: 32px;
+    margin-left: 6px;
+}
+
+.mynetwork ion-label {
+    margin: 0 !important;
+    position: relative;
+    top: 5px;
+    font-weight: 500;
+    font-size: 18px !important;
+    line-height: 120%;
+    color: rgb(50 50 50) !important;
+    padding: 0;
+}
+
+img.more-icon {
+    width: 15px;
+    margin-left: 4px;
+    position: relative;
+    top: 3px;
+}
+
+.edit-delete-header button{
+    background: none;
+    float: right;
+    position: absolute;
+    right: 10px;
+    z-index: 99;
+    top: 20px;
+}
+.edit-delete-header h2{
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-bottom: 2px;
+    padding: 0 40px;
+}
+.share-button{
+    margin: 0 !important;
+    display: block;
+    max-height: 38px;
+}
+.loader-npi{
+    text-align: center;
+}
+.search-title h2{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    color: #323232;
+}
+span.more {
+    font-size: 15px !important;
+    text-transform: capitalize;
+    float: right;
+    letter-spacing: 0;
+    position: relative;
+    top: -3px;
+}
+img.connection-request-img {
+    border: 3px solid rgb(255 255 255);
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+    border-radius: 128px;
+    max-width: 48px;
+    width: 100%;
+    margin-left: 5px;
+    position: relative;
+    height: 48px;
+    object-fit: cover;
+}
+img.verified-png {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    right: 0;
+    top: 0;
+}
+.right-col-datas{
+    width: 83%;
+}
+.speciality-tag{
+    max-width: 75px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.search-checkbox{
+    float: right;
+}
+.search-checkbox ion-checkbox{
+    margin: 0 !important;
+}
+.search-datas ion-label, .search-datas span, .search-datas ion-item {
+    position: relative;
+    top: 10px;
+}
+.search-datas ion-label {
+    padding-top: 5px;
+    padding-left: 10px;
+}
+.back{
+    background: none;
+    position: relative;
+    top: 5px;
+  }

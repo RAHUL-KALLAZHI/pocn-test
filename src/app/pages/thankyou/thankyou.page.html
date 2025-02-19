@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true"> 
+  <div class="container">
+    <ion-grid class="pocn-logo-top">
+      <ion-row class="">
+        <ion-col size="12" class="thankyou">
+          <img src="assets/images/logo-pocn.svg">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-padding-horizontal registration-banner">
+      <ion-row class="ion-padding-vertical">
+        <ion-col size="12" class="ion-padding-vertical">
+          <img src="assets/images/join-pocn-banner.svg">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-padding-horizontal registration-success">
+     <!-- <ion-row class="">
+        <ion-col size="12" class="">
+          <h1 class="title ion-no-padding ion-no-margin learn-title">Welcome! </h1>
+        </ion-col>
+      </ion-row>-->
+      <ion-row class="">
+        <ion-col size="12" class="">
+          <h2></h2>
+        </ion-col>
+      </ion-row>
+      <ion-row class="">
+        <ion-col size="12" class="align-center">
+          <!--<ion-text>Thanks for registering with POCN</ion-text>-->
+          <ion-text class="setup-complete-text">Your POCN setup is now complete.</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-center width-100p">
+        <div class="width-100p">
+          <ion-button (click)="loginBtnClick()" class="action-button blue-border-button width-100p login-now" fill="clear" type="submit">
+            <span>Login Now</span>
+          </ion-button>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

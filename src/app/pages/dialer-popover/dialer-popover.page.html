@@ -1,0 +1,53 @@
+<ion-content class="add-social-details contact-edit-popover ">
+
+    <form name="form">
+        <ion-row class="contact-form-row contact-form-titlesection edit-delete-header">
+            <ion-col>
+                <h2>Select Caller ID <button class="close" (click)="close('')" fill="clear">
+                    <img src="assets/images/close.svg"></button>
+                </h2>
+            </ion-col>
+        </ion-row>
+        <ion-row class="contact-form-row dialer-popover" scrollY="true" id="scroll-list">
+            <ion-col class="">
+                <div id="content" class="">
+                    <div id="contentInside" *ngFor="let set of myUserDialerData, let i = index;" [class.show-select]="selectedItem == i" (click)="selectedItem=i">
+                        <div (click)="getSelectNumber(set,$event, i)" class="select-caller-id">
+                            <ion-row class="contact-form-row">
+                                <ion-col class="" size="2" class="callerid-icon">
+                                    <img src="assets/images/caller-id.svg">
+                                </ion-col>
+                                <ion-col class="" size="10">
+                                    <div class="calleridnumber">{{set.phoneNumber.replace(countryCodeArray, '')}}</div>
+                                    <div class="location">{{set.name}}</div>
+                                </ion-col>
+                            </ion-row>
+                        </div>
+                    </div>
+                </div>
+                <ion-row class="contact-form-row update-buttons">
+                    <ion-col size="3" class="align-right">
+
+                    </ion-col>
+                    <ion-col size="3" class="align-right">
+                        <ion-button (click)="editDialerPopOver()" fill="clear" class="blue-border-button width-100p">
+                            <span class="add-btn-text">Edit</span>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="3" class="align-right">
+                        <ion-button (click)="addDialerPopOver()" fill="clear" class="blue-border-button width-100p">
+                            <span class="add-btn-text">Add</span>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="3" class="align-right">
+                        <ion-button (click)="getDialerSave()" fill="clear" class="blue-bg-button width-100p">
+                            <span class="add-btn-text">Ok</span>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </form>
+
+</ion-content>

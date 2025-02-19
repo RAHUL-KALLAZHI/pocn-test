@@ -1,0 +1,455 @@
+<ion-content [fullscreen]="true" >
+  <ion-col size="12" class="login-error-panel" *ngIf="showLoginError">
+    <div class="error-panel-icon"><img src="assets/images/alert-onred.svg"></div>
+    <p class="error-panel-text">The entered email and/or password are incorrect. Please check your information and try again.</p>
+ </ion-col>
+  <ion-grid class="welcome-banner-bg ion-padding-horizontal" *ngIf="!showRegisterForm">
+     <ion-row>
+        
+        <ion-col size="12" class="header-logo-top">
+           <a href="/register"><img src="assets/images/logo-pocn.svg"></a>
+        </ion-col>
+        <ion-col class="ion-padding" size="12">
+           <div class="login-reg-button">
+              <ul>
+                 <!--<li (click)="toggleLoginRegister()" [ngClass]="{ 'active': showRegisterForm == false }">Login</li>
+                 <li (click)="toggleLoginRegister()" [ngClass]="{ 'active': showRegisterForm == true }">Register</li>-->
+
+                 <li (click)="toggleLoginRegister()" class="active">Login</li>
+                 <li (click)="toggleLoginRegister()">Register</li>
+              </ul>
+           </div>
+        </ion-col>
+        <!-- <ion-row class="">
+           <ion-col class="">
+             <h1 class="title ion-no-padding ion-no-margin">Register
+               <ion-button class="action-button blue-border-button login-btn" (click)="loginBtnClick()" fill="clear"
+                 type="submit">
+                 <span>Login</span>
+               </ion-button>
+             </h1>
+           </ion-col>
+           </ion-row> -->
+        <ion-col class="registration-form" size="12" >
+           <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" (keydown.enter)="$event.preventDefault()" novalidate> 
+           <!-- <ion-row>
+              <ion-col class="valid-pass-alert-col">
+                <div class="red-color" >{{ msgForm }}</div>
+              </ion-col>
+              </ion-row> -->
+           <ion-item lines="none" class="ion-no-padding mt-8" [ngClass]="{ 'validation-error': f.submitted && username.invalid}">
+              <ion-label class="input-label" position="stacked">
+                 
+                 <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                 Email
+                 <span class="required-star"><img src="assets/images/required.svg"></span>
+              </ion-label>
+              <ion-input #username="ngModel" name="username" [(ngModel)]="loginInputs.username" class="custom-input" [clearInput]="true" (keyup.enter)="setFocusLoginEmailInput()" type="text" #loginEmailInput required></ion-input>
+              <div *ngIf="f.submitted && username.invalid">
+                 <div *ngIf="username.errors?.required" class="error-msg"></div>
+              </div>
+           </ion-item>
+           <ion-item lines="none" class="ion-no-padding password-sec mt-24" [ngClass]="{ 'validation-error': f.submitted && password.invalid}">
+              <ion-label class="input-label" position="stacked">
+                 
+                 <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                 Password
+                 <span class="required-star"><img src="assets/images/required.svg"></span>
+              </ion-label>
+              <ion-input  #password="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" #loginPasswordInput required (keyup.enter)="getAuthentication()"
+              name="password" [(ngModel)]="loginInputs.password" [clearInput]="true" [type]="passwordType" class="form-control custom-input"></ion-input>
+              <ion-icon *ngIf="loginInputs.password != ''" item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+              <div *ngIf="f.submitted && password.invalid">
+                 <div *ngIf="password.errors?.required" class="error-msg"></div>
+              </div>
+           </ion-item> 
+           <!--<ion-item>
+              <ion-label floating>Password</ion-label>
+              <ion-input formControlName="password" [type]="passwordType" clearOnEdit="false"></ion-input>
+              <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+              </ion-item>-->
+           <!--<ion-item lines="none" class="ion-no-padding remember-me">
+              <ion-label class="input-label" position="stacked">Remember Me 
+                <ion-toggle class="remember-toggle"></ion-toggle>
+              </ion-label>
+              </ion-item>-->
+           <ion-item lines="none" class="ion-no-padding forgot-pass mt-16">
+              <button>
+              <a href="/forgot-password">Forgot your password?</a>
+              </button>
+           </ion-item>
+           <ion-item lines="none" class="ion-no-padding login-button-sec">
+              <ion-button class="action-button blue-bg-button width-100p mt-16" fill="clear" (click)="getAuthentication()" type="submit">
+                 <span>Login</span>
+                 <span *ngIf="setLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+              </ion-button>
+           </ion-item>
+           </form>
+        </ion-col>
+     </ion-row>
+  </ion-grid>
+
+  <!--  Register Form starts-->
+  <ion-grid *ngIf="showRegisterForm" class="ion-padding-horizontal">    
+    <ion-row class="registration-form">
+      <ion-col size="12" class="header-logo-top">
+        <a href="/register"><img src="assets/images/logo-pocn.svg"></a>
+     </ion-col>
+     <ion-col class="ion-padding" size="12">
+        <div class="login-reg-button">
+           <ul>
+              <li (click)="toggleLoginRegister()" >Login</li>
+              <li (click)="toggleLoginRegister()" class="active">Register</li>
+           </ul>
+        </div>
+     </ion-col>
+      <ion-col class="">
+        <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+            <ion-row>
+                <ion-col class="valid-pass-alert-col">
+                  <div class="red-color" >{{ msgForm }}</div>
+                </ion-col>
+              </ion-row>
+          <ion-item lines="none" class="ion-no-padding mt-8"
+            [ngClass]="{ 'validation-error': f.submitted && firstName.invalid && !lookupFirstShow }">
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              First Name <span class="label-small">(the name associated with your NPI)</span> <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+            <ion-input autocomplete="off" class="custom-input" [clearInput]="true" type="text" name="firstName"
+              [(ngModel)]="person.firstName" #firstName="ngModel" (keyup.enter)="setFocusInput()" #firstNameInput
+              [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" [pattern]="noSpacesRegex" required></ion-input>
+              <div *ngIf="!firstName?.valid">
+                <div *ngIf="firstName.errors.pattern" class="error-msg">Please enter a valid first name</div>
+              </div>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding mt-24"
+           [ngClass]="{ 'validation-error': f.submitted && lastName.invalid && !lookupFirstShow}">
+            <ion-label class="input-label" position="stacked">
+                  
+                  <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                  Last Name <span class="required-star"><img src="assets/images/required.svg"></span>
+            </ion-label>
+            <ion-input autocomplete="off" class="custom-input" [pattern]="noSpacesRegex" [clearInput]="true" type="text" name="lastName"
+              [(ngModel)]="person.lastName" #lastName="ngModel" #lastNameInput (keyup.enter)="setFocusLastNameInput()"
+              [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }" required>
+            </ion-input>
+            <div *ngIf="!lastName?.valid">
+              <div *ngIf="lastName.errors.pattern" class="error-msg">Please enter a valid last name</div>
+            </div>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding mt-24">
+            <ion-label class="input-label" position="stacked">City</ion-label>
+            <ion-input class="custom-input" [clearInput]="true" type="text" name="city" [(ngModel)]="person.city"
+              #city="ngModel" #cityInput (keyup.enter)="setFocusCityInput()"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding mt-24"
+           [ngClass]="{ 'validation-error': f.submitted && state.invalid && !lookupFirstShow}" >
+            <ion-label class="input-label" position="stacked">
+                  
+                  <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                  State <span class="label-small">(state where your NPI is associated)</span> <span class="required-star"><img src="assets/images/required.svg"></span>
+                </ion-label>
+
+            <!-- <ion-label class="input-label" position="stacked">State</ion-label> -->
+           <!-- <ion-select idlDefault class="custom-input" name="state" [(ngModel)]="person.state" #state="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" required>
+              <ion-select-option  *ngFor="let state of stateList" value="{{ state.statevalue }}">{{ state.statename }}
+              </ion-select-option>
+            </ion-select>-->
+
+
+            <ionic-selectable class="contact-section-form blue-border-input custom-input"
+            #state="ngModel"
+            #stateInput
+            [ngClass]="{ 'is-invalid': f.submitted && state.invalid }"
+            [(ngModel)]="stateListTemp"
+            required
+            confirmButtonText="Select" 
+            placeholder="" 
+            name="state" 
+            [items]="stateList" 
+            itemValueField="statevalue" 
+            itemTextField="statename" 
+            [canSearch]="true" 
+            [isMultiple]="false"
+            [canClear]="true" 
+            clearButtonText="Clear"
+            [canClear]="false"
+            closeButtonText="Close"
+            searchPlaceholder="">
+
+                            <ng-template ionicSelectableHeaderTemplate>
+                               <ion-row class="searchmodule-header">
+                                 <ion-col size="2"></ion-col>
+                                <ion-col size="8">
+                                  <ion-title>
+                                     State
+                                  </ion-title>
+                                </ion-col>
+                                <ion-col size="2">
+                                  <ion-buttons class="close" (click)="close()" fill="clear">
+                                     <img src="assets/images/close.svg">
+                                  </ion-buttons>
+                                </ion-col>
+                               </ion-row>
+                             </ng-template>
+            </ionic-selectable>
+            <div *ngIf="f.submitted && state.invalid" [hidden]="lookupFirstShow">
+              <div *ngIf="state.errors.required" class="error-msg"></div>
+            </div>
+          </ion-item>
+
+          <ion-item lines="none" class="ion-no-padding mt-24" 
+          [ngClass]="{ 'validation-error': f.submitted && provideType.invalid && !lookupFirstShow}"
+          >
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              Provider Type <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+            <ul class="donate-now">
+              <li [ngClass]="{ 'provider-active': npRadio}">
+                <input type="radio" required id="NP" name="provideType" value="NP/CNS" [(ngModel)]="person.provideType" #provideType="ngModel" checked="npRadio" />
+                <label for="np">Nurse Practitioner</label>
+              </li>
+              <li [ngClass]="{ 'provider-active': paRadio}">
+                <input type="radio" required id="PA" name="provideType" value="PA" [(ngModel)]="person.provideType" #provideType="ngModel" checked="paRadio" />
+                <label for="pa">Physician Associate</label>
+              </li>
+            </ul>
+            <div *ngIf="f.submitted && provideType.invalid" >
+              <div *ngIf="provideType.errors?.required" class="error-msg"></div>
+            </div>
+          </ion-item>
+
+          <!--<ion-item lines="none" class="ion-no-padding mt-8"
+            [ngClass]="{ 'validation-error': f.submitted && firstName.invalid && !lookupFirstShow}">
+            <ion-label class="input-label" position="stacked">
+              <span class="required-star"><img src="assets/images/required.svg"></span>
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              First Name</ion-label>
+            <ion-input class="custom-input" [clearInput]="true" type="text" name="firstName"
+              [(ngModel)]="person.firstName" #firstName="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required></ion-input>
+            <div *ngIf="f.submitted && firstName.invalid" [hidden]="lookupFirstShow">
+              <div *ngIf="firstName.errors?.required" class="error-msg">First Name is required</div>
+            </div>
+          </ion-item>-->
+
+
+          <ion-item lines="none" class="ion-no-padding lookup mt-8" [ngClass]="{ 'validation-error': f.submitted && npi.invalid && !lookupShow}">
+            <ion-row class="">
+              <ion-col size="7">
+                <ion-label class="input-label" position="stacked">
+                  
+                  <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+                  NPI # <span class="required-star"><img src="assets/images/required.svg"></span>
+                </ion-label>
+
+                <ion-input inputmode="numeric" class="custom-input" [clearInput]="true" type="text" name="npi" 
+                #npi="ngModel" [ngClass]="{'npi-readonly' : isReadonly, 'is-invalid': f.submitted && npi.invalid }"
+                [(ngModel)]="person.npi" (keyup.enter)="presentModal(f)" #npiInput required pattern="^[0-9]+$">
+                </ion-input>
+
+                <div *ngIf="npi.invalid" >
+                  <div *ngIf="npi.errors.required && !lookupShow" class="error-msg"></div>
+                  <div *ngIf="npi.errors.pattern" class="error-msg">Please enter only numeric values</div>
+                </div>
+
+              </ion-col>
+              <ion-col size="5" class="lookup-button">
+                <button class="action-button blue-bg-button width-100p" fill="clear" type="button"
+                  (click)="presentModal(f)">
+                  Lookup <span class="npi-search"><img src="assets/images/search.svg"></span>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding mt-24"
+          [ngClass]="{ 'validation-error': f.submitted && year.invalid && !lookupShow}">
+            <ion-label class="input-label label-graduation" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              Graduation Year <span class="label-small">(year you earned your NP or PA license)</span> <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+            
+            
+            <!--<ion-select idlDefault class="custom-input" #year="ngModel" name="year" [(ngModel)]="person.year"
+              [ngClass]="{ 'is-invalid': f.submitted && year.invalid && !lookupShow}" required>
+              <ion-select-option *ngFor="let year of yearGraduated, index=i" value="{{ year }}">{{ year }}</ion-select-option>
+            </ion-select> -->
+
+
+            <ionic-selectable class="custom-input ion-no-padding toi"
+            #year="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && year.invalid && !lookupShow}"
+            [(ngModel)]="yearListTemp"
+            required
+            confirmButtonText="Select" 
+            placeholder="" 
+            name="year" 
+            [items]="yearGraduatedTemp" 
+            itemValueField="val" 
+            itemTextField="val" 
+            [canSearch]="true" 
+            [isMultiple]="false"
+            [canClear]="true" 
+            clearButtonText="Clear"
+            [canClear]="false"
+            closeButtonText="Close"
+            searchPlaceholder="">
+
+                            <ng-template ionicSelectableHeaderTemplate>
+                               <ion-row class="searchmodule-header">
+                                 <ion-col size="2"></ion-col>
+                                <ion-col size="8">
+                                  <ion-title>
+                                    Graduation Year
+                                  </ion-title>
+                                </ion-col>
+                                <ion-col size="2">
+                                  <ion-buttons class="close" (click)="close()" fill="clear">
+                                     <img src="assets/images/close.svg">
+                                  </ion-buttons>
+                                </ion-col>
+                               </ion-row>
+                             </ng-template>
+            </ionic-selectable>
+
+
+            <div *ngIf="f.submitted && year.invalid" [hidden]="lookupShow">
+              <div *ngIf="year.errors.required" class="error-msg"></div>
+            </div>
+          </ion-item>
+
+          <ion-item lines="none" class="ion-no-padding mt-24">
+            <ion-label class="input-label" position="stacked">
+              
+              How did you hear about POCN?</ion-label>
+            
+            <ionic-selectable class="custom-input ion-no-padding toi"
+            #year="ngModel"
+            [(ngModel)]="leadListTemp"
+            required
+            confirmButtonText="Select" 
+            placeholder="" 
+            name="leadsrc" 
+            [items]="leadSources" 
+            itemValueField="id" 
+            itemTextField="title" 
+            [canSearch]="true" 
+            [isMultiple]="false"
+            [canClear]="true" 
+            clearButtonText="Clear"
+            [canClear]="false"
+            closeButtonText="Close"
+            (onChange)="selectLeadSource(leadListTemp)"
+            searchPlaceholder="">
+
+                            <ng-template ionicSelectableHeaderTemplate>
+                               <ion-row class="searchmodule-header">
+                                 <ion-col size="2"></ion-col>
+                                <ion-col size="8">
+                                  <ion-title>
+                                    How did you hear about POCN?
+                                  </ion-title>
+                                </ion-col>
+                                <ion-col size="2">
+                                  <ion-buttons class="close" (click)="close()" fill="clear">
+                                     <img src="assets/images/close.svg">
+                                  </ion-buttons>
+                                </ion-col>
+                               </ion-row>
+                             </ng-template>
+            </ionic-selectable>
+          
+          </ion-item>
+
+          <ion-item *ngIf="promoCodeShow && promoCodeLabel != null" lines="none" class="ion-no-padding mt-24">
+            <ion-label class="input-label" position="stacked">{{promoCodeLabel}}</ion-label>
+            <ion-input class="custom-input" [clearInput]="true" type="text" name="promocode" [(ngModel)]="person.promoCode" (keyup.enter)="setFocusLabelInput()"
+              #promocode="ngModel" #promoInput> </ion-input>
+          </ion-item>
+
+          <ion-item lines="none" class="ion-no-padding mt-24"
+            [ngClass]="{ 'validation-error': f.submitted && email.invalid && !lookupShow}">
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              Email <span class="label-small">(will be used as your username)</span> <span class="required-star"><img src="assets/images/required.svg"></span>
+            </ion-label>
+            <ion-input class="custom-input" [clearInput]="true" type="text" name="email" [(ngModel)]="person.email"
+              #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required #emailInput (keyup.enter)="setFocusEmailInput()"></ion-input>
+            <div *ngIf="f.submitted && email.invalid" [hidden]="lookupShow"> 
+              <div *ngIf="email.errors?.required" class="error-msg"></div>
+            </div>
+            <div [hidden]="showDiv || email.errors?.required" class="error-msg">Please check the format of your email and try again.</div>
+          </ion-item>
+
+          <ion-item lines="none" class="ion-no-padding password-sec mt-24"
+            [ngClass]="{ 'validation-error': f.submitted && password.invalid && !lookupShow}">
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              Password <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+            <ion-input [clearInput]="true" [type]="regPasswordType" name="password" class="form-control custom-input"
+              [(ngModel)]="person.password" #password="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required #passwordInput (keyup.enter)="setFocusPasswordInput()"
+              pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])([a-zA-Z0-9@$!%*?&]{8,})$"
+              (keyup)="showValue()"></ion-input>
+              <ion-icon *ngIf="person.password!=''" item-end [name]="regPasswordIcon" class="regPasswordIcon" (click)='hideShowRegisterPassword()'></ion-icon>
+
+            <div *ngIf="f.submitted && password.invalid" [hidden]="lookupShow">
+              <div *ngIf="password.errors?.required" class="error-msg"></div>
+              <div *ngIf="password.errors.pattern" class="error-msg">Your password must meet the requirements below. Please try again.</div>
+            </div>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding passwordhint-sec mb-16">
+            <ion-text class="pass-hint" position="stacked">
+              * At least 8 characters<br>
+              * At least 1 number<br>
+              * At least 1 lowercase letter<br>
+              * At least 1 uppercase letter<br>
+              * At least 1 special character<br>
+            </ion-text>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding"
+            [ngClass]="{ 'validation-error': f.submitted && confirmPassword.invalid && !lookupShow}">
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              Confirm Password <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
+            <ion-input class="custom-input" [clearInput]="true" [type]="confirmPasswordType" name="confirm_password"
+              [(ngModel)]="person.confirmPassword" #confirmPassword="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }" required #confirmPasswordInput
+              pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])([a-zA-Z0-9@$!%*?&]{8,})$"
+              (keyup)="showValue()" (keyup.enter)="signUp()"></ion-input>
+              <ion-icon *ngIf="person.confirmPassword!=''" item-end [name]="confirmPasswordIcon" class="confirmPasswordIcon" (click)='hideShowConfirmPassword()'></ion-icon>
+
+            <div *ngIf="f.submitted && confirmPassword.invalid" [hidden]="lookupShow">
+              <div *ngIf="confirmPassword.errors?.required" class="error-msg"></div>
+            </div>
+            <div [hidden]="confirmPassword.errors?.required || showPattern" class="error-msg">
+              Your "password” and “confirm password” fields must match. Please check your entries and try again.
+            </div>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding registration-acknowledge mt-24">
+            <ion-text>
+              By submitting this form, you acknowledge and agree that you are "opted-in" 
+            and express consent to the collection and use of your information as described 
+            in our <a target="_blank" href="https://www.pocn.com/privacy-policy/">Terms of Use</a> and <a target="_blank" href="https://www.pocn.com/privacy-policy/">Privacy Policy</a> statements.
+            </ion-text>
+          </ion-item>
+          <div class="mt-24">
+            <ion-button class="action-button blue-bg-button width-100p register-btn" fill="clear" (click)="signUp()" type="submit">
+              <span>Register</span>
+              <span *ngIf="setSignUpLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+            </ion-button>
+          </div>
+        </form>
+      </ion-col>
+    </ion-row>
+    <!--  Register Form ends-->
+  </ion-grid>
+
+</ion-content>

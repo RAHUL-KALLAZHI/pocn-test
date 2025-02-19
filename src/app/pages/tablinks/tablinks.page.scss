@@ -1,0 +1,87 @@
+ion-tab-bar{
+  padding-bottom: 0;
+  border: 0 !important;
+  padding-top: 5px;
+}
+.bottom-maintab{
+    background: rgb(252 252 252);
+}
+.bottom-maintab ion-tab-bar span{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: #616161;
+    text-transform: capitalize;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+}
+.tab-icon{
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin: auto;
+    margin-bottom: 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.tab-selected span{
+  color: #0D4C74 !important;
+}
+.network{
+    background-image: url("/assets/images/network.svg");
+}
+.tab-selected .network{
+  background-image: url("/assets/images/network-selected.svg");
+}
+.stream{
+    background-image: url("/assets/images/stream.svg");
+    width: 24px;
+}
+.tab-selected .stream{
+  background-image: url("/assets/images/stream-selected.svg");
+  width: 24px;
+}
+.groups{
+    background-image: url("/assets/images/groups.svg");
+}
+.tab-selected .groups{
+  background-image: url("/assets/images/groups-selected.svg");
+}
+.profile{
+    background-image: url("/assets/images/profile.svg");
+}
+.tab-selected .profile{
+  background-image: url("/assets/images/profile-selected.svg");
+}
+
+
+
+ion-segment-button::part(indicator-background) {
+    opacity: 0 !important;
+  }
+  
+  /* Material Design styles */
+  
+  
+  .segment-button-checked.md::part(native) {
+    color: #0C1131;
+  }
+  
+  ion-segment-button.md::part(indicator-background) {
+    height: 4px;
+  }
+  
+  /* iOS styles */
+  ion-segment-button.ios::part(native) {
+    
+  }
+  
+  .segment-button-checked.ios::part(native) {
+    color: #fff;
+  }
+  
+  ion-segment-button.ios::part(indicator-background) {
+    border-radius: 20px;
+  }

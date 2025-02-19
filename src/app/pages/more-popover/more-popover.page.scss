@@ -1,0 +1,30 @@
+.edit ion-label{
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #00A9E0 !important;
+    margin: 0 !important;
+}
+.delete ion-label{
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    color: #DF1642 !important;
+    margin: 0 !important;
+}
+.editpopover-icon, .deletepopover-icon{
+    width: 24px;
+    position: relative;
+    top: 3px;
+}
+.edit, .delete {
+    padding: 0 20px;
+}
+.edit-delete-popover{
+    padding: 10px 0;
+}
+.update-buttons {
+    margin-top: 13px;
+}

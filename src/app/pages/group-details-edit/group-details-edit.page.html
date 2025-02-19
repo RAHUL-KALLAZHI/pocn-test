@@ -1,0 +1,521 @@
+<!-- <app-headers></app-headers> -->
+<!-- <ion-app> -->
+    <ion-content [fullscreen]="true" class="post-page">
+        <ion-grid>
+            <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
+                <ion-col size="4" class="align-left settings" *ngIf="showMemberData == false">
+                    <img (click)="goToGroups()" src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="4" class="align-left settings" *ngIf="showMemberData == true">
+                    <img (click)="backClick()" src="assets/images/arrow-left.svg" class="previous-icon">
+                </ion-col>
+                <ion-col size="4" class="align-center">
+                    <img [routerLink]="['/tablinks//my-profile']" src="assets/images/myprofile-pocn-logo.svg" class="pocn-header">
+                </ion-col>
+                <ion-col size="4" class="align-right audio-video-call">
+                    <img src="assets/images/video-call.svg" class="mr-24" (click)="patientConnectStatusCalls('video')">
+                    <img src="assets/images/audio-call.svg" (click)="patientConnectStatusCalls('audio')">
+                </ion-col>
+                <ion-col *ngIf="!showMemberData == true">
+                    <button class="close" (click)="close()" fill="clear"><img
+          src="assets/images/close.svg"></button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid [hidden]="showPostSuccess">
+            <ion-row class="ion-no-padding-vertical accept-request">
+                <ion-col size="12" class="" [routerLink]="['/post-detail-page']">
+                    <img src="assets/images/accept-request.svg" class="mr-8">
+                    <ion-text>You just posted a message.</ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <div [hidden]="showMemberData == true">
+            <ion-grid class="ion-no-padding">
+                <ion-row class="ion-padding-horizontal mt-8">
+                    <ion-item class="ionitem-padding-remove ion-no-padding top-cnt-group width-100p" lines="none">
+                        <div class="group-img width-100p">
+                            <!-- <img src="{{groupBanner}}" class="width-100p group-banner"> -->
+                            <img class="upload-banner" class="width-100p group-banner" src="{{ attachmentTypeContent }}" [hidden]="showBanner" />
+                            <img [src]="grpEditImageUrl" class="width-100p group-banner" (error)="onBannerImgError($event,bannerFileName,bannerExtension)" *ngIf="showBanner">
+
+                            <!-- <img [src]="groupBanner" (error)="onImgError($event,group.bannerFileName,group.bannerExtension)"> -->
+
+                            <input type="file" name="file" id="pickImageInput" style="display:none;" accept="image/*" #pickImageInput (change)="postImageUploads($event)" />
+
+
+                            <label (click)="selectFile()"><img src="assets/images/group-banner-edit.svg" class="banner-edit"> </label>
+                        </div>
+                    </ion-item>
+                    <ion-item lines="none" class="error-text ion-no-padding ionitem-padding-remove width-100p" *ngIf="idfileErrorStatus || postImageErrorMsg">
+                        <ion-col size="12">
+                            <span *ngIf="idfileErrorStatus">
+                    <span  class="error-msg" >{{ errorMsg }}</span>
+                            </span>
+                            <span *ngIf="postImageErrorMsg">
+                     <span  class="error-msg" >{{ postErrorMsg }}</span>
+                            </span>
+                        </ion-col>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p mt-16" lines="none" *ngIf="showGrpNameInput" (click)="showGrpName()">
+                        <ion-label>
+                            <h2>Group Name</h2>
+                            <p>{{groupName}}</p>
+                            <!-- <p>{{groupDescription}}</p> -->
+                        </ion-label>
+                    </ion-item>
+                    <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate class="width-100p">
+                        <ion-item class="ion-no-padding ionitem-padding-remove contact-cont mt-8" lines="none" [hidden]="showGrpNameInput">
+                            <!-- <span class="span-left">First Name</span> -->
+                            <!-- <ion-item (click)="addContactGroupName()" class="span-right ion-no-padding ionitem-padding-remove" lines="none">
+                     {{groupName ? this.groupName : ''}}
+                  </ion-item> -->
+                            <ion-item class="span-right ion-no-padding ionitem-padding-remove width-100p" lines="none">
+                                <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right width-100p">
+                                    <div class="name-field">
+                                        <ion-input type="text" [pattern]="noSpacesRegex" [(ngModel)]="groupName" (ionBlur)="blurFunction('groupName')" [clearInput]="true" name="groupName" #groupNameInput (ionBlur)="blurFunction(groupName)" [value]="groupName? groupName : '' " (input)="setFirstname($event)"
+                                            type="text" class="contact-section-form blue-border-input mb-5 custom-input" required></ion-input>
+                                    </div>
+                                    <span class="name-save">
+                           <img src="assets/images/add-icons.svg" class="social-add" (click)="updateGrpNmae(f)">
+                        </span>
+                                    <div [hidden]="errGrpName" class="error-msg">Group Name is required</div>
+                                    <div [hidden]="grpNameWhiteSpaceCheck" class="error-msg">Please enter valid Group Name</div>
+                                </div>
+                            </ion-item>
+                        </ion-item>
+                    </form>
+                    <ion-item class="ionitem-padding-remove ion-no-padding subscribers-number width-100p mt-16" lines="none">
+                        <ion-button fill="clear" [disabled]="disableSub" slot="end" (click)="groupMembersListsData()">{{memberTotalCountOnly}} Subscribers<img src="assets/images/arrow-next-right.svg" class="subs-next"></ion-button>
+                    </ion-item>
+                </ion-row>
+            </ion-grid>
+            <ion-grid class="invite-share-btns">
+                <ion-row class="ion-padding-horizontal">
+                    <ion-col size="6">
+                        <ion-button fill="clear" class="width-100p blue-border-button invite" (click)="groupMembersLists()"><img src="assets/images/send-lite.svg" class="mr-8">Invite</ion-button>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-button fill="clear" class="width-100p blue-bg-button share" (click)="groupShareLists(groupName)"><img src="assets/images/share-white.svg" class="mr-8">Share</ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <ion-grid class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate class="width-100p">
+                    <ion-row>
+                        <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p mt-16" lines="none">
+                            <ion-label>
+                                <h2>Description</h2>
+                                <!-- <p>You must be shapeless, formless, like water.
+                     When you pour water in a cup, it becomes the cup. When you pour water in a bottle, it becomes the bottle.
+                     When you pour water in a teapot, it becomes the teapot. Water can drip and it can crash.
+                     Become like water my friend.
+                  </p> -->
+                            </ion-label>
+                        </ion-item>
+                        <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p" lines="none" (click)="showDescGroup()" *ngIf="showGrpDescInput">
+                            <ion-label>
+                                <p>{{groupDescription}}</p>
+                            </ion-label>
+                        </ion-item>
+
+                        <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p" lines="none" [hidden]="showGrpDescInput">
+                            <ion-textarea placeholder="" [(ngModel)]="groupDescription" name="groupDesc" (ionBlur)="blurFunction('groupDesc')" class="blue-border-input description-textarea"></ion-textarea>
+                            <img src="assets/images/save-ok.svg" class="tagline-save" (click)="updateGrpDescription(f1)">
+                        </ion-item>
+                        <div [hidden]="errGrpDesc || grpDescWhiteSpaceCheck" class="error-msg">Group Descrption is required</div>
+                        <!-- <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p" lines="none" *ngIf="groupDescription">
+                        <div class="name-field">
+
+                        </div>
+                        <div class="description-save">
+                            <img src="assets/images/add-icons.svg" class="social-add" (click)="updateGrpDescription(f)">
+                        </div>
+                    </ion-item> -->
+
+                    </ion-row>
+                </form>
+            </ion-grid>
+            <ion-grid class="ion-padding-horizontal">
+                <form name="form" (ngSubmit)="f2.form.valid" #f2="ngForm" novalidate class="width-100p">
+                    <ion-row>
+                        <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" lines="none">
+                            <ion-label>
+                                <h2>Tags</h2>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p" lines="none" (click)="showGrpTag()" *ngIf="showGrpTags">
+                            <ion-label>
+                                <p>{{groupTags}}</p>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item class="ionitem-padding-remove ion-no-padding group-name-edit width-100p" lines="none" [hidden]="showGrpTags">
+                            <div class="name-field">
+                                <ion-input class="blue-border-input" [(ngModel)]="groupTags" name="groupTag" (ionBlur)="blurFunction('groupTag')"></ion-input>
+                            </div>
+                            <div class="name-save">
+                                <img src="assets/images/add-icons.svg" class="social-add" (click)="updateGrpTags(f2)">
+                            </div>
+                        </ion-item>
+                    </ion-row>
+                </form>
+            </ion-grid>
+            <ion-grid class="ion-padding-horizontal">
+                <ion-row>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" lines="none">
+                        <ion-label>
+                            <h2>Details</h2>
+                        </ion-label>
+                    </ion-item>
+
+
+
+
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Enrollment</span>
+                        <span class="details-right">
+                  <ul class="donate-now">
+                     <li>
+                        <input type="radio" id="NP" name="enrollment" value="open" checked="npRadio" [(ngModel)]="enrollment"  (click)="getEnrollmentValue($event)"/>
+                        <label for="np" >Open</label>
+                     </li>
+                     <li>
+                        <input type="radio" id="PA" name="enrollment" value="private"  checked="paRadio" [(ngModel)]="enrollment" (click)="getEnrollmentValue($event)"/>
+                        <label for="pa">Private</label>
+                     </li>
+                  </ul>
+               </span>
+                    </ion-item>
+                    <!-- <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Private</span>
+                        <span class="details-right">
+                  <ul class="donate-now">
+                     <li>
+                        <input type="radio" id="NP" name="provideType1" value="NP/CNS"  checked="npRadio" (click)="getPrivateValue($event)"/>
+                        <label for="np">No</label>
+                     </li>
+                     <li>
+                        <input type="radio" id="PA" name="provideType1" value="PA" checked="paRadio" (click)="getPrivateValue($event)"/>
+                        <label for="pa">Yes</label>
+                     </li>
+                  </ul>
+               </span>
+                    </ion-item> -->
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Provider Type</span>
+                        <span class="details-right">
+                  <ul class="donate-now">
+                     <!-- <li >
+                        <input type="radio" id="all" name="type" value="all"  [(ngModel)]="type" checked="all" />
+                        <label for="np">All</label>
+                     </li> -->
+                     <li>
+                      <input type="radio" required id="all" name="type" value="ALL" [(ngModel)]="type"
+                          #provideType="ngModel" checked="all" (click)="getProviderValue($event)"/>
+                      <label for="all">All</label>
+                  </li>
+                     <li >
+                        <input type="radio" id="NP" name="type" value="NP" [(ngModel)]="type" checked="npRadio" (click)="getProviderValue($event)" />
+                        <label for="pa">NP</label>
+                     </li>
+                     <li >
+                        <input type="radio" id="PA" name="type" value="PA" [(ngModel)]="type" checked="paRadio" (click)="getProviderValue($event)" />
+                        <label for="pa">PA</label>
+                     </li>
+                  </ul>
+               </span>
+                    </ion-item>
+                    <div [hidden]="errProviderType" class="error-msg">Provider type is required</div>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Speciality</span>
+                        <span class="details-right speciality-details" *ngIf="viewSpeciality" (click)="hideSpeciality()">
+                          <p class="speciality"  *ngIf="specialty != 'null'" >{{specialty}}</p>
+                  <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+               </span>
+                        <span class="details-right speciality-details" [hidden]="viewSpeciality">
+                <!-- <p class="speciality">Oncology</p> -->
+                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                <ionic-selectable
+                     class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                     name="speciality"
+                     ngDefaultControl 
+                     [(ngModel)]="specialityListTemp"
+                     #specialtyName="ngModel"
+                     required
+                     [items]="specialityType"
+                     itemValueField="specialtyCode"
+                     itemTextField="specialtyName"
+                     [canSearch]="true"
+                     [isMultiple]="false"
+                     closeButtonText="Close"
+                     (onClose)="getSpeciality(specialityListTemp['specialtyCode'], specialityListTemp['specialtyName'])" >
+
+                     </ionic-selectable>
+             </span>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Therapeutics</span>
+                        <span class="details-right speciality-details" *ngIf="viewTherapeutic" (click)="showSelectTherapeutic()">
+                          <p class="speciality" *ngIf="groupTherapeuticArea != 'null'" >{{groupTherapeuticArea}}</p>
+                  <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+               </span>
+                        <span class="details-right speciality-details" [hidden]="viewTherapeutic">
+                <!-- <p class="speciality">Oncology</p> -->
+                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                <ionic-selectable
+                     class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                     name="therapeutic"
+                     ngDefaultControl
+                     [(ngModel)]="therapeuticAreaListTemp"
+                     #therapeuticArea="ngModel"
+                     required
+                     [items]="topicsOfInterestList"
+                     itemValueField="title"
+                     itemTextField="title"
+                     [canSearch]="true"
+                     [isMultiple]="false"
+                     closeButtonText="Close"
+                     (onChange)="updateTherapeuticArea(therapeuticAreaListTemp)" >
+                     </ionic-selectable>
+             </span>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16">
+                        <span class="details-label">Location</span>
+                        <span class="details-right speciality-details" *ngIf="viewSelectLocation" (click)="viewLocation()">
+                  <p class="speciality" *ngIf="groupScope != 'null'">{{groupScope}}</p>
+                  <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+               </span>
+                        <span class="details-right speciality-details" [hidden]="viewSelectLocation">
+                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                <ionic-selectable
+                class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+                name="groupScope"
+                ngDefaultControl
+                [(ngModel)]="locationListTemp"
+                #groupIdScope="ngModel"
+                required
+                [items]="groupScopMasters"
+                itemValueField="scopeId"
+                itemTextField="scopeTitle"
+                [canSearch]="true"
+                [isMultiple]="false"
+                closeButtonText="Close"
+                (onClose)="getLocation(locationListTemp)">
+>
+                </ionic-selectable>
+            </span>
+                    </ion-item>
+                    <div [hidden]="errLocation" class="error-msg">Location is required</div>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" *ngIf="groupScope=='Local'">
+                        <span class="details-label">State</span>
+                        <span class="details-right speciality-details" *ngIf="viewSelectState" (click)="viewState()">
+                          <p class="speciality" *ngIf="scope != 'null'">{{scope}}</p>
+                <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+             </span>
+                        <span class="details-right speciality-details" [hidden]="viewSelectState">
+              <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+              <ionic-selectable
+              class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+              name="scope"
+              ngDefaultControl
+              [(ngModel)]="stateListTemp"
+              #scopeState
+              required
+              [items]="stateList"
+              itemValueField="id"
+              itemTextField="statename"
+              [canSearch]="true"
+              [isMultiple]="false"
+              closeButtonText="Close"
+              (onClose)="updateGroupState(stateListTemp)">
+              </ionic-selectable>
+          </span>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16" *ngIf="groupScope=='Regional'">
+                        <span class="details-label">Region</span>
+                        <span class="details-right speciality-details" *ngIf="viewSelectRegion" (click)="viewRegion()">
+                          <p class="speciality"  *ngIf="scope != 'null'">{{scope}}</p>
+                          <!-- <img src="assets/images/arrow-next-right.svg" class="details-arrow"> -->
+                          </span>
+                        <span class="details-right speciality-details" [hidden]="viewSelectRegion">
+                          <ionic-selectable
+            class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
+            name="scope"
+            ngDefaultControl
+            [(ngModel)]="regionalListTemp"
+            #scopeRegion="ngModel"
+            required
+            [items]="regionalMasters"
+            itemValueField="regionalId"
+            itemTextField="title"
+            [canSearch]="true"
+            [isMultiple]="false"
+            closeButtonText="Close"
+            (onClose)="updateGroupRegion(regionalListTemp)">
+            </ionic-selectable>
+                       </span>
+                    </ion-item>
+                    <ion-item class="ionitem-padding-remove ion-no-padding tags width-100p mt-16 allow-toggle" lines="none">
+                        <form name="form" (ngSubmit)="f3.form.valid" #f3="ngForm" novalidate class="width-100p allow-members">
+                            <ion-col size="10" class="ion-no-padding">
+                                <ion-label>Allow members to send invitations</ion-label>    
+                            </ion-col>
+                            <ion-col size="2" class="ion-no-padding">
+                                <ion-toggle [checked]="memberInvite" color="primary" (ionChange)="updateGroupMemberInvite(f3,$event)"></ion-toggle>
+                            </ion-col>                         
+                            
+                            
+                        </form>
+                    </ion-item>
+                </ion-row>
+            </ion-grid>
+            <!-- <ion-grid class="ion-padding-horizontal mb-16" *ngIf="showGrpDetails == false">
+                    <ion-row class="">
+                        <ion-col class="">
+                            <ion-button type="submit" [disabled]="leaveButton" class="blue-bg-button" (click)="leaveGroup()">Leave Group
+                            </ion-button>
+                        </ion-col>
+                        <ion-col class=""></ion-col>
+                    </ion-row>
+                </ion-grid> -->
+            <ion-grid class="ion-padding-horizontal">
+                <ion-row class="tags">
+                    <ion-label>
+                        <h2>Group Admins</h2>
+                    </ion-label>
+                </ion-row>
+                <ion-row>
+                    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request" *ngFor="let memberData of memberDetails">
+                        <ion-col size="2">
+                            <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img"> -->
+                            <img (error)="onUserImgError($event)" src="{{imageUrl}}{{memberData.memberUserId}}.{{memberData.fileExtension}}" (click)="showPublicProfileModal(memberData,'adminProfile')" class="connection-request-img">
+                            <!-- <img *ngIf="!memberData.fileExtension" src="{{defaultImg}}" class="connection-request-img" (click)="showPublicProfileModal(memberData,'adminProfile')"> -->
+                        </ion-col>
+                        <ion-col size="10" class="request-data-right">
+                            <h2 (click)="showPublicProfileModal(memberData,'adminProfile')">{{memberData.firstName | titlecase}} {{memberData.lastName | titlecase}} </h2>
+                            <div class="chip-content request-chip">
+                                <ion-chip [outline]="true" class="custom-chip">{{memberData.degreeGroupCode}}</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="memberData.addressCity">
+                                    {{memberData.addressCity}}<span *ngIf="memberData.addressState">,</span>{{memberData.addressState}}</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">{{ memberData.primarySpecialtyDesc}}</ion-chip>
+                            </div>
+                            <p>
+                                {{memberData.profileTagLine}}
+                                <!-- Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor ist amet palleque quo. -->
+                            </p>
+                        </ion-col>
+                    </ion-item>
+                    <!-- <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request">
+                        <ion-col size="2">
+                            <img src="assets/images/user-demo-image.jpg" class="connection-request-img">
+                        </ion-col>
+                        <ion-col size="10" class="request-data-right">
+                            <h2>Halaz Emesi</h2>
+                            <div class="chip-content request-chip">
+                                <ion-chip [outline]="true" class="custom-chip">PA</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Springfield, MO</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Cardiac</ion-chip>
+                            </div>
+                            <p>
+                                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor ist amet palleque quo.
+                            </p>
+                        </ion-col>
+                    </ion-item>
+                    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request">
+                        <ion-col size="2">
+                            <img src="assets/images/user-demo-image.jpg" class="connection-request-img">
+                        </ion-col>
+                        <ion-col size="10" class="request-data-right">
+                            <h2>Halaz Emesi</h2>
+                            <div class="chip-content request-chip">
+                                <ion-chip [outline]="true" class="custom-chip">PA</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Springfield, MO</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Cardiac</ion-chip>
+                            </div>
+                            <p>
+                                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor ist amet palleque quo.
+                            </p>
+                        </ion-col>
+                    </ion-item>
+                    <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request">
+                        <ion-col size="2">
+                            <img src="assets/images/user-demo-image.jpg" class="connection-request-img">
+                        </ion-col>
+                        <ion-col size="10" class="request-data-right">
+                            <h2>Halaz Emesi</h2>
+                            <div class="chip-content request-chip">
+                                <ion-chip [outline]="true" class="custom-chip">PA</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Springfield, MO</ion-chip>
+                                <ion-chip [outline]="true" class="custom-chip tag-limit">Cardiac</ion-chip>
+                            </div>
+                            <p>
+                                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor ist amet palleque quo.
+                            </p>
+                        </ion-col>
+                    </ion-item> -->
+                </ion-row>
+            </ion-grid>
+            <ion-grid class="ion-padding-horizontal">
+                <ion-row class="tags">
+                    <ion-label>
+                        <h2>Related Groups</h2>
+                    </ion-label>
+                </ion-row>
+                <ion-row class="group-tab-content">
+                    <ion-item class="ionitem-padding-remove ion-no-padding width-100p mt-8 recommended-cnt" lines="none">
+                        <div class="recommended-card" *ngFor="let grpData of relatedGrpDetails">
+                            <ion-card>
+                                <!-- <img alt="" src="assets/images/groups-demo-img.jpg" /> -->
+                                <img alt="" class="subscribed-image" [src]="grpData.grpSubImageUrl" (error)="onImgError($event,grpData.bannerFileName,grpData.bannerExtension)" (click)="showGroupDetail(grpData)" />
+                                <ion-card-header>
+                                    <p>{{grpData.name}}</p>
+                                </ion-card-header>
+                            </ion-card>
+                        </div>
+
+                    </ion-item>
+                </ion-row>
+            </ion-grid>
+        </div>
+        <ion-row class="requests-row ion-padding-horizontal" *ngIf="showMemberData == true">
+            <!-- <ion-list lines="none" class="recommended-title">
+                <h2>Connection Invitations</h2>
+            </ion-list> -->
+            <!-- <span *ngIf="incomingReqLoaderStatus" class="loader-npi"><img
+                    src="./../assets/images-pocn/ajax-loader.gif"></span>
+            <ion-label *ngIf="connectionRequestMessage">
+                <h1 class="home-text no-connection-msg">No Incoming Request Found</h1>
+            </ion-label> -->
+            <ion-item lines="none" class="ionitem-padding-remove ion-no-padding incoming-request width-100p" 
+            *ngFor="let memberData of membersList">
+                <ion-label *ngIf="showMsg">
+                    <h1 class="home-text no-connection-msg">No Subscribers Found</h1>
+                </ion-label>
+                <ion-col size="2">
+                    <!-- <img src="assets/images/user-demo-image.jpg" class="connection-request-img" > -->
+                    <img *ngIf="memberData.fileExtension" src="{{imageUrl}}{{memberData.memberUserId}}.{{memberData.fileExtension}}" class="connection-request-img" (click)="showPublicProfileModal(memberData,'memebrInvite')">
+                    <img *ngIf="!memberData.fileExtension" src="{{defaultImg}}" class="connection-request-img" (click)="showPublicProfileModal(memberData,'memebrInvite')">
+                    <!-- <img *ngIf="!requestConnection.fileExtension" src="{{defaultImg}}" class="connection-request-img"
+                    (click)="basicProfileClick(requestConnection,'incomingRequest')">
+                     <img *ngIf ="requestConnection.registered==true" src="assets/images/verified.png" class="verified-png"> -->
+                </ion-col>
+                <ion-col size="10" class="request-data-right">
+                    <h2 (click)="showPublicProfileModal(memberData,'memebrInvite')">{{memberData.firstName | titlecase}} {{memberData.lastName | titlecase}}
+                    </h2>
+                    <div class="chip-content request-chip">
+                        <ion-chip [outline]="true" class="custom-chip" *ngIf="memberData.degreeGroupCode">
+                            {{memberData.degreeGroupCode}}</ion-chip>
+                        <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="memberData.addressCity">
+                            {{memberData.addressCity}}<span *ngIf="memberData.addressState">,</span>{{memberData.addressState}}</ion-chip>
+                        <ion-chip [outline]="true" class="custom-chip tag-limit" *ngIf="memberData.primarySpecialtyDesc">{{ memberData.primarySpecialtyDesc}}</ion-chip>
+                    </div>
+                    <!-- <p>
+                        {{memberData.profileTagLine}}
+                    </p> -->
+
+                </ion-col>
+            </ion-item>
+        </ion-row>
+    </ion-content>
+<!-- </ion-app> -->
+<!--<app-main-tabs></app-main-tabs>-->
