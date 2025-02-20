@@ -1,24 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { AlertController, ModalController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { LocalStorageManager } from './../../services/local-storage-manager';
-import { Router } from '@angular/router';
-import { GraphqlDataService } from './../../services/graphql-data.service';
-import { AddcallPopoverPage } from '../addcall-popover/addcall-popover.page';
-import { Location } from '@angular/common';
-import { PopoverController, Platform } from '@ionic/angular';
-import { DialerMorePopoverPage } from '../dialer-more-popover/dialer-more-popover.page';
-import { Socket } from 'ngx-socket-io';
-import { TelemetryService } from 'src/app/services/telemetry.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { AlertController, ModalController } from "@ionic/angular";
+import { HttpClient } from "@angular/common/http";
+import { LocalStorageManager } from "./../../services/local-storage-manager";
+import { Router } from "@angular/router";
+import { GraphqlDataService } from "./../../services/graphql-data.service";
+import { AddcallPopoverPage } from "../addcall-popover/addcall-popover.page";
+import { Location } from "@angular/common";
+import { PopoverController, Platform } from "@ionic/angular";
+import { DialerMorePopoverPage } from "../dialer-more-popover/dialer-more-popover.page";
+import { Socket } from "ngx-socket-io";
+import { TelemetryService } from "src/app/services/telemetry.service";
 
 declare const Twilio: any;
 
-const callerType_MODERATOR = 'MODERATOR';
+const callerType_MODERATOR = "MODERATOR";
 @Component({
-  selector: 'app-dialer1',
-  templateUrl: './dialer1.page.html',
-  styleUrls: ['./dialer1.page.scss'],
+  selector: "app-dialer1",
+  templateUrl: "./dialer1.page.html",
+  styleUrls: ["./dialer1.page.scss"],
 })
 export class Dialer1Page implements OnInit {
   number = null;
@@ -30,16 +30,16 @@ export class Dialer1Page implements OnInit {
   accessToken: string;
   dialedPhone: string;
   fromNumber: string;
-  currentValue = '';
+  currentValue = "";
   callerIdNumber: string;
   participantList = [];
   showContent = false;
   muted = false;
   running = false;
-  ms: any = '0' + 0;
-  sec: any = '0' + 0;
-  min: any = '0' + 0;
-  hr: any = '0' + 0;
+  ms: any = "0" + 0;
+  sec: any = "0" + 0;
+  min: any = "0" + 0;
+  hr: any = "0" + 0;
   startTimer = null;
   history = [];
   token: string;
@@ -71,66 +71,66 @@ export class Dialer1Page implements OnInit {
     private socket: Socket,
     public telemetry: TelemetryService
   ) {
-    this.token = this._pocnLocalStorageManager.getData('pocnApiAccessToken');
+    this.token = this._pocnLocalStorageManager.getData("pocnApiAccessToken");
     this.callerIds = this.location.getState();
     this.callerData = this.callerIds?.callerData;
   }
 
   ngOnInit() {
-    console.log('ngOnInit ==========');
+    console.log("ngOnInit ==========");
     this.getTelephoneCountryCode();
-    const spanName = 'page-view' + this.router.url.replace(/\//g, '-');
+    const spanName = "page-view" + this.router.url.replace(/\//g, "-");
     let attributes = {
-      userId: this._pocnLocalStorageManager.getData('userId'),
-      firstName: this._pocnLocalStorageManager.getData('firstName'),
-      lastName: this._pocnLocalStorageManager.getData('lastName'),
-      userEmail: this._pocnLocalStorageManager.getData('userEmail'),
+      userId: this._pocnLocalStorageManager.getData("userId"),
+      firstName: this._pocnLocalStorageManager.getData("firstName"),
+      lastName: this._pocnLocalStorageManager.getData("lastName"),
+      userEmail: this._pocnLocalStorageManager.getData("userEmail"),
       url: this.router.url,
     };
-    const eventName = 'page view';
+    const eventName = "page view";
     const event = {
-      userEmail: this._pocnLocalStorageManager.getData('userEmail'),
-      status: 'success',
-      message: 'viewed page',
+      userEmail: this._pocnLocalStorageManager.getData("userEmail"),
+      status: "success",
+      message: "viewed page",
     };
     this.telemetry
       .sendTrace(spanName, attributes, eventName, event)
       .then((result: string) => {
         this.telemetry.parentTrace = result;
       });
-    if (this.token == '' || this.token == null) {
-      this.router.navigate(['/']);
+    if (this.token == "" || this.token == null) {
+      this.router.navigate(["/"]);
     }
     this.startupClient();
     this.showCallStatus = true;
     this.socket.connect();
-    this.socket.emit('my message', 'Socket ping');
+    this.socket.emit("my message", "Socket ping");
 
-    this.socket.fromEvent('my broadcast').subscribe((data: string) => {
+    this.socket.fromEvent("my broadcast").subscribe((data: string) => {
       console.log(data);
     });
-    this.socket.fromEvent('callEnded').subscribe((data: any) => {
-      console.log('disconnected participant details: ', data);
+    this.socket.fromEvent("callEnded").subscribe((data: any) => {
+      console.log("disconnected participant details: ", data);
     });
-    this.socket.fromEvent('statusChanged').subscribe((data: any) => {
-      console.log('call status: ', data);
-      console.log('this.dialedPhone: ', this.dialedPhone);
+    this.socket.fromEvent("statusChanged").subscribe((data: any) => {
+      console.log("call status: ", data);
+      console.log("this.dialedPhone: ", this.dialedPhone);
       switch (data.status) {
-        case 'initiated':
+        case "initiated":
           break;
-        case 'ringing':
+        case "ringing":
           break;
-        case 'in-progress':
+        case "in-progress":
           this.showCallStatus = false;
           this.start();
           break;
-        case 'completed':
+        case "completed":
           let index = this.participantList.findIndex(
             (item) => item.number === this.countryCodeArray + this.dialedPhone
           );
-          console.log('before', index, this.participantList);
+          console.log("before", index, this.participantList);
           if (index > -1) {
-            console.log('after', index, this.participantList);
+            console.log("after", index, this.participantList);
             this.participantList.splice(index, 1);
             if (this.participantList.length == 1) {
               this.dialedPhone = this.participantList[0].number;
@@ -140,46 +140,46 @@ export class Dialer1Page implements OnInit {
             }
           }
           break;
-        case 'failed':
+        case "failed":
           this.device.disconnectAll();
           this.participantList = [];
           this.muted = false;
-          this.router.navigate(['/dialer']);
+          this.router.navigate(["/dialer"]);
           break;
-        case 'busy':
+        case "busy":
           this.device.disconnectAll();
           this.participantList = [];
           this.muted = false;
-          this.router.navigate(['/dialer']);
+          this.router.navigate(["/dialer"]);
           break;
-        case 'canceled':
+        case "canceled":
           this.device.disconnectAll();
           this.participantList = [];
           this.muted = false;
-          this.router.navigate(['/dialer']);
+          this.router.navigate(["/dialer"]);
           break;
       }
     });
-    this.socket.fromEvent('participantStatusChanged').subscribe((data: any) => {
-      console.log('participant status: ', data);
-      let participantLabel = data.participantNumber.split('+').pop();
+    this.socket.fromEvent("participantStatusChanged").subscribe((data: any) => {
+      console.log("participant status: ", data);
+      let participantLabel = data.participantNumber.split("+").pop();
       let index = this.participantList.findIndex(
         (item) => item.number === participantLabel
       );
       switch (data.callStatus) {
-        case 'initiated':
+        case "initiated":
           break;
-        case 'ringing':
+        case "ringing":
           break;
-        case 'in-progress':
-          console.log('index', index);
+        case "in-progress":
+          console.log("index", index);
           if (index > -1) {
             this.participantList[index].loading = false;
-            console.log('loader changed');
+            console.log("loader changed");
           }
           break;
-        case 'completed':
-          console.log('index of the participant', index);
+        case "completed":
+          console.log("index of the participant", index);
           console.log(this.participantList);
           if (index > -1) {
             this.participantList.splice(index, 1);
@@ -192,9 +192,9 @@ export class Dialer1Page implements OnInit {
             }
           }
           break;
-        case 'failed':
-          console.log(index, 'index');
-          console.log('this.participantList', this.participantList);
+        case "failed":
+          console.log(index, "index");
+          console.log("this.participantList", this.participantList);
 
           if (index > -1) {
             this.participantList.splice(index, 1);
@@ -207,7 +207,7 @@ export class Dialer1Page implements OnInit {
             }
           }
           break;
-        case 'busy':
+        case "busy":
           if (index > -1) {
             this.participantList.splice(index, 1);
             if (this.participantList.length == 1) {
@@ -219,7 +219,7 @@ export class Dialer1Page implements OnInit {
             }
           }
           break;
-        case 'canceled':
+        case "canceled":
           if (index > -1) {
             this.participantList.splice(index, 1);
             if (this.participantList.length == 1) {
@@ -231,7 +231,7 @@ export class Dialer1Page implements OnInit {
             }
           }
           break;
-        case 'no-answer':
+        case "no-answer":
           if (index > -1) {
             this.participantList.splice(index, 1);
             if (this.participantList.length == 1) {
@@ -247,11 +247,11 @@ export class Dialer1Page implements OnInit {
     });
 
     setInterval(() => {
-      this.socket.emit('my message', 'Socket ping');
+      this.socket.emit("my message", "Socket ping");
     }, 5000);
 
-    this.socket.on('disconnect', (reason) => {
-      console.log(reason, 'reason');
+    this.socket.on("disconnect", (reason) => {
+      console.log(reason, "reason");
     });
   }
 
@@ -287,12 +287,12 @@ export class Dialer1Page implements OnInit {
     this._pocnService.getUserBasicProfile(this.token).subscribe(
       ({ data }) => {
         this.providerHcpNpi =
-          data['getUserBasicProfile'].data['userBasicProfile']['npi'];
+          data["getUserBasicProfile"].data["userBasicProfile"]["npi"];
         this.providerId =
-          data['getUserBasicProfile'].data['userBasicProfile']['providerId'];
+          data["getUserBasicProfile"].data["userBasicProfile"]["providerId"];
       },
       (error) => {
-        this.router.navigate(['/']);
+        this.router.navigate(["/"]);
       }
     );
   }
@@ -313,39 +313,40 @@ export class Dialer1Page implements OnInit {
     this.dialedPhone = this.callerIds?.dialedPhone;
     this.fromNumber = this.callerIds?.fromNumber;
     this.callerData = this.callerIds?.callerData;
-    console.log('Requesting Access Token...');
+    console.log("Requesting Access Token...");
     try {
-      let tokenStored = localStorage.getItem('token')
-        ? localStorage.getItem('token')
-        : '';
-      console.log('token: ' + tokenStored);
+      let tokenStored = localStorage.getItem("token")
+        ? localStorage.getItem("token")
+        : "";
+      console.log("token: " + tokenStored);
       this.accessToken = tokenStored;
+      console.log("startupClient =>", this.twilioServerURL);
       this.http
-        .get(`${this.twilioServerURL}/accessToken`, { responseType: 'text' })
+        .get(`${this.twilioServerURL}/accessToken`, { responseType: "text" })
         .subscribe((data: any) => {
-          console.log('Got a token : ' + data);
+          console.log("Got a token : " + data);
           this.accessToken = data;
-          localStorage.setItem('token', data);
+          localStorage.setItem("token", data);
           this.intitializeDevice();
         });
     } catch (err) {
       console.log(err);
       console.log(
-        'An error occurred. See your browser console for more information.'
+        "An error occurred. See your browser console for more information."
       );
     }
   }
 
   async intitializeDevice() {
-    console.log('Initializing device');
+    console.log("Initializing device");
     const options: any = {
       logLevel: 1,
       enableRingingState: true,
-      codecPreferences: ['pcmu', 'opus'],
-      edge: 'ashburn',
+      codecPreferences: ["pcmu", "opus"],
+      edge: "ashburn",
     };
     this.device = await Twilio.Device.setup(this.accessToken, options);
-    console.log('intitializeDevice =>', this.device);
+    console.log("intitializeDevice =>", this.device);
     this.addDeviceListeners(this.device);
     // this.device[this.participantIndex].register();
   }
@@ -365,12 +366,12 @@ export class Dialer1Page implements OnInit {
     // });
   }
   async startConference() {
-    console.log('startConference ========');
-    this.currentValue = '';
+    console.log("startConference ========");
+    this.currentValue = "";
     this.callerType = callerType_MODERATOR;
     this.conferenceId = `${this.dialedPhone}conferance`;
     this.number = this.fromNumber;
-    this.socket.emit('my message', `${this.conferenceId}`);
+    this.socket.emit("my message", `${this.conferenceId}`);
     this._pocnService
       .getTelephoneCountryCode(this.token)
       ?.subscribe(async ({ data }) => {
@@ -380,7 +381,7 @@ export class Dialer1Page implements OnInit {
           connectCountryCode.getTelephoneCountryCode.data.countryCode;
         let phone = this.dialedPhone;
         let validNumber = this.countryCodeArray.some((elem) =>
-          phone.match('^' + elem)
+          phone.match("^" + elem)
         );
         let dialedPhoneNumber;
         if (!!validNumber) {
@@ -390,64 +391,64 @@ export class Dialer1Page implements OnInit {
         }
         const params = {
           to: dialedPhoneNumber,
-          record: 'record-from-answer',
-          callStatus: 'call',
+          record: "record-from-answer",
+          callStatus: "call",
           from: this.number,
-          caller: '+18149134172',
+          caller: "+18149134172",
           conferenceId: this.conferenceId,
         };
         if (this.device) {
           if (this.dialedPhone !== null) {
-            console.log('startConference =>', params);
+            console.log("startConference =>", params);
             const connection = await this.device.connect(params);
             this.participantList.push({
               number: dialedPhoneNumber,
               muted: true,
               loading: false,
             });
-            console.log('connection status:', connection);
-            console.log('connection status:', this.participantList);
+            console.log("connection status:", connection);
+            console.log("connection status:", this.participantList);
             this.showContent = true;
-            connection.on('ringing', (hasEarlyMedia) => {
+            connection.on("ringing", (hasEarlyMedia) => {
               console.log(
-                'The call has started and the other phone is ringing.'
+                "The call has started and the other phone is ringing."
               );
             });
-            connection.on('accept', (connection) => {
-              console.log('The other person answered the phone!');
+            connection.on("accept", (connection) => {
+              console.log("The other person answered the phone!");
             });
-            connection.on('disconnect', () => {
-              console.log('The other person hung up.');
+            connection.on("disconnect", () => {
+              console.log("The other person hung up.");
               this.getCommunicationHistory();
-              this.router.navigate(['/dialer']);
+              this.router.navigate(["/dialer"]);
               this.participantList = [];
               this.muted = false;
             });
-            connection.on('error', (error) => {
-              this.router.navigate(['/dialer']);
-              console.log('the call has an error', error);
+            connection.on("error", (error) => {
+              this.router.navigate(["/dialer"]);
+              console.log("the call has an error", error);
             });
-            connection.on('reject', () => {
-              this.router.navigate(['/dialer']);
+            connection.on("reject", () => {
+              this.router.navigate(["/dialer"]);
             });
           } else {
-            console.log('Unable to make call.');
+            console.log("Unable to make call.");
           }
         } else {
-          console.log('Unable to make call.');
+          console.log("Unable to make call.");
         }
-        const spanName = 'voice-call-initiated-btn';
+        const spanName = "voice-call-initiated-btn";
         let attributes = {
-          userId: this._pocnLocalStorageManager.getData('userId'),
-          firstName: this._pocnLocalStorageManager.getData('firstName'),
-          lastName: this._pocnLocalStorageManager.getData('lastName'),
-          userEmail: this._pocnLocalStorageManager.getData('userEmail'),
+          userId: this._pocnLocalStorageManager.getData("userId"),
+          firstName: this._pocnLocalStorageManager.getData("firstName"),
+          lastName: this._pocnLocalStorageManager.getData("lastName"),
+          userEmail: this._pocnLocalStorageManager.getData("userEmail"),
         };
-        const eventName = 'voice-call-initiated';
+        const eventName = "voice-call-initiated";
         const event = {
-          userEmail: this._pocnLocalStorageManager.getData('userEmail'),
-          status: 'success',
-          message: 'successfully voice-call-initiated',
+          userEmail: this._pocnLocalStorageManager.getData("userEmail"),
+          status: "success",
+          message: "successfully voice-call-initiated",
         };
         this.telemetry
           .sendTrace(spanName, attributes, eventName, event)
@@ -461,37 +462,37 @@ export class Dialer1Page implements OnInit {
       this.running = true;
       this.startTimer = setInterval(() => {
         this.ms++;
-        this.ms = this.ms < 10 ? '0' + this.ms : this.ms;
+        this.ms = this.ms < 10 ? "0" + this.ms : this.ms;
 
         if (this.ms === 100) {
           this.sec++;
-          this.sec = this.sec < 10 ? '0' + this.sec : this.sec;
-          this.ms = '0' + 0;
+          this.sec = this.sec < 10 ? "0" + this.sec : this.sec;
+          this.ms = "0" + 0;
         }
 
         if (this.sec === 60) {
           this.min++;
-          this.min = this.min < 10 ? '0' + this.min : this.min;
-          this.sec = '0' + 0;
+          this.min = this.min < 10 ? "0" + this.min : this.min;
+          this.sec = "0" + 0;
         }
 
         if (this.min === 60) {
           this.hr++;
-          this.hr = this.hr < 10 ? '0' + this.hr : this.hr;
-          this.min = '0' + 0;
+          this.hr = this.hr < 10 ? "0" + this.hr : this.hr;
+          this.min = "0" + 0;
         }
       }, 10);
     } else {
-      this.sec = '0' + 0;
-      this.min = '0' + 0;
-      this.ms = '0' + 0;
+      this.sec = "0" + 0;
+      this.min = "0" + 0;
+      this.ms = "0" + 0;
     }
   }
   getCommunicationHistory = () => {
     const body = JSON.stringify({ from: this.number, to: this.dialedPhone });
     this.http
       .post(`${this.twilioServerURL}/callHistory`, body, {
-        responseType: 'text',
+        responseType: "text",
       })
       .subscribe((data) => {
         this.history = JSON.parse(data);
@@ -504,17 +505,17 @@ export class Dialer1Page implements OnInit {
     this._pocnService.getUserBasicProfile(this.token).subscribe(
       ({ data }) => {
         this.providerHcpNpi =
-          data['getUserBasicProfile'].data['userBasicProfile']['npi'];
+          data["getUserBasicProfile"].data["userBasicProfile"]["npi"];
         this.providerId =
-          data['getUserBasicProfile'].data['userBasicProfile']['providerId'];
+          data["getUserBasicProfile"].data["userBasicProfile"]["providerId"];
         const duration = this.secondsToHms(logData.duration);
         const from = logData.from;
         const to = logData.to;
-        const userId = this._pocnLocalStorageManager.getData('userId');
+        const userId = this._pocnLocalStorageManager.getData("userId");
         const historyMutate = {
           fromPhone: from,
           toPhone: to,
-          type: 'call',
+          type: "call",
           duration: duration,
           providerId: parseInt(this.providerId),
           userId: userId,
@@ -535,9 +536,9 @@ export class Dialer1Page implements OnInit {
     var m = Math.floor((d % 3600) / 60);
     var s = Math.floor((d % 3600) % 60);
 
-    var hDisplay = h > 0 ? h + (h == 1 ? ' hour, ' : ' hour, ') : '';
-    var mDisplay = m > 0 ? m + (m == 1 ? ' min, ' : ' min, ') : '';
-    var sDisplay = s > 0 ? s + (s == 1 ? ' sec' : ' sec') : '';
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hour, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " min, " : " min, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " sec" : " sec") : "";
     return `${hDisplay + mDisplay + sDisplay}`;
   }
   muteCall() {
@@ -548,47 +549,47 @@ export class Dialer1Page implements OnInit {
     };
     this.http
       .post(`${this.twilioServerURL}/muteCall`, bodyData, {
-        responseType: 'text',
+        responseType: "text",
       })
       .subscribe((data) => {
-        if (data === 'muted') this.muted = true;
-        else if (data === 'unmuted') this.muted = false;
+        if (data === "muted") this.muted = true;
+        else if (data === "unmuted") this.muted = false;
       });
   }
 
   getColor() {
     if (this.muted === true) {
-      return 'rgb(254 61 47)';
+      return "rgb(254 61 47)";
     }
   }
   endCall() {
     this.device.disconnectAll();
     this.participantList = [];
     this.muted = false;
-    const spanName = 'voice-call-disconnection-btn';
+    const spanName = "voice-call-disconnection-btn";
     let attributes = {
-      userId: this._pocnLocalStorageManager.getData('userId'),
-      firstName: this._pocnLocalStorageManager.getData('firstName'),
-      lastName: this._pocnLocalStorageManager.getData('lastName'),
-      userEmail: this._pocnLocalStorageManager.getData('userEmail'),
+      userId: this._pocnLocalStorageManager.getData("userId"),
+      firstName: this._pocnLocalStorageManager.getData("firstName"),
+      lastName: this._pocnLocalStorageManager.getData("lastName"),
+      userEmail: this._pocnLocalStorageManager.getData("userEmail"),
     };
-    const eventName = 'voice-call-disconnection';
+    const eventName = "voice-call-disconnection";
     const event = {
-      userEmail: this._pocnLocalStorageManager.getData('userEmail'),
-      status: 'success',
-      message: 'successfully voice-call-disconnected',
+      userEmail: this._pocnLocalStorageManager.getData("userEmail"),
+      status: "success",
+      message: "successfully voice-call-disconnected",
     };
     this.telemetry
       .sendTrace(spanName, attributes, eventName, event)
       .then((result: string) => {
         this.telemetry.parentTrace = result;
       });
-    this.router.navigate(['/dialer']);
+    this.router.navigate(["/dialer"]);
   }
   async addNewCallerPopOver() {
     const popover = await this.modalController.create({
       component: AddcallPopoverPage,
-      cssClass: 'addCaller-modal',
+      cssClass: "addCaller-modal",
       componentProps: {
         number: this.number,
         conferenceId: this.conferenceId,
@@ -630,10 +631,10 @@ export class Dialer1Page implements OnInit {
   //   return;
   // }
   backSpace() {
-    console.log('backspace');
+    console.log("backspace");
     this.currentValue = this.currentValue.slice(0, -1);
     this.participantPhone = this.currentValue;
-    if (this.participantPhone == '') this.showBackButton = false;
+    if (this.participantPhone == "") this.showBackButton = false;
   }
   showDialer() {
     this.showDialerPad = true;
@@ -648,7 +649,7 @@ export class Dialer1Page implements OnInit {
   async showPopover(event, type, indexVal) {
     const popover = await this.popoverCtrl.create({
       component: DialerMorePopoverPage,
-      cssClass: 'edit-modal',
+      cssClass: "edit-modal",
       event,
       componentProps: {
         key1: type,
@@ -671,9 +672,9 @@ export class Dialer1Page implements OnInit {
           this.showCommonDialer = true;
           this.showDialerPad = false;
         }
-        console.log('ondismiss-------');
+        console.log("ondismiss-------");
         console.log(this.listParticipant);
-        console.log('ondismiss-------');
+        console.log("ondismiss-------");
       }
     });
     await popover.present();
