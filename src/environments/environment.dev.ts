@@ -7,7 +7,7 @@ export const environment = {
   grpImgUrl: "https://next-dev.pocnconnect.com/uiimage/group_images/",
   telemetryUrl: "https://otlp-apm-infra-dev.pocnconnect.com/v1/trace",
   serviceName: "POCN UX",
-  twilioServerURL: "https://e1fe-103-142-31-217.ngrok-free.app",
+  twilioServerURL: "https://poco-api-test.onrender.com",
   imageProxyKey:
     "958c5b1aff54420abca1caecfc5e8134d4460653b0bab8bde26723a422df49e56c74b887da83298c943809e2b0b67f125f3070c11ce4b33ee5310a011a39d352",
   imageProxySalt:
