@@ -125,7 +125,7 @@ export class DialerPage implements OnInit {
     if (this.currentValue != "") {
       this.router.navigateByUrl("/dialer1", {
         state: {
-          fromNumber: this.fromNumber,
+          fromNumber: "19734595823",
           dialedPhone: this.dialedPhone,
           callerData: this.callerIdNumber,
         },
