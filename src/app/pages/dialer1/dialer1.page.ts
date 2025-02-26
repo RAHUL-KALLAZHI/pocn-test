@@ -398,6 +398,7 @@ export class Dialer1Page implements OnInit {
           dialedPhoneNumber = this.countryCodeArray + this.dialedPhone;
           console.log("dialedPhoneNumber =>", dialedPhoneNumber);
         }
+        console.log("this.countryCodeArray =>", this.countryCodeArray);
         const params = {
           to: "+919446628537",
           record: "record-from-answer",
