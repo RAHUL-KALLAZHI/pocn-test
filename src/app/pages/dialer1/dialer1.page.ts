@@ -372,6 +372,7 @@ export class Dialer1Page implements OnInit {
     this.conferenceId = `${this.dialedPhone}conferance`;
     this.number = this.fromNumber;
     this.socket.emit("my message", `${this.conferenceId}`);
+    console.log("startConference =>,"this.callerType,this.conferenceId,this.number);
     this._pocnService
       .getTelephoneCountryCode(this.token)
       ?.subscribe(async ({ data }) => {
@@ -383,11 +384,14 @@ export class Dialer1Page implements OnInit {
         let validNumber = this.countryCodeArray.some((elem) =>
           phone.match("^" + elem)
         );
+        console.log("validNumber =>", validNumber);
         let dialedPhoneNumber;
         if (!!validNumber) {
           dialedPhoneNumber = this.dialedPhone;
+          console.log("dialedPhoneNumber =>", dialedPhoneNumber);
         } else {
           dialedPhoneNumber = this.countryCodeArray + this.dialedPhone;
+          console.log("dialedPhoneNumber =>", dialedPhoneNumber);
         }
         const params = {
           to: dialedPhoneNumber,
