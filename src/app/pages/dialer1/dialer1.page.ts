@@ -372,7 +372,12 @@ export class Dialer1Page implements OnInit {
     this.conferenceId = `${this.dialedPhone}conferance`;
     this.number = this.fromNumber;
     this.socket.emit("my message", `${this.conferenceId}`);
-    console.log("startConference =>,"this.callerType,this.conferenceId,this.number);
+    console.log(
+      "startConference =>",
+      this.callerType,
+      this.conferenceId,
+      this.number
+    );
     this._pocnService
       .getTelephoneCountryCode(this.token)
       ?.subscribe(async ({ data }) => {
