@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   graphqlAnonymous: "https://dev-dcp.pocnconnect.com/graphql",
   graphqlShielded: "https://dev-dcp.pocnconnect.com/shield/graphql",
   postProfileImgUrl: "https://next-dev.pocnconnect.com/uiimage/profile_images/",

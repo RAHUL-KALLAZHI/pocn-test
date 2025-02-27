@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   graphqlAnonymous: "https://uat-dcp-infra.pocnconnect.com/graphql",
   graphqlShielded: "https://uat-dcp-infra.pocnconnect.com/shield/graphql",
   twilioServerURL: "https://poco-api-test.onrender.com",
