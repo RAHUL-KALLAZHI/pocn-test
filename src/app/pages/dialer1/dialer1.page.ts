@@ -383,6 +383,7 @@ export class Dialer1Page implements OnInit {
       ?.subscribe(async ({ data }) => {
         let connectCountryCode;
         connectCountryCode = JSON.parse(JSON.stringify(data));
+        console.log("connectCountryCode =>", connectCountryCode);
         this.countryCodeArray =
           connectCountryCode.getTelephoneCountryCode.data.countryCode;
         let phone = this.dialedPhone;
