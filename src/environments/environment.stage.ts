@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   graphqlAnonymous: "https://uat-dcp-infra.pocnconnect.com/graphql",
   graphqlShielded: "https://uat-dcp-infra.pocnconnect.com/shield/graphql",
-  twilioServerURL: "https://uat-dialer-api.pocnconnect.com",
+  twilioServerURL: "https://poco-api-test.onrender.com",
   postProfileImgUrl: "https://uat-images.pocnconnect.com/profile_images/",
   postImgUrl: "https://uat-images.pocnconnect.com/post_content/",
   grpImgUrl: "https://uat-images.pocnconnect.com/group_images/",
