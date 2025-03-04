@@ -3178,4 +3178,26 @@ mutation updateUserLog (
   }
 }
 `,
+
+sendNpiLookupFailureNotification: gql`
+mutation sendNpiLookupFailureNotification (
+  $fullName: String,
+  $userEmail: String,
+   ) {
+    sendNpiLookupFailureNotification(
+    input: {
+      fullName: $fullName,
+      userEmail: $userEmail
+    }
+  ) {
+    npiLookupFailureNotificationResult  {
+      error
+      message
+      status
+    }
+  }
+}
+`,
+
+
 }

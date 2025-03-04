@@ -18,7 +18,7 @@
                                     <img src="assets/images/caller-id.svg">
                                 </ion-col>
                                 <ion-col class="" size="10">
-                                    <div class="calleridnumber">{{set.phoneNumber.replace(countryCodeArray, '')}}</div>
+                                    <div class="calleridnumber">{{replaceCountryCode(set.phoneNumber)}}</div>
                                     <div class="location">{{set.name}}</div>
                                 </ion-col>
                             </ion-row>

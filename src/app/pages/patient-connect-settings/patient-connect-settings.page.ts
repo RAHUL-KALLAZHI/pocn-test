@@ -49,6 +49,8 @@ export class PatientConnectSettingsPage implements OnInit {
   public countryCodeArray;
   disableResendBtn:boolean =  false;
   successEmailResendMsg: boolean = false;
+  setConnectNumLoader: boolean;
+  setConnectMailLoader: boolean;
   constructor(private _pocnService: GraphqlDataService,
     private _pocnLocalStorageManager: LocalStorageManager,
     public modalController: ModalController,
@@ -196,7 +198,7 @@ getTelephoneCountryCode(){
   }
   //verficiation
   clickVerifyNumber(f:NgForm){
-
+    this.setConnectNumLoader =true;
     if((f.value['mobilePhoneNumber'] != null) ||(f.value['mobilePhoneNumber'] != undefined)){
       let mobilePhoneNumber = f.value['mobilePhoneNumber'].replace('+', '');
       let countryCodes = this.countryCodeArray;
@@ -220,16 +222,30 @@ getTelephoneCountryCode(){
     if(f.value['mobilePhoneNumber'] != '' && !isNaN(f.value['mobilePhoneNumber']) && f.value['mobilePhoneNumber'].length >= 10  && this.showCallCountryError == true){
       this.showCallCountryError = true;
       let countryCodes = this.countryCodeArray;
-      let phone= f.value['mobilePhoneNumber'];
+      let phone= f.value['mobilePhoneNumber'].replace('+', '');
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
-      if(validNumber == true){
-        mobilePhoneNumber = f.value['mobilePhoneNumber'];
-        console.log(validNumber);
-        console.log(mobilePhoneNumber)
-      }
-      else{
-        mobilePhoneNumber = countryCodes + f.value['mobilePhoneNumber'];
+      // if(validNumber == true){
+      //   phone = f.value['mobilePhoneNumber'].replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+      //   mobilePhoneNumber = countryCodes[0] + phone;
+      //   console.log(validNumber);
+      //   console.log(mobilePhoneNumber)
+      // }
+      // else{
+      //   mobilePhoneNumber = countryCodes[0] + f.value['mobilePhoneNumber'];
+      // }
+      let startsWithCountryCode = countryCodes.some(code => phone.startsWith(code));
+      if (startsWithCountryCode) {
+        this.showCallCountryError = false;
+        this.setConnectNumLoader= false;
+        console.error('Please do not include country codes.');
+        return;
+      } else {
+        this.showCallCountryError = true;
+        this.setConnectNumLoader= false;
+        mobilePhoneNumber = countryCodes[1] + phone;
+        // Proceed with the rest of your logic using mobilePhoneNumber
+        // Add any further logic here
       }
       let validatePhoneNumber: any;
       validatePhoneNumber = {
@@ -239,6 +255,7 @@ getTelephoneCountryCode(){
       this._pocnService.validatePhoneNumber(validatePhoneNumber).subscribe(
         (response: ValidatePhoneNumberResponse) => {
           if(response.data.validatePhoneNumber.updateConnectionResponse.status === 'success') {
+            this.setConnectNumLoader =true;
             this.showSendNumberButton = false;
             this.showSendButton = true;
              this.sendOtp(f);
@@ -260,7 +277,10 @@ getTelephoneCountryCode(){
               this.otpNumber = '';
               this.showDisablerNumber = false;
               this.showVerifyNumber = false;
+              this.setConnectNumLoader =false;
+
           } else {
+            this.setConnectNumLoader =false;
               this.showVerifyNumber = true;
               this.showDisablerNumber = true;
               this.verifyMessage = true;
@@ -268,6 +288,8 @@ getTelephoneCountryCode(){
         });
       console.log("=========sendOtp");
     } else {
+      this.setConnectNumLoader =false;
+
     }
   }
 // phone number resend code
@@ -288,15 +310,16 @@ sendNumberResendCode(f:NgForm){
     //call step4 verification
     if(this.myUserPhone){
       let countryCodes = this.countryCodeArray;
-      let phone= this.myUserPhone;
+      let phone= this.myUserPhone.replace('+', '');
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
       if(validNumber == true){
-        mobilePhoneNumber = this.myUserPhone;
+        phone = this.myUserPhone.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+        mobilePhoneNumber = countryCodes[1] + phone;
         console.log(mobilePhoneNumber)
       }
       else{
-        mobilePhoneNumber = countryCodes + this.myUserPhone;
+        mobilePhoneNumber = countryCodes[1] + phone;
         console.log(mobilePhoneNumber)
       }
       const bodyData = { "phoneNumber": `${mobilePhoneNumber}`, "channel": 'sms' }
@@ -341,11 +364,12 @@ sendNumberResendCode(f:NgForm){
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
       if(validNumber == true){
-        mobileNumber = mobileNumber;
+        mobileNumber = mobileNumber.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+        mobileNumber = countryCodes[1] + mobileNumber;
         console.log(mobilePhoneNumber)
       }
       else{
-        mobileNumber = countryCodes + mobileNumber;
+        mobileNumber = countryCodes[1] + mobileNumber;
         console.log(mobilePhoneNumber)
       }
       const bodyData = { "phoneNumber": `${mobileNumber}`, "code": this.otpNumber }
@@ -358,7 +382,7 @@ sendNumberResendCode(f:NgForm){
             countryCode: '',
             channel: this.userAgent,
             ipAddressV4: this._pocnLocalStorageManager.getData("ipv4"),
-ipAddressV6: this._pocnLocalStorageManager.getData("ipv6"),
+            ipAddressV6: this._pocnLocalStorageManager.getData("ipv6"),
             device: this.deviceType,
             geoLocation:'',
           }
@@ -409,6 +433,7 @@ ipAddressV6: this._pocnLocalStorageManager.getData("ipv6"),
   }
   //for email
 sendVerifyEmail(f:NgForm){
+  this.setConnectMailLoader=true;
   this.successEmailResendMsg = false;
   if(f.value['email']){
     let regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])?$/g;
@@ -426,6 +451,7 @@ sendVerifyEmail(f:NgForm){
       this._pocnService.validateWorkEmail(validateEmail).subscribe(
         (response: ValidateEmailResponse) => {
           if(response.data.validateWorkEmail.updateConnectionResponse.status === 'success') {
+            this.setConnectMailLoader=false;
             const spanName = "connect-settings-email-validate-btn";
                     let attributes = {
                       userId: this._pocnLocalStorageManager.getData("userId"),
@@ -444,13 +470,19 @@ sendVerifyEmail(f:NgForm){
             if(response.data.validateWorkEmail.updateConnectionResponse.status === 'error' && response.data.validateWorkEmail.updateConnectionResponse.error === 'This email id already exists'){
               this.showEmailAlertPopOver();
             }
+            this.setConnectMailLoader=false;
+
           }
         });
 
     } else {
+      this.setConnectMailLoader=false;
+
         this.showEmailError = false;
     }
   } else {
+    this.setConnectMailLoader=false;
+
      this.showEmailError = false;
     }
 }

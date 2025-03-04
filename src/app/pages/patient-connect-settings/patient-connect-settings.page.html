@@ -37,7 +37,7 @@
                             <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Patient Connect Mobile Number
                         </ion-label>
                         <ion-input [clearInput]="true" type="tel" name="mobilePhoneNumber" [(ngModel)]="myUserPhone" #phoneNumber="ngModel" [ngClass]="{'is-invalid': fNum.submitted && phoneNumber.invalid && phoneNumber.dirty}" class="contact-section-form mobile-reg textinput custom-input"
-                            required maxlength="16" placeholder=""></ion-input>
+                            required maxlength="16" placeholder="" (keyup.enter)="clickVerifyNumber(fNum)"></ion-input>
                         <div *ngIf="fNum.submitted && phoneNumber.invalid">
                             <div *ngIf="phoneNumber.errors?.required" class="error-msg">Phone Number is required.</div>
                         </div>
@@ -54,6 +54,8 @@
                         <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" full round (click)="clickVerifyNumber(fNum)">
                             <span><img src="assets/images/verify.svg" class="send-verification mr-8"> </span>
                             <span>Verify</span>
+                            <span *ngIf="setConnectNumLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+
                         </ion-button>
                     </ion-item>
                 </form>
@@ -66,7 +68,7 @@
                     <ion-item [ngClass]="{'validation-error':(fNums.submitted && otp.invalid)|| !verifyMessage}" lines="none" *ngIf="showVerifyNumber" class="ionitem-padding-remove ion-no-padding mt-16">
                         <ion-label position="stacked" class="input-label">Please enter the code we texted to you.
                         </ion-label>
-                        <ion-input [clearInput]="true" type="tel" name="otpNumber" [(ngModel)]="otpNumber" #otp="ngModel" [ngClass]="{'is-invalid': fNums.submitted && otp.invalid }" class="contact-section-form mobile-reg textinput custom-input" required minlength="6" placeholder=""></ion-input>
+                        <ion-input [clearInput]="true" type="tel" name="otpNumber" [(ngModel)]="otpNumber" #otp="ngModel" [ngClass]="{'is-invalid': fNums.submitted && otp.invalid }" class="contact-section-form mobile-reg textinput custom-input" required minlength="6" placeholder="" (keyup.enter)="clickVerifyOtp(fNums)"></ion-input>
                         <div *ngIf="fNums.submitted && !otp.valid">
                             <div *ngIf="otp.errors?.required" class="error-msg">OTP number is required.</div>
                         </div>
@@ -95,7 +97,7 @@
                             <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Patient Connect Email
                         </ion-label>
                         <ion-input [clearInput]="true" type="email" name="email" [(ngModel)]="email" #myUserEmail="ngModel" [ngClass]="{'is-invalid': fEmail.submitted && myUserEmail.invalid && myUserEmail.dirty}" class="contact-section-form mobile-reg textinput custom-input pc-email"
-                            required placeholder=""></ion-input>
+                            required placeholder="" (keyup.enter)="sendVerifyEmail(fEmail)"></ion-input>
                         <div *ngIf="fEmail.submitted && myUserEmail.invalid">
                             <div *ngIf="myUserEmail.errors?.required" class="error-msg">Email is required.</div>
                         </div>
@@ -111,6 +113,8 @@
                         <ion-button type="submit " class="button-native blue-bg-button width-100p next-button " fill="clear " full round (click)="sendVerifyEmail(fEmail) ">
                             <span><img src="assets/images/verify.svg " class="send-verification mr-8 "> </span>
                             <span>Verify</span>
+                            <span *ngIf="setConnectMailLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+
                         </ion-button>
                     </ion-item>
                 </form>
@@ -124,7 +128,7 @@
                         <ion-label position="stacked" class="input-label">Enter the code in your verification email.
                         </ion-label>
                         <ion-input [clearInput]="true" name="emailCode" type="tel" inputmode="numeric" placeholder="" [(ngModel)]="emailCode" #resend="ngModel" [ngClass]="{ 'is-invalid': fEmails.submitted && emailCode}" class="contact-section-form mobile-reg custom-input" required
-                            minlength="5"></ion-input>
+                            minlength="5" (keyup.enter)="verifyEmailToken(fEmails)"></ion-input>
                         <div *ngIf="fEmails.submitted && resend.invalid">
                             <div *ngIf="resend.errors?.required" class="error-msg">Code is required.</div>
                         </div>

@@ -11,23 +11,39 @@
   </ion-header>
   <ion-content>
     <ion-slides #mySlider pager="true" [options]="slideOpts" (ionSlideDidChange)='ionSlideDidChange()' class="">
-      <ion-slide class="startmonth-section">
-        <!-- <h1>Slide 1</h1> -->
+    <ion-slide class="startmonth-section">
         <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate>
           <div *ngFor="let workHistory of workHistoryList; let i = index;">
             <ion-row class="contact-form-row" *ngIf="i==0">
               <ion-col class="align-left">
                 <ion-label>Employer <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
                 <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
-                  <ion-searchbar placeholder="" [(ngModel)]="workHistory.healthOrganization" #healthOrgzn="ngModel" name="healthOrganization" (search)="searchUser(workHistory.healthOrganization,i)"  enterkeyhint="go"
-                   inputmode="search" class="network-searchbar" [ngClass]="{ 'is-invalid': f1.submitted && workHistory.healthOrganization.invalid }" required>
-                  </ion-searchbar>
+                  <ion-searchbar placeholder="Search"
+               [(ngModel)]="workHistory.healthOrganization"
+               #healthOrgzn="ngModel"
+               name="healthOrganization"
+               (search)="searchUser(workHistory.healthOrganization, i)"
+               (ionClear)="clearSearch(workHistory)" 
+               enterkeyhint="go"
+               inputmode="search"
+               class="network-searchbar"
+               [ngClass]="{ 'is-invalid': f1.submitted && workHistory.healthOrganization.invalid }"
+               required>
+                 </ion-searchbar>
+
                 </ion-item>
                 <div *ngIf="f1.submitted && healthOrgzn.invalid">
                   <div *ngIf="(healthOrgzn.errors.required )" class="error-msg">Please enter a valid workplace</div>
                 </div>
               </ion-col>
+              <ion-button [ngClass]="{'bottom-position': listSearchData, 'top-position': !listSearchData}" type="button" *ngIf="firstSlide && showSearch && !statusMessage" 
+              (click)="searchUser(workHistory.healthOrganization, i)"
+              class="button-native blue-bg-button width-100p next-button" 
+              fill="clear" ion-button full round>
+          <span class="next-btn-text mr-8">Search</span>
+           </ion-button>
             </ion-row>
+      
           </div>
           <div *ngIf="statusMessage">
             <h1 class="no-result">No result found</h1>
@@ -51,13 +67,13 @@
           </span>
           <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
             <ion-col>
-              <ion-button type="submit" *ngIf="!showCustomAddBtn"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              <ion-button type="submit" *ngIf="!showCustomAddBtn && !showSearch"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
                 full round (click)="swipeNext1(mySlider,f1,selectedItem)">
                 <span *ngIf = "NextSlide == 'Add work Experience'" class="plus-icon mr-8"><img src="assets/images/plus-button-icon.svg"></span>
                 <span class="next-btn-text mr-8">{{NextSlide}}</span>
                 <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
               </ion-button >
-              <ion-button type="submit" *ngIf="showCustomAddBtn"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              <ion-button type="submit" *ngIf="showCustomAddBtn && statusMessage"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="customSwipeNext1(mySlider,f1,selectedItem)">
               <span class="next-btn-text mr-8 custom-hco">Add Your Workplace </span>
               <img src="assets/images/arrow-right.svg">
@@ -66,7 +82,14 @@
             </ion-col>
           </ion-item>
         </form>
-      </ion-slide>
+      </ion-slide> 
+     
+     
+     
+
+      
+     
+     
       <ion-slide class="startmonth-section">
         <!-- <h1>Slide 2</h1> -->
         <form name="form" (ngSubmit)="f2.form.valid" #f2="ngForm" novalidate>
@@ -101,7 +124,7 @@
               </ion-row>
               <ion-row class="employment-type-sec mt-8 ">
                 <ion-item lines="none" class="ion-no-padding ionitem-padding-remove type-item">
-                  <ion-label class="input-label" position="stacked">Employement Type</ion-label>
+                  <ion-label class="input-label" position="stacked">Employment Type</ion-label>
                   <ul class="donate-now" (change)='emplyementType($event,workHistory.emplyementType,i)'>
                     <li [ngClass]="{ 'provider-active': npRadio}">
                       <input type="radio" id="fullTime" name="emplyementType" value="fullTime"

@@ -1,18 +1,5 @@
 <ion-content [fullscreen]="true">
     <div class="container">
-        <!--<ion-grid class="myprofile-header">
-         <ion-row class="myprofile-header-row">
-            <ion-col size="4" class="">
-            </ion-col>
-            <ion-col size="4" class="align-center">
-               <a href="/tablinks/my-profile"><img src="assets/images/myprofile-pocn-logo.svg" class="header-logo"></a>
-            </ion-col>
-            <ion-col size="4" class="align-right audio-video-call">
-               <img src="assets/images/settings.svg" (click)="goToSettings()">
-            </ion-col>
-         </ion-row>
-      </ion-grid>-->
-
         <ion-grid>
             <ion-row class="ion-padding-vertical myprofile-header-row lr-padd-5">
                 <ion-col size="4" class="align-left settings">
@@ -66,11 +53,7 @@
             <ion-row class="ion-padding-horizontal">
                 <ion-col class="myprofile-user-image">
                     <div class="profile-image">
-                        <img class="user-img" (error)="imageErrorUrl($event)" *ngIf="profileImgUrl" src="{{ profileImgUrl }}">
-                        <!-- img class="user-img" *ngIf="!profileImgUrl" src="{{ defaultImg }}">-->
-                        <!--  <span (click)="manageProfileImage()" class="user-image-edit"><img
-                        src="assets/images/edit-icon.svg">
-                  </span>-->
+                        <img class="user-img" (error)="imageErrorUrl($event)" *ngIf="profileImgUrl" src="{{ profileImgUrl }}">               
                         <span class="user-image-edit" (click)="imageEdit()">
                     <input type="file" style="display: none;" accept="image/*" (change)="manageProfileImage($event)" #profileImageUpdate/>
                      <label  fill="clear" slot="end" class="">
@@ -106,18 +89,6 @@
                 </div>
             </ion-row>
         </ion-grid>
-
-
-        <!-- Profile small size -->
-        <!-- <ion-grid class="user-details-smallsize">
-         <ion-row>
-            <ion-col>
-               <img class="user-img-small" src="assets/images/user-demo-image.jpg">
-               <ion-label>WIlliam James, <span>PA, Cardiology </span></ion-label>
-            </ion-col>
-         </ion-row>
-      </ion-grid> -->
-        <!-- Profile small size -->
         <ion-grid [hidden]="showSignIn">
             <ion-row class="myprofile-innertab">
                 <ion-col>
@@ -149,11 +120,6 @@
                                 <span>Posts</span>
                             </div>
                         </ion-segment-button>
-                        <!--<ion-segment-button (click)="reloadEngagement()" value="engagements" class="ion-no-padding eng-tab">
-                     <div class="tab-container">
-                        <span>Engagements</span>
-                     </div>
-                  </ion-segment-button>-->
                     </ion-segment>
                 </ion-col>
             </ion-row>
@@ -171,7 +137,9 @@
                                 <div class="tagline-txtarea" [hidden]="!showTagLineInput">
                                     <img (click)="updateUserTagline('tagLine',fTagLIne)" src="assets/images/save-ok.svg" class="tagline-save">
                                     <ion-textarea #tagLineInput (ionBlur)="blurFunction('tagLine')" [(ngModel)]="userbasicDetails.profileTagLine" [value]="(userbasicDetails) ? userbasicDetails.profileTagLine : '' " (input)="setTagLine($event)" type="text" name="tagLine" #tagLine="ngModel"
-                                        class="contact-section-form blue-border-input mb-5 tagline-textarea"></ion-textarea>
+                                        class="contact-section-form blue-border-input mb-5 tagline-textarea"
+                                        (keydown.enter)="updateUserTagline('tagLine',fTagLIne)">
+                                        ></ion-textarea>
                                 </div>
                                 <button (click)="addContactTagLine()" *ngIf="showAddTagLine" slot="end" class="socialmedia-add">
                            <span><img src="assets/images/add-icons.svg" class="social-add"></span>
@@ -190,12 +158,16 @@
                                         {{person ? this.person['userBasicProfile'].firstName : ''}}
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showFirstnameInput">
-                                        <ion-input type="text" [pattern]="noSpacesRegex" [(ngModel)]="userbasicDetails.firstName" name="firstName" #firstName="ngModel" #firstNameInput (keyup)="showValue()" (ionBlur)="blurFunction('firstName')" [value]="(userbasicDetails) ? userbasicDetails.firstName : '' "
-                                            (input)="setFirstname($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" required></ion-input>
+                                        <ion-input type="text" [pattern]="noSpacesRegex" 
+                                        [(ngModel)]="userbasicDetails.firstName" name="firstName" #firstName="ngModel" 
+                                        #firstNameInput (keyup)="showValue()" (ionBlur)="blurFunction('firstName')" 
+                                        [value]="(userbasicDetails) ? userbasicDetails.firstName : '' "
+                                        (input)="setFirstname($event)" type="text" 
+                                        (keydown.enter)="onKeyupEnterFirstName('firstname',f)"
+                                        class="contact-section-form blue-border-input mb-5 custom-input" required></ion-input>
                                         <div *ngIf="!firstName?.valid">
                                             <div *ngIf="showFirstname || firstName.errors.pattern" class="error-msg">First name is required</div>
-                                            <!-- <div *ngIf="firstName.errors.pattern" class="error-msg">Please enter a valid First Name
-                                 </div> -->
+                                       
                                         </div>
                                     </div>
                                     <img [hidden]="!showFirstnameInput" (click)="updateFirstName('firstname',f)" src="assets/images/add-icons.svg" class="social-save custom-input">
@@ -211,13 +183,11 @@
                                         {{person ? this.person['userBasicProfile'].lastName : ''}}
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showLastNameInput">
-                                        <!-- <ion-input #lastNameInput  (ionBlur)="blurFunction('lastName')" [value]="(userbasicDetails) ? userbasicDetails.lastName : '' "  (input)="setLastName($event.target.value)" type="text" class="contact-section-form blue-border-input mb-5"></ion-input> -->
                                         <ion-input [pattern]="noSpacesRegex" [(ngModel)]="userbasicDetails.lastName" name="lastName" #lastName="ngModel" #lastNameInput (ionBlur)="blurFunction('lastName')" [value]="(userbasicDetails) ? userbasicDetails.lastName : '' " (input)="setLastName($event)"
-                                            type="text" class="contact-section-form blue-border-input mb-5 custom-input" required></ion-input>
+                                            type="text" class="contact-section-form blue-border-input mb-5 custom-input" 
+                                            (keydown.enter)="onKeyupEnterLastName('lastname',f1)" required></ion-input>
                                         <div *ngIf="!lastName?.valid">
-                                            <div *ngIf="showLastname || lastName.errors.pattern" class="error-msg">Last name is required</div>
-                                            <!-- <div *ngIf="lastName.errors.pattern" class="error-msg">Please enter a valid Last Name
-                                 </div> -->
+                                            <div *ngIf="showLastname || lastName.errors.pattern" class="error-msg">Last name is required</div>                                            
                                         </div>
                                     </div>
                                     <img [hidden]="!showLastNameInput" (click)="updateLastName('lastname',f1)" src="assets/images/add-icons.svg" class="social-save">
@@ -242,7 +212,8 @@
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showCredentialsInput">
                                         <ion-input #credentialsInput (ionBlur)="blurFunction('credentials')" [value]="(userbasicDetails) ? userbasicDetails.userDegreeCodeText : '' " (input)="setCredentials($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input"
-                                            [(ngModel)]="userbasicDetails.userDegreeCodeText" #credentials="ngModel" name="credentials" required>
+                                            [(ngModel)]="userbasicDetails.userDegreeCodeText" #credentials="ngModel" name="credentials" 
+                                            (keydown.enter)="onKeyupEnterCredentials('credentials',fCredentials)" required>
                                         </ion-input>
                                     </div>
                                     <img [hidden]="!showCredentialsInput" (click)="updateCredentials('credentials',fCredentials)" src="assets/images/add-icons.svg" class="social-save">
@@ -262,15 +233,6 @@
 
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right"
                                         [hidden]="!showSpecialityInput">
-                                        <!-- <img (click)="updateUserBasicDetails('speciality',fPractice)"
-                                 src="assets/images/save-ok.svg" class="social-save"> -->
-                                        <!--<ion-select  (ionChange)="updateUserPrimarySpecialty('speciality',fPractice)" #specialtyInput idlDefault (ionBlur)="blurFunction('specialty')"
-                                 name="speciality" [(ngModel)]="userbasicDetails.primarySpecialityCode"
-                                 class="contact-section-form blue-border-input mb-5 state-selectbox custom-input">
-                                 <ion-select-option *ngFor="let source of specialityType"
-                                    value="{{ source.specialtyCode }}">{{ source.specialtyName }}</ion-select-option>
-                              </ion-select>-->
-
                                         <ionic-selectable
                                             class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
                                             ngDefaultControl name="speciality" [(ngModel)]="specialityListTemp"
@@ -302,7 +264,6 @@
                                     <button (click)="addContactSpeciality()" *ngIf="showAddSpeciality" slot="end" class="socialmedia-add">
                               <span><img src="assets/images/add-icons.svg" class="social-add"></span>
                            </button>
-
                                 </ion-item>
                             </form>
                             <form name="form" (ngSubmit)="fState.form.valid" #fState="ngForm" novalidate>
@@ -312,39 +273,13 @@
                                     <ion-item lines="none" (click)="addContactState()" class="span-right ion-no-padding ionitem-padding-remove" *ngIf="!showStateInput">
                                         {{person ? person['userAddressProfile'][0].addressState : ''}}
                                     </ion-item>
-                                    <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showStateInput">
-                                        <!--<img (click)="updateUserAddressDetails('state',fState)" src="assets/images/save-ok.svg"
-                                 class="social-save"> -->
-
-                                        <!--<ion-select (ionChange)="updateState('state',fState)" #stateInput idlDefault placeholder="" (ionBlur)="blurFunction('state')"
-                                 [(ngModel)]="userAddressDetails[0].addressState"
-                                 class="contact-section-form blue-border-input mb-5 state-selectbox custom-input"
-                                 name="state">
-                                 <ion-select-option *ngFor="let state of stateList" value="{{ state.statevalue }}">
-                                    {{ state.statename }}</ion-select-option>
-                              </ion-select> -->
-
+                                    <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showStateInput">                              
                                         <ionic-selectable class="contact-section-form blue-border-input mb-5 state-selectbox custom-input" #stateInput [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" [(ngModel)]="stateListTemp" (onClose)="updateState('state',fState)" required confirmButtonText="Select"
                                             placeholder="" ngDefaultControl name="state" [items]="stateList" itemValueField="statevalue" itemTextField="statename" [canSearch]="true" [isMultiple]="false" [canClear]="true" clearButtonText="Clear" [canClear]="false"
                                             closeButtonText="Close" searchPlaceholder="">
 
                                             <ng-template ionicSelectableHeaderTemplate>
                                                 <ion-row class="searchmodule-header">
-                                                    <!-- <ion-buttons class="close" (click)="close()" fill="clear">
-                                       <img src="assets/images/close.svg">
-                                    </ion-buttons>
-                                    <ion-title>
-                                     State
-                                   </ion-title> -->
-                                                    <!-- <ion-title>
-                                    Page Title
-                                  </ion-title>
-
-                                  <ion-buttons end>
-                                    <button ion-button class="close" (click)="close()" >
-                                       <img src="assets/images/close.svg">
-                                    </button>
-                                  </ion-buttons> -->
                                                     <ion-col size="2"></ion-col>
                                                     <ion-col size="8">
                                                         <ion-title>
@@ -358,18 +293,11 @@
                                                     </ion-col>
                                                 </ion-row>
                                             </ng-template>
-                                            <!-- <ng-template ionicSelectableCloseButtonTemplate>
-                                 <img src="assets/images/close.svg" class="selectable-close">
-                               </ng-template> -->
-
-
                                         </ionic-selectable>
-
                                     </div>
                                     <button (click)="addContactState()" *ngIf="showAddState" slot="end" class="socialmedia-add">
                               <span><img src="assets/images/add-icons.svg" class="social-add"></span>
                            </button>
-
                                 </ion-item>
                             </form>
 
@@ -381,7 +309,8 @@
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showCityInput">
                                         <ion-input #cityInput (ionBlur)="blurFunction('city')" [value]="(person) ? this.person['userAddressProfile'][0].addressCity : ''" (input)="setCity($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" [(ngModel)]="userAddressDetails[0].addressCity"
-                                            #city="ngModel" name="city" required>
+                                            #city="ngModel" name="city" 
+                                            (keydown.enter)="onKeyupEnterCity('city',fCity)" required>
                                         </ion-input>
                                     </div>
                                     <img [hidden]="!showCityInput" (click)="updateCity('city',fCity)" src="assets/images/add-icons.svg" class="social-save">
@@ -399,18 +328,14 @@
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showZipInput">
                                         <ion-input #zipInput (ionBlur)="blurFunction('zip')" inputmode="numeric" (ngModelChange)="addHyphen($event,'i')" [value]="(person)? this.person['userAddressProfile'][0].addressZip : '' " (input)="setZip($event)" type="text" [ngModel]="userAddressDetails[0].addressZip"
-                                            name="addressZip" #addrsZip="ngModel" class="contact-section-form blue-border-input mb-5 custom-input" maxlength="10" pattern="^\d{5}(?:[-\s]\d{4})?$" required></ion-input>
-                                        <!-- *ngIf="f.submitted && addrsZip.invalid" -->
+                                            name="addressZip" #addrsZip="ngModel" 
+                                            class="contact-section-form blue-border-input mb-5 custom-input" maxlength="10" 
+                                            pattern="^\d{5}(?:[-\s]\d{4})?$" 
+                                            (keydown.enter)="onKeyupEnterZip('zip',f2)" required></ion-input>
                                         <div *ngIf="addrsZip.invalid">
                                             <div *ngIf="showZip && !addrsZip.errors?.pattern" class="error-msg">Please enter zip code</div>
                                             <div *ngIf="addrsZip.errors?.pattern" class="error-msg">Please enter a valid zip code with 5 or 9 digits</div>
                                         </div>
-                                        <!-- <div *ngIf="userContactNumberDetails[0].showPhoneDiv">
-                                    <div *ngIf="!addressZip.errors?.pattern && !addressZip.errors?.required" class="error-msg" >Please enter valid phone Number with country code.</div>
-                                  </div>
-                                  <div *ngIf="userContactNumberDetails[0].showDuplicate" >
-                                    <div class="error-msg" >Phone number is already exist please enter a new number.</div>
-                                  </div> -->
                                     </div>
                                     <img [hidden]="!showZipInput" (click)="updateZip('zip',f2)" src="assets/images/add-icons.svg" class="social-save">
                                     <button (click)="addContactZip()" *ngIf="showAddZip" slot="end" class="socialmedia-add">
@@ -427,15 +352,14 @@
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showTelephoneInput">
                                         <ion-input #telephoneInput (ionBlur)="blurFunction('telephone')" [(ngModel)]="userContactNumberDetails[0].phoneNumber" name="phoneNumber" inputmode="numeric" #mobilePhoneNumber="ngModel" [value]="(person) ? this.person['userContactProfile'][0].phoneNumber : ''"
-                                            (input)="setTelephone($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" minlength="11" pattern="^[+0-9]+$" required></ion-input>
+                                            (input)="setTelephone($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" minlength="11" pattern="^[+0-9]+$" 
+                                            (keydown.enter)="onKeyupEnterPhoneNumber('telephone',f3)" required></ion-input>
                                         <div *ngIf="!mobilePhoneNumber?.valid">
                                             <div *ngIf="showPhnNumber" class="error-msg">Please enter phone number
                                             </div>
                                             <div *ngIf="mobilePhoneNumber.errors?.pattern && !mobilePhoneNumber.errors?.required" class="error-msg">Please enter numeric values</div>
                                         </div>
                                         <div *ngIf="userContactNumberDetails[0].showMobileDiv == true">
-                                            <!-- <div *ngIf="!mobilePhoneNumber.errors?.pattern && !mobilePhoneNumber.errors?.required && !showPhnNumber && showMobileDiv"
-                                    class="error-msg">Please enter valid phone number with country code.</div> -->
                                             <div class="error-msg">Please enter a valid telephone number.</div>
                                         </div>
                                         <div *ngIf="userContactNumberDetails[0].hasDuplicate">
@@ -462,17 +386,14 @@
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showMobileInput">
                                         <ion-input #mobileInput (ionBlur)="blurFunction('mobile')" [(ngModel)]="userContactNumberDetails[0].mobilePhoneNumber" name="mobilePhoneNumber" inputmode="numeric" #phoneNumber="ngModel" [value]="(person) ? person['userContactProfile'][0].mobilePhoneNumber : ''"
-                                            (input)="setMobile($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" minlength="11" pattern="^[+0-9]+$" required></ion-input>
-                                        <!-- *ngIf="f.submitted && phoneNumber.invalid" -->
+                                            (input)="setMobile($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" 
+                                            minlength="11" pattern="^[+0-9]+$" 
+                                            (keydown.enter)="onKeyupEnterMobileNumber('mobile',f4)" required></ion-input>
                                         <div *ngIf="!phoneNumber?.valid">
                                             <div *ngIf="showMobileNumber" class="error-msg">Please enter phone number
                                             </div>
                                             <div *ngIf="phoneNumber.errors?.pattern && !phoneNumber.errors?.required" class="error-msg">Please enter numeric values</div>
                                         </div>
-                                        <!-- <div *ngIf="userContactNumberDetails[0].showPhoneDiv">
-                                 <div *ngIf="!phoneNumber.errors?.pattern && !phoneNumber.errors?.required && !showMobileNumber"
-                                    class="error-msg">Please enter valid phone number with country code.</div>
-                              </div> -->
                                         <div *ngIf="userContactNumberDetails[0].showPhoneDiv == true">
                                             <div class="error-msg">Please enter a valid mobile number.</div>
                                         </div>
@@ -499,13 +420,10 @@
                                         {{person ? this.person['userContactProfile'][0].faxNumber : ''}}
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showFaxInput">
-
-                                        <!-- <img [hidden]="!fax.invalid" (click)="updateUserFax('fax',f5)"
-                                 src="assets/images/save-error.svg" class="social-save"> -->
-                                        <ion-input #faxInput (ionBlur)="blurFunction('fax')" inputmode="numeric" [value]="(person) ? this.person['userContactProfile'][0].faxNumber : ''" (input)="setFax($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" [(ngModel)]="userContactNumberDetails[0].faxNumber"
-                                            #fax="ngModel" name="faxNumber" required pattern="^[0-9]+$"></ion-input>
+                                        <ion-input #faxInput (ionBlur)="blurFunction('fax')" inputmode="numeric" [value]="(person) ? this.person['userContactProfile'][0].faxNumber : ''" (input)="setFax($event)" 
+                                        type="text" class="contact-section-form blue-border-input mb-5 custom-input" [(ngModel)]="userContactNumberDetails[0].faxNumber"
+                                            #fax="ngModel" name="faxNumber" required pattern="^[0-9]+$"   (keydown.enter)="onKeyupEnterFax('fax',f5)"></ion-input>
                                         <div *ngIf="fax.invalid">
-                                            <!-- <div *ngIf="showFax" class="error-msg">Please enter Zip Code</div> -->
                                             <div *ngIf="fax.errors?.pattern" class="error-msg">Please enter only numeric values
                                             </div>
                                         </div>
@@ -531,11 +449,11 @@
                                 <p>{{person ? this.person['userBasicProfile'].email : ''}}</p>
                             </div>
                         </div>
+                       
                         <form name="form" (ngSubmit)="f6.form.valid" #f6="ngForm" novalidate>
                             <ion-item lines="none" class="ion-no-padding ionitem-padding-remove socialmedia-cnt">
-
+                        
                                 <div class="internet-icon">
-                                    <!--<img *ngIf="!showWebsiteInput" src="assets/images/web.svg" class="social-icon"> -->
                                     <img src="assets/images/web.svg" class="social-icon">
                                 </div>
                                 <div class="internet-middle-cnt">
@@ -543,25 +461,34 @@
                                         <p>{{person ? person.userBasicProfile.website : ''}}</p>
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove social-edit-field" [hidden]="!showWebsiteInput">
-                                        <!--<img (click)="updateUserWebsite('website',f6)"
-                                 src="assets/images/save-ok.svg" class="social-save"> -->
-                                        <ion-input #websiteInput (ionBlur)="blurFunction('website')" [value]="(userbasicDetails) ? userbasicDetails.website : '' " (input)="setWebsite($event)" #website="ngModel" [(ngModel)]="userbasicDetails.website" name="website" type="text" class="contact-section-form blue-border-input mb-5 custom-input"></ion-input>
-                                        <!-- <div *ngIf="website.invalid"> -->
+                                        <ion-input 
+                                            #websiteInput 
+                                            (ionBlur)="blurFunction('website')" 
+                                            [value]="(userbasicDetails) ? userbasicDetails.website : ''" 
+                                            (input)="setWebsite($event)" 
+                                            #website="ngModel" 
+                                            [(ngModel)]="userbasicDetails.website" 
+                                            name="website" 
+                                            type="text" 
+                                            class="contact-section-form blue-border-input mb-5 custom-input"
+                                            (keydown.enter)="updateUserWebsite('website', f6)"> 
+                                        </ion-input>
                                         <div *ngIf="showWebsiteMsg" class="error-msg">Please enter a valid url</div>
-                                        <!-- </div> -->
                                     </div>
                                 </div>
                                 <div class="internet-right-btns" *ngIf="showEditWebsite">
                                     <button fill="clear" slot="end" class="experience-more">
-                              <img src="assets/images/more-icon.svg" class="more-dots" (click)="addSocialWebsite()">
-                           </button>
+                                        <img src="assets/images/edit-popover.svg" class="more-dots" (click)="addSocialWebsite()">
+                                    </button>
                                 </div>
-                                <img [hidden]="!showWebsiteInput" (click)="updateUserWebsite('website',f6)" src="assets/images/add-icons.svg" class="social-save">
+                                <img [hidden]="!showWebsiteInput" (click)="updateUserWebsite('website', f6)" src="assets/images/add-icons.svg" class="social-save">
                                 <button (click)="addSocialWebsite()" *ngIf="showAddWebsite && person ? person.userBasicProfile.website == '' : false" slot="end" class="socialmedia-add">
-                           <span><img src="assets/images/add-icons.svg" class="social-add"></span>
-                        </button>
+                                    <span><img src="assets/images/add-icons.svg" class="social-add"></span>
+                                </button>
                             </ion-item>
                         </form>
+                        
+                       
                         <form name="form" (ngSubmit)="f7.form.valid" #f7="ngForm" novalidate>
                             <ion-item lines="none" class="ion-no-padding ionitem-padding-remove socialmedia-cnt">
                                 <div class="internet-icon"><img src="assets/images/twitter.svg" class="social-icon"></div>
@@ -569,17 +496,19 @@
                                     <ion-item class="ion-no-padding ionitem-padding-remove internet-label" lines="none" *ngIf="!showTwitterInput">
                                         <p>{{person ? person.userBasicProfile.twitter : ''}}</p>
                                     </ion-item>
-                                    <div class="ion-no-padding ionitem-padding-remove social-edit-field" [hidden]="!showTwitterInput">
-                                        <!--<img (click)="updateUserTwitterProfile('twitter',f7)"
-                              src="assets/images/save-ok.svg" class="social-save">-->
-                                        <ion-input #twitterInput [value]="(userbasicDetails) ? userbasicDetails.twitter : '' " (input)="setTwitter($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" (ionBlur)="blurFunction('twitter')" #twitter="ngModel" [(ngModel)]="userbasicDetails.twitter"
+                                    <div class="ion-no-padding ionitem-padding-remove social-edit-field" [hidden]="!showTwitterInput">                              
+                                        <ion-input #twitterInput [value]="(userbasicDetails) ? userbasicDetails.twitter : '' " 
+                                        (input)="setTwitter($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" 
+                                        (ionBlur)="blurFunction('twitter')" #twitter="ngModel" 
+                                        [(ngModel)]="userbasicDetails.twitter"
+                                        (keydown.enter)="updateUserTwitterProfile('twitter', f7)"
                                             name="twitter"></ion-input>
                                         <div *ngIf="showTwitterMsg" class="error-msg">Please enter a valid url.</div>
                                     </div>
                                 </div>
                                 <div class="internet-right-btns" *ngIf="showEditTwitter">
                                     <button fill="clear" slot="end" class="experience-more">
-                              <img src="assets/images/more-icon.svg" class="more-dots" (click)="addSocialTwitter()">
+                              <img src="assets/images/edit-popover.svg" class="more-dots" (click)="addSocialTwitter()">
                            </button>
                                 </div>
                                 <img [hidden]="!showTwitterInput" (click)="updateUserTwitterProfile('twitter',f7)" src="assets/images/add-icons.svg" class="social-save">
@@ -597,16 +526,18 @@
                                         <p>{{person ? person.userBasicProfile.linkedin : ''}}</p>
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove social-edit-field" [hidden]="!showLinkedInInput">
-                                        <!--<img (click)="updateUserLinkedin('linkedin',f8)"
-                              src="assets/images/save-ok.svg" class="social-save">-->
-                                        <ion-input #linkedInInput (ionBlur)="blurFunction('linkedIn')" [value]="(userbasicDetails) ? userbasicDetails.linkedin : '' " (input)="setLinkedin($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" #linkedin="ngModel"
-                                            [(ngModel)]="userbasicDetails.linkedin" name="linkedin"></ion-input>
+                                        <ion-input #linkedInInput (ionBlur)="blurFunction('linkedIn')"
+                                         [value]="(userbasicDetails) ? userbasicDetails.linkedin : '' " 
+                                         (input)="setLinkedin($event)" type="text" 
+                                         class="contact-section-form blue-border-input mb-5 custom-input" #linkedin="ngModel"
+                                            [(ngModel)]="userbasicDetails.linkedin" name="linkedin"
+                                            (keydown.enter)="updateUserLinkedin('linkedin', f8)"></ion-input>
                                         <div *ngIf="showLinkedinMsg" class="error-msg">Please enter a valid url.</div>
                                     </div>
                                 </div>
                                 <div class="internet-right-btns" *ngIf="showEditLinkedIn">
                                     <button fill="clear" slot="end" class="experience-more">
-                              <img src="assets/images/more-icon.svg" class="more-dots" (click)="addSocialLinkedIn()">
+                              <img src="assets/images/edit-popover.svg" class="more-dots" (click)="addSocialLinkedIn()">
                            </button>
                                 </div>
                                 <img [hidden]="!showLinkedInInput" (click)="updateUserLinkedin('linkedin',f8)" src="assets/images/add-icons.svg" class="social-save">
@@ -623,16 +554,15 @@
                                         <p>{{person ? person.userBasicProfile.facebook : ''}}</p>
                                     </ion-item>
                                     <div class="ion-no-padding ionitem-padding-remove social-edit-field" [hidden]="!showFacebookInput">
-                                        <!--<img (click)="updateUserFbProfile('facebook',f9)"
-                              src="assets/images/save-ok.svg" class="social-save">-->
                                         <ion-input #facebookInput (ionBlur)="blurFunction('facebook')" [value]="(userbasicDetails) ? userbasicDetails.facebook : '' " (input)="setFacebook($event)" type="text" class="contact-section-form blue-border-input mb-5 custom-input" #facebook="ngModel"
-                                            [(ngModel)]="userbasicDetails.facebook" name="facebook"></ion-input>
+                                            [(ngModel)]="userbasicDetails.facebook" name="facebook"
+                                            (keydown.enter)="updateUserFbProfile('facebook', f9)"></ion-input>
                                         <div *ngIf="showFacebookMsg" class="error-msg">Please enter a valid url.</div>
                                     </div>
                                 </div>
                                 <div class="internet-right-btns" *ngIf="showEditFacebook">
                                     <button fill="clear" slot="end" class="experience-more">
-                           <img src="assets/images/more-icon.svg" class="more-dots" (click)="addSocialFacebook()">
+                           <img src="assets/images/edit-popover.svg" class="more-dots" (click)="addSocialFacebook()">
                         </button>
                                 </div>
                                 <img [hidden]="!showFacebookInput" (click)="updateUserFbProfile('facebook',f9)" src="assets/images/add-icons.svg" class="social-save">
@@ -656,7 +586,6 @@
                                 <span [hidden]="showRename || fileErrorStatus" class="resume-icon-left"><img src="assets/images/resume-icon.svg"
                               class="resume-icon"></span>
                                 <span [hidden]="showRename || fileErrorStatus" class="resume-name">{{ userResume[0].fileName }}</span>
-                                <!-- <input [hidden] = "!showRename" type="text" name="renameResume" id="renameResume" /> -->
                                 <form name="form" (ngSubmit)="fRename.form.valid" #fRename="ngForm" novalidate>
                                     <div class="ion-no-padding ionitem-padding-remove contact-edit-field span-right" [hidden]="!showRename">
                                         <img (click)="resumeFilenameUpdate(fRename)" src="assets/images/save-ok.svg" class="social-save custom-input">
@@ -665,15 +594,9 @@
 
                                     </div>
                                 </form>
-                                <!-- <span *ngIf="fileErrorStatus">
-                           <span class="update-message-error">{{ errorMsg }}</span>
-                                </span> -->
                                 <span *ngIf="fileLoader">
                            <span class="update-message-success"><img src="assets/images-pocn/ajax-loader.gif" /></span>
                                 </span>
-                                <!-- <span *ngIf="successStatus">
-                           <span class="update-message-success">{{ successMsg }}</span>
-                        </span> -->
                                 <span class="subtab-more" [hidden]="showRename || fileErrorStatus">
                            <div>
                               <button fill="clear" slot="end" class="experience-more">
@@ -682,23 +605,13 @@
                               </button>
                            </div>
                         </span>
-
-
                             </ion-col>
                         </ion-row>
 
                         <ion-item lines="none" *ngIf="!userResume[0].fileName">
-                            <!-- <ion-button for="img" fill="clear" slot="end" class="blue-border-button socialmedia-add"
-                                             >Add</ion-button> -->
-                            <!-- <span *ngIf="fileErrorStatus">
-                        <span class="update-message-error">{{ errorMsg }}</span>
-                            </span> -->
                             <span *ngIf="fileLoader">
                         <span class="update-message-success"><img src="assets/images-pocn/ajax-loader.gif" /></span>
                             </span>
-                            <!-- <span *ngIf="successStatus">
-                        <span class="update-message-success">{{ successMsg }}</span>
-                            </span> -->
                         </ion-item>
                     </ion-col>
                     <ion-col size="12" class="pro-experience">
@@ -710,8 +623,6 @@
                                     <h2>{{workHistoryData.experienceTitle}}</h2>
 
                                     <div class="chip-content">
-                                        <!--<ion-chip [outline]="true" class="custom-chip " *ngIf="workHistoryData.experienceTitle">
-                                 {{workHistoryData.experienceTitle}}</ion-chip>-->
                                         <ion-chip [outline]="true" class="custom-chip " *ngIf="workHistoryData.healthOrganization">
                                             {{workHistoryData.healthOrganization}}</ion-chip>
 
@@ -756,7 +667,6 @@
                                     {{ data.description}}
                                  </ion-chip>
                               </div>
-                              <!-- <p class="experience-description" *ngIf="data.description">{{ data.description}}</p> -->
                            </div>
                            <div class="subtab-more">
                               <button fill="clear" slot="end" class="experience-more">
@@ -780,9 +690,6 @@
                            <div class="subtab-content">
                               <h2>{{licenseData.certificateName}}</h2>
                               <div class="chip-content">
-                                <!-- <ion-chip [outline]="true" class="custom-chip " *ngIf="licenseData.certificateName">
-                                    {{licenseData.certificateName}}
-                                 </ion-chip> -->
                                  <ion-chip [outline]="true" class="custom-chip " *ngIf="licenseData.speciality">
                                     {{licenseData.speciality}}</ion-chip>
                                  <ion-chip [outline]="true" class="custom-chip " *ngIf="licenseData.institutionName">
@@ -797,7 +704,6 @@
                         </div>
                      </div>
                   </span>
-
 
                     </ion-col>
 
@@ -973,9 +879,7 @@
                           <span *ngIf="viewPost.colorCss=='faq' ">Check out my new Group</span>
                                     <p [ngClass]="{ 'faq': viewPost.parentPostContent != null && viewPost.colorCss }" *ngIf="(viewPost.colorCss=='faq')">{{viewPost.descDataContentLink}}</p>
                                     <p *ngIf="(viewPost.colorCss !='faq')">{{viewPost.newContentDescription}}</p>
-                                    <!-- <p [class]="viewPost.colorCss">{{viewPost.parentPostContent}}</p>
-                                    <p>{{viewPost.newContentDescription}}</p> -->
-
+                               
                                     </ion-text>
                                     </span>
                                 </ion-item>
@@ -984,28 +888,11 @@
                                     *ngIf="viewPost.descDataLink || viewPost.newDescription">
                                     <ion-text>
                                         <span *ngIf="viewPost.colorCss=='faq' ">Check out my new Group</span>
-                                        <!-- <p [class]="viewPost.colorCss">{{viewPost.description}}</p>
-                                        <p>{{viewPost.newDescription}}</p> -->
                                         <p [ngClass]="{ 'faq': viewPost.parentPostContent == null && viewPost.colorCss }"
                                             *ngIf="(viewPost.colorCss=='faq')">{{viewPost.descDataLink}}</p>
                                         <p>{{viewPost.newDescription}}</p>
                                     </ion-text>
                                 </ion-item>
-                                <!-- <ion-item *ngIf="hideLinkPreview">
-                                    <div class="preview">
-                                        <div [hidden]="!viewPost.preview.image">
-                                            <img class="image" [src]="viewPost.preview.image">
-                                        </div>
-                                        <div class="preview-text">
-                                            <div [hidden]="!viewPost.preview.title" class="title">
-                                                <span>{{viewPost.preview.title}}</span>
-                                            </div>
-                                            <div [hidden]="!viewPost.preview.description" class="description">
-                                                <span>{{viewPost.preview.description}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ion-item> -->
                                 <ion-item *ngIf="!imageType[i] && viewPost.fileName"
                                     class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p "
                                     lines="none ">
@@ -1021,35 +908,19 @@
                                 <ion-item *ngIf="!audioType[i] && viewPost.fileName"
                                     class="ionitem-padding-remove ion-no-padding post-user-description mt-8 width-100p"
                                     lines="none">
-                                    <!-- <audio id="audio " src="{{imageUrl}}{{viewPost.fileName}} "> -->
                                     <audio controls>
                                         <source src="{{imageUrl}}{{viewPost.fileName}}" type="{{viewPost.fileType}}" />
                                     </audio>
-                                    <!-- </audio> -->
                                 </ion-item>
                                 <ion-item
                                     class="ionitem-padding-remove ion-no-padding post-user-description width-100p mt-24 separator "
                                     lines="none">
                                     <ion-col size="4" class="duration">
-                                        <!-- <ion-text>2<span class="hours ">h</span></ion-text> -->
                                         <ion-text>
                                             {{viewPost.postDate | timeAgo}}
-                                            <!-- <ion-datetime displayFormat="H " [(ngModel)]="viewPost.postDate "></ion-datetime><span class="hours ">h</span> -->
                                         </ion-text>
                                     </ion-col>
                                     <ion-col size="8 " class="like-comment ">
-                                        <!-- <span class="like " *ngIf="viewPost.likeCount==n ull || userId !=v iewPost.likedUsers[0] ">
-                              <ion-icon name='heart-outline' (click)="likePost(viewPost.postId,i) " class="mr-8 like-comment-img " ></ion-icon>
-
-
-                                <i>{{viewPost.likeCount}}</i>
-                            </span>
-                              <span class="like " *ngIf="userId==v iewPost.likedUsers[0] ">
-                             <ion-icon name='heart'  (click)="likePost(viewPost.postId,i) " class="mr-8 like-comment-img " ></ion-icon>
-
-
-                            <i>{{viewPost.likeCount}}</i>
-                            </span> -->
                                         <span class="like-area " *ngIf="!viewPost.likedUsers.includes(userId) ">
                               <div class="likepost " (click)="likePost(viewPost.postId,i,'liked')"></div>
                               <i *ngIf="viewPost.likeCount> 0">{{viewPost.likeCount}}</i>
@@ -1078,21 +949,6 @@
                     </div>
                 </ion-row>
             </div>
-            <!--<div [ngSwitch]="tabType" class="profile-subtab-content engagements-tab-content mt-24">
-            <ion-row *ngSwitchCase="'engagements'" class="ion-no-padding">
-               <ion-col size="12" class="mynetwork">
-                  <ion-item *ngFor="let log of userLogsList" class="ionitem-padding-remove ion-no-padding width-100p mt-8">
-                     <img src="assets/images/user-demo-image.jpg" class="mr-8 mynetwork-img">
-                     <ion-label>{{log.description}}</ion-label>
-                     <p class="notification-timing" >{{log.createdAt | timeAgo}}</p>
-                 </ion-item>
-               </ion-col>
-            </ion-row>
-         </div>-->
-
         </ion-grid>
-
     </div>
-
 </ion-content>
-<!--<app-main-tabs></app-main-tabs>-->

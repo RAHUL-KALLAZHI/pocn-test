@@ -1,14 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
-import { DataService } from 'src/app/services/data.service';
-import { ImageModalPage } from '../image-modal/image-modal.page';
+import { ModalController } from '@ionic/angular';
 import { GraphqlDataService } from './../../services/graphql-data.service';
-import { CookieManager } from "./../../services/cookie-manager";
 import { LocalStorageManager } from "./../../services/local-storage-manager";
-import { Observable, Subscriber, ReplaySubject } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-import { TokenManager } from "./../../services/token-manager";
-import { Source, EmploymentNode, UserProfileImage, UserResume, AddressNode, ContactNode, DegreeNode, SpecialityNode, StateNode, educationNode } from './../../services/type';
+import { educationNode } from './../../services/type';
 import { TelemetryService } from 'src/app/services/telemetry.service';
 import { Router } from '@angular/router';
 
@@ -88,12 +82,8 @@ export class DeletePopoverPage implements OnInit {
     institutionName: ''
   }];
   constructor(private modalController: ModalController,
-    private dataService: DataService,
     private _pocnService: GraphqlDataService,
-    private _pocnCookieManager: CookieManager,
     private _pocnLocalStorageManager: LocalStorageManager,
-    private _sanitizer: DomSanitizer,
-    private tokenManager: TokenManager,
     public telemetry: TelemetryService,
     private router:Router,
 
@@ -131,13 +121,6 @@ export class DeletePopoverPage implements OnInit {
     //this.getHcoList();
 
   }
-  // getHcoList = () => {
-  //   this._pocnService.getHcoList().subscribe(({ data }) => {
-  //     this.hcoList = data.hcoMasters.nodes;
-  //     console.log(this.hcoList);
-
-  //   });
-  // }
   getUserProfile () {
     let educationDetails = [];
     let educationData = [];

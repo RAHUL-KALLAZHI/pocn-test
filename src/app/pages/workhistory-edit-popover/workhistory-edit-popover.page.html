@@ -25,13 +25,20 @@
                   <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
                     <ion-searchbar placeholder="" [(ngModel)]="workHistory.healthOrganization" #healthOrgzn="ngModel"
                      name="healthOrganization" enterkeyhint="go" (search)="searchUser(workHistory.healthOrganization,i, $event)" 
-                     inputmode="search" class="network-searchbar"  [ngClass]="{ 'is-invalid': f1.submitted && workHistory.healthOrganization.invalid }" required>
+                     inputmode="search" class="network-searchbar" 
+                     (ionClear)="clearSearch(workHistory)"  [ngClass]="{ 'is-invalid': f1.submitted && workHistory.healthOrganization.invalid }" required>
                     </ion-searchbar>
                     </ion-item>
                   <div *ngIf="f1.submitted && healthOrgzn.invalid">
                     <div *ngIf="(healthOrgzn.errors.required )" class="error-msg">Please enter a valid workplace</div>
                   </div>
                 </ion-col>
+                <ion-button [ngClass]="{'bottom-position': listSearchData, 'top-position': !listSearchData}" type="button" *ngIf="firstSlide && showSearch && !statusMessage" 
+                (click)="searchUser(workHistory.healthOrganization, i,$event)"
+                class="button-native blue-bg-button width-100p next-button" 
+                fill="clear" ion-button full round>
+            <span class="next-btn-text mr-8">Search</span>
+             </ion-button>
               </ion-row>
             </div>
           </div>
@@ -58,12 +65,12 @@
           </span>
           <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-8 next-bottom-button" lines="none" *ngIf="!setLoader">
             <ion-col class="ion-padding-horizontal">
-              <ion-button type="submit" *ngIf="!showCustomAddBtn" (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+              <ion-button type="submit" *ngIf="!showCustomAddBtn && !showSearch" (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="swipeNext1(mySlider,f1,selectedItem)">
               <span class="next-btn-text mr-8">{{NextSlide}}</span>
               <span *ngIf = "NextSlide == 'Next'"><img src="assets/images/arrow-right.svg"></span>
             </ion-button>
-            <ion-button type="submit" *ngIf="showCustomAddBtn"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
+            <ion-button type="submit" *ngIf="showCustomAddBtn && statusMessage"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
             full round (click)="customSwipeNext1(mySlider,f1,selectedItem)">
             <span class="next-btn-text mr-8 custom-hco">Add Your Workplace</span>
             <img src="assets/images/arrow-right.svg">
@@ -129,7 +136,7 @@
               </ion-row>
               <ion-row class="employment-type-sec mt-8 ion-padding-horizontal">
                 <ion-item lines="none" class="ion-no-padding ionitem-padding-remove">
-                  <ion-label class="input-label" position="stacked">Employement Type</ion-label>
+                  <ion-label class="input-label" position="stacked">Employment Type</ion-label>
                   <ul class="donate-now" (change)='emplyementType($event,workHistory.employmentType,i)'>
                     <li [ngClass]="{ 'provider-active': npRadio}">
                       <input type="radio" id="fullTime" name="emplyementType" value="fullTime"

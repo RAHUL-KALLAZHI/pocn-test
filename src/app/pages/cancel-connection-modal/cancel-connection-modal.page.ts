@@ -6,7 +6,6 @@ import {  ModalController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { HttpClient } from '@angular/common/http';
-//import { Geolocation } from '@capacitor/geolocation';
 import { TelemetryService } from 'src/app/services/telemetry.service';
 import { Router } from '@angular/router';
 @Component({
@@ -63,19 +62,6 @@ export class CancelConnectionModalPage implements OnInit {
       this.deviceType = "Unknown"
       }
   }
-   //get location
-  //  getCurrentPosition = async () => {
-  //   const coordinates = await Geolocation.getCurrentPosition();
-  //   this.geolocationPosition = coordinates.coords.latitude + ',' + coordinates.coords.longitude;
-  // };
-  // getPosition(): any {
-  //   Geolocation.getCurrentPosition().then(coordinates => {
-  //     this.geolocationPosition = coordinates.coords.latitude + ',' + coordinates.coords.longitude;
-  //   }).catch((error) => {
-  //     this.geolocationPosition = "";
-  //     console.log('Error getting location', error);
-  //   });
-  // }
   get device(): any {
     return this.deviceService.getDeviceInfo();
     }

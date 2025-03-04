@@ -112,9 +112,6 @@ margin: 0;
         position: relative;
         top: -5px;
     }
-    .next-bottom-button{
-        
-    }
     span.plus-icon img {
         width: 22px;
     }
@@ -124,3 +121,40 @@ margin: 0;
       .next-bottom-button {
         margin-bottom: 15px;
     }
+    .bottom-position {
+      position: absolute;
+      bottom: 40px;
+      width: 93%;
+      z-index: 9;
+    }
+    .top-position {
+      // position: relative;
+      // top: 0;
+      position: absolute;
+      bottom: -66px;
+      width: 93%;
+      z-index: 9;
+    }
+    .search-position{
+      position: absolute;
+      bottom: -121px;
+      width: 93%;
+      z-index: 9;
+    }
+
+    .startmonth-section{
+        display: block !important;
+      }
+      .startmonth-section{
+        padding: 24px 11px;
+      }
+      .startmonth-section row{
+        width: 100%;
+      }
+      .type-item{
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .employment-type-sec ion-label{
+        margin-bottom: 5px !important;
+      }

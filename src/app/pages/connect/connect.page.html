@@ -61,7 +61,7 @@
                                         <p>Register your mobile number </p>
                                     </ion-text>
                                 </ion-item>
-                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length < 1) && stepNavigation()">
+                                <ion-item class="item-background-color" [ngClass]="{ 'step-active': myUserDialerData.length > 0,'step-upcoming': myUserDialerData.length ==0 && phoneLinked==1}" lines="none" (click)="phoneLinked ==1 && (myUserDialerData.length==0) && stepNavigation()">
                                     <ion-text class="steps">
                                         <span>Step 5
                                             <img src="assets/images/next-step.svg" class="next-step">
@@ -512,7 +512,7 @@
                                         <ion-label position="stacked" class="input-label">
 
                                             <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Please confirm your work email address <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
-                                        <ion-input class="custom-input" [clearInput]="true" name="email" mailto:placeholder="johndoe@umchealth.com" [(ngModel)]="email" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && email}" required></ion-input>
+                                        <ion-input class="custom-input" [clearInput]="true" name="email" mailto:placeholder="johndoe@umchealth.com" [(ngModel)]="email" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && email}" (keyup.enter)="sendVerifyEmail(fEmail)" required></ion-input>
                                         <span class="phone-number-hint mt-8"> You must link your work email address to your POCN account to be able to use Patient Connect.</span>
 
                                         <!-- <div *ngIf="fEmail.submitted && !emailType?.valid">
@@ -549,7 +549,7 @@
                                         <div class="text-width">
 
                                             <ion-input [clearInput]="true" type="tel" name="emailCode" placeholder="" inputmode="numeric" [(ngModel)]="emailCode" #resend="ngModel" [ngClass]="{ 'is-invalid': fEmails.submitted && emailCode}" class="contact-section-form mobile-reg
-  custom-input" required minlength="5"></ion-input>
+                                            custom-input" required minlength="5" (keyup.enter)="verifyEmailToken(fEmails)"></ion-input>
 
 
 
@@ -997,7 +997,7 @@
 
                                         </ion-label>
                                         <ion-input [clearInput]="true" type="tel" name="mobilePhoneNumber" inputmode="numeric" [(ngModel)]="mobilePhoneNumber" #phoneNumber="ngModel" [ngClass]="{ 'is-invalid': fNum.submitted && phoneNumber.invalid && phoneNumber.dirty}" class="contact-section-form mobile-reg textinput custom-input"
-                                            required maxlength="16" placeholder=""></ion-input>
+                                            required maxlength="16" placeholder="" (keyup.enter)="clickVerifyNumber(fNum)"></ion-input>
                                         <div *ngIf="fNum.submitted && phoneNumber.invalid">
                                             <div *ngIf="phoneNumber.errors?.required" class="error-msg">Phone Number is required</div>
                                         </div>
@@ -1006,7 +1006,7 @@
                                         <ion-item lines="none" class="ion-no-padding ionitem-padding-remove contact-cont mobile-alert">
                                             <span class="span-left"></span>
                                             <ion-item lines="none" class="span-right ion-no-padding ionitem-padding-remove mt-8">
-                                                <span class="phone-number-hint"> Enter numbers without dashes.
+                                                <span class="phone-number-hint"> Enter numbers without dashes and country codes.
                                                     <br>
                                                     You must link your mobile number to your POCN account to use Patient Connect.
                                                 </span>
@@ -1040,7 +1040,7 @@
                                     <ion-item [ngClass]="{ 'validation-error':(fNums.submitted && otp.invalid)|| !verifyMessage}" lines="none" *ngIf="showVerifyNumber" class="padding-11 paddingstart-ionitem">
                                         <div class="text-width">
                                             <ion-input [clearInput]="true" type="tel" name="otpNumber" inputmode="numeric" [(ngModel)]="otpNumber" #otp="ngModel" [ngClass]="{ 'is-invalid': fNums.submitted && otp.invalid }" class="contact-section-form mobile-reg textinput
-                                        custom-input" required minlength="6" placeholder=""></ion-input>
+                                        custom-input" required minlength="6" placeholder="" (keyup.enter)="clickVerifyOtp(fNums)"></ion-input>
                                             <div *ngIf="fNums.submitted && !otp.valid">
                                                 <div *ngIf="otp.errors?.required" class="error-msg" [hidden]="hideErrorMsg">OTP Number is required</div>
                                             </div>
@@ -1144,7 +1144,7 @@
                     </ion-slide>
                     <ion-slide *ngIf="setLoader==false">
                         <ion-card class="patient-connect-card" no-lines>
-                            <form name="form" (ngSubmit)="fCall.form.valid" #fCall="ngForm" novalidate>
+                            <form name="form" (ngSubmit)="submitForm(fCall, $event)" #fCall="ngForm" novalidate>
                                 <ion-card-header>
                                     <ion-card-title>
                                         <button (click)="slidePrev()" class="back-btn" fill="clear"><img src="assets/images/arrow-left.svg"></button> 5/5 - Caller ID
@@ -1166,7 +1166,7 @@
                                     </ion-item>
                                     <ion-item [ngClass]="{'validation-error':(fCall.submitted &&  name.invalid)|| !callNameWhiteSpaceCheck}" lines="none" class="padding-11 paddingstart-ionitem mt-24">
                                         <ion-label position="stacked" class="input-label"><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Name to Display on Caller ID <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
-                                        <ion-input [clearInput]="true" type="text" name="userName" [(ngModel)]="userProfileName" #name="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  name.invalid}" class="contact-section-form textinput custom-input" required></ion-input>
+                                        <ion-input [clearInput]="true" type="text" name="userName" [(ngModel)]="userProfileName" #name="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  name.invalid}" class="contact-section-form textinput custom-input" required (keydown.enter)="$event.preventDefault(); setFocusWorkNumInput()"></ion-input>
                                         <span class="phone-number-hint mt-8">Please provide a descriptive name that you can use to identify your caller ID. Patients will not see this name.</span>
                                         <div [hidden]="callErrName" class="error-msg">Name is required</div>
                                         <div [hidden]="callNameWhiteSpaceCheck" class="error-msg">Please enter valid User Name</div>
@@ -1174,8 +1174,8 @@
                                     <ion-item [ngClass]="{'validation-error':(fCall.submitted && workPhoneNumber.invalid)|| !showWorkNumber || !ShowConnectErrPhone || !showWorkCountryError || !callVerifyErr}" class="item-background-color padding-11 paddingstart-ionitem" lines="none">
                                         <ion-label position="stacked" class="input-label"><span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>Phone number to display on Caller ID <span class="required-star"><img src="assets/images/required.svg"></span>
                                         </ion-label>
-                                        <ion-input [clearInput]="true" type="tel" class="textinput custom-input" inputmode="numeric" name="workPhoneNumber" [(ngModel)]="workNumber" #workPhoneNumber="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  workPhoneNumber.invalid }" required maxlength="14"
-                                            placeholder=""></ion-input>
+                                        <ion-input [clearInput]="true" type="tel" class="textinput custom-input" inputmode="numeric" name="workPhoneNumber" [(ngModel)]="workNumber" #workPhoneNumber="ngModel" [ngClass]="{'is-invalid': fCall.submitted &&  workPhoneNumber.invalid }" required maxlength="14" #workNumInput  
+                                            placeholder="" (keydown.enter)="$event.preventDefault(); clickCallerConfirm(fCall)" ></ion-input>
                                         <!-- <div *ngIf="fCall.submitted && workPhoneNumber.invalid">
                                             <div *ngIf="workPhoneNumber.errors?.required" class="error-msg">Phone Number is required</div>
                                         </div> -->
@@ -1186,13 +1186,13 @@
                                         <ion-item lines="none" class="ion-no-padding ionitem-padding-remove contact-cont mobile-alert">
                                             <span class="span-left"></span>
                                             <ion-item lines="none" class="span-right ion-no-padding ionitem-padding-remove">
-                                                <span class="phone-number-hint mt-8">Enter numbers without dashes.</span>
+                                                <span class="phone-number-hint mt-8">Enter numbers without dashes and country codes.</span>
                                             </ion-item>
                                         </ion-item>
                                         <ion-text class="have-questions mb-16">Have questions? See our <span class="faq" (click)="faqNavigation('connect')">FAQ</span>.</ion-text>
                                     </ion-item>
                                     <ion-item class="item-background-color padding-11 paddingstart-ionitem" lines="none">
-                                        <ion-button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="clickCallerConfirm(fCall)">
+                                        <ion-button type="button" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button full round (click)="clickCallerConfirm(fCall)">
                                             <span class="mr-8">Next</span>
                                             <span><img src="assets/images/arrow-right.svg" class="send-verification"></span>
                                             <span *ngIf="setSignUpConnectLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>

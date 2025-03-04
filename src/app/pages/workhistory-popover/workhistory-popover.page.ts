@@ -1,13 +1,11 @@
-import { Component, OnInit, Input,ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { DataService } from 'src/app/services/data.service';
-import { ImageModalPage } from '../image-modal/image-modal.page';
 import { GraphqlDataService } from './../../services/graphql-data.service';
 import { CookieManager } from "./../../services/cookie-manager";
 import { LocalStorageManager } from "./../../services/local-storage-manager";
-import { Source,EmploymentNode, UserProfileImage, UserResume, AddressNode, ContactNode, DegreeNode, SpecialityNode, StateNode, educationNode} from './../../services/type';
-import { Observable, Subscriber, ReplaySubject } from 'rxjs';
+import { Source,EmploymentNode, DegreeNode, StateNode, educationNode} from './../../services/type';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TokenManager } from "./../../services/token-manager";
 import { NgForm } from '@angular/forms';
@@ -16,7 +14,6 @@ import { PopoverController } from "@ionic/angular";
 import { ActionSheetController } from '@ionic/angular';
 import { IonSlides, Platform } from '@ionic/angular';
 import { IonContent } from '@ionic/angular';
-import { Keyboard } from '@capacitor/keyboard';
 import { TelemetryService } from 'src/app/services/telemetry.service';
 @Component({
   selector: 'app-workhistory-popover',
@@ -31,7 +28,6 @@ export class WorkhistoryPopoverPage implements OnInit {
   @Input() states: [];
   @Input() hcoList: any;
   public token;
-  // hcoDetails = [];
   hcoDetails = {
     hcoCountry: "",
     hcoDmcid: "",
@@ -59,7 +55,6 @@ export class WorkhistoryPopoverPage implements OnInit {
   showCustomValidationError: boolean = false; 
   showCustomAddBtn: boolean = false; 
   selectEmployerMsg: boolean = false; 
-  //public hcoList;
   customHealthOrganization;
   NextSlide = 'Next';
   yearDiff: any;
@@ -108,17 +103,13 @@ export class WorkhistoryPopoverPage implements OnInit {
     autoHeight: true,
   };
   disablePrevBtn = true;
+  showSearch = true;
+  listSearchData = false;
   constructor(
-    private popover: PopoverController,
-    private actionSheetCtrl: ActionSheetController,    
-    private dataService: DataService,
     private modalController: ModalController,
     private router: Router,
     private _pocnService: GraphqlDataService,
-    private _pocnCookieManager: CookieManager,
     private _pocnLocalStorageManager: LocalStorageManager,
-    private _sanitizer: DomSanitizer,
-    private tokenManager: TokenManager,
     public alertController: AlertController,
     public telemetry: TelemetryService,
     ) { 
@@ -146,6 +137,7 @@ export class WorkhistoryPopoverPage implements OnInit {
     this.getUserProfile();
     this.getEmploymentType();
     this.stateList = this.states
+
   }
   ScrollToTop(){
    // this.content.scrollToTop(1500);
@@ -249,7 +241,7 @@ export class WorkhistoryPopoverPage implements OnInit {
           name: workHistoryData['endMonth']
         };
         this.tempEndMonth.push(monthEndObj);
-        this.workHistoryList.push({   // showing in ui form
+        this.workHistoryList.push({   
           experienceTitle: workHistoryData['experienceTitle'],
           hcoStateProvince: workHistoryData['hcoStateProvince'],
           description: workHistoryData['description'],
@@ -264,6 +256,7 @@ export class WorkhistoryPopoverPage implements OnInit {
           endMonth:this.tempEndMonth[index],
           diffYear:this.yearDiff,
         });
+
       });
     },
     (error) => {
@@ -501,6 +494,7 @@ export class WorkhistoryPopoverPage implements OnInit {
     this.workHistoryList[index].tags = tags;
   }
   searchUser(searchText,index) {
+
     this.hcoDetails = {
       hcoCountry: "",
       hcoDmcid: "",
@@ -518,6 +512,7 @@ export class WorkhistoryPopoverPage implements OnInit {
       this.selectedItem = undefined;
       this._pocnService.getHcoListSearch(searchText).subscribe(({ data }) => {
         this.searchData = data['hcoMasters']['nodes'];
+        this.listSearchData = true;
         if (this.searchData.length === 0) {
           this.statusMessage = true;
           this.showCustomAddBtn = true;
@@ -531,6 +526,7 @@ export class WorkhistoryPopoverPage implements OnInit {
 }
 updateActive(i){
   this.selectedItem = i;
+  this.showSearch = false;
 }
 ScrollToBottom(){
   setTimeout(() => {
@@ -538,7 +534,6 @@ ScrollToBottom(){
   }, 700);    
 }
 selectSearchData(test,i){
-// this.selectedItem[i] = true;
 this.selectEmployerMsg = false;
 this.ScrollToBottom();
 this.selectedItem = i;
@@ -554,5 +549,14 @@ addCustomHco(){
   this.statusMessage = false;
   this.searchData = [];
 }
+
+clearSearch(workHistory: any) {
+  workHistory.healthOrganization = ''; 
+  this.searchData = [];
+  this.showSearch = true;
+  this.listSearchData = false;
+
+}
+
 }
 

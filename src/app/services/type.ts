@@ -299,6 +299,13 @@ export interface PostLikeResponse {
     likeStatus: string;
   }
 }
+export interface npiSendResponse {
+  npiLookupFailureNotificationResult: {
+    status : string;
+    error: string ;
+    message: string;
+  }
+}
 export type PatientConnectResponse  ={
   data: {
     submitBaaSign:ConnectionResponse
@@ -413,4 +420,10 @@ export type LikePostResponse  ={
   data: {
     likePost: PostLikeResponse
   }
+}
+
+export type npiNotificationResponse  ={
+    data: {
+      sendNpiLookupFailureNotification:npiSendResponse
+    }
 }

@@ -203,10 +203,11 @@ detectBrowserVersion(){
           let validNumber = countryCodes.some(elem => phone.match('^' + elem));
           let emailPhone;
           if(validNumber == true){
-            emailPhone =this.emailPhone;
+            phone = phone.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+            emailPhone = this.countryCodeArray[1] + phone;
           }
           else{
-            emailPhone =  this.countryCodeArray + this.emailPhone;
+            emailPhone =  this.countryCodeArray[1] + this.emailPhone;
           }
               roomData = {
                 accessToken: this.token,

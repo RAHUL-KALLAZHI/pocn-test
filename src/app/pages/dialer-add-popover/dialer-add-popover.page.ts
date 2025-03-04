@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonInput, ModalController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { GraphqlDataService } from './../../services/graphql-data.service';
 import { LocalStorageManager } from "./../../services/local-storage-manager";
@@ -34,6 +34,9 @@ export class DialerAddPopoverPage implements OnInit {
   activateCode = null;
   callerIds = [];
   public countryCodeArray;
+  @ViewChild('workInputNum', {static: false}) workNumInputData: IonInput;
+  setDialAddLoader: boolean;
+  
   constructor(private modalController: ModalController,
     public alertController: AlertController,
     private _pocnService: GraphqlDataService,
@@ -90,6 +93,7 @@ export class DialerAddPopoverPage implements OnInit {
     })
   }
   async saveAddPopOver(f:NgForm){
+    this.setDialAddLoader=true;
     if((f.value['workPhoneNumber'] != null) ||(f.value['workPhoneNumber'] != undefined)){
       let userPhoneNumber = f.value['workPhoneNumber'].replaceAll('+', '');
       let countryCodes=this.countryCodeArray;
@@ -165,12 +169,25 @@ export class DialerAddPopoverPage implements OnInit {
       let phone = f.value['workPhoneNumber'].replaceAll('+', '');
       let validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
-      if(validNumber == true){
-        mobilePhoneNumber = phone;
+      // if(validNumber == true){
+      //   mobilePhoneNumber = phone;
+      // }
+      // else{
+      //   mobilePhoneNumber = countryCodes + phone;
+      // }
+      let startsWithCountryCode = countryCodes.some(code => phone.startsWith(code));
+      console.log(startsWithCountryCode,"startsWithCountryCode")
+      if (startsWithCountryCode) {
+        this.showAddCountryError = true;
+        console.error('Please do not include country codes.');
+        return;
+      } else {
+        this.showAddCountryError = false;
+        mobilePhoneNumber = countryCodes[0] + phone;
+        // Proceed with the rest of your logic using mobilePhoneNumber
+        // Add any further logic here
       }
-      else{
-        mobilePhoneNumber = countryCodes + phone;
-      }
+      console.log(mobilePhoneNumber,"mobilePhoneNumber")
       let callerData = {
         accessToken: this.token,
         name:f.value['userName'],
@@ -182,6 +199,7 @@ export class DialerAddPopoverPage implements OnInit {
       // caller id verification removed from client approval
       this._pocnService.updateCallerProfileDetails(callerData).subscribe(
         (response: any) => {
+          this.setDialAddLoader=false;
           if (response.data.addCallerProfile.userProfileUpdateResponse.status === 'Success') {
             this.close();
             this.getDialerCaller();
@@ -205,6 +223,12 @@ export class DialerAddPopoverPage implements OnInit {
               }
           }
         });
+    }
+  }
+  setWorkNumFocus(){
+    console.log("setWorkNumFocus")
+    if (this.workNumInputData) {
+      this.workNumInputData.setFocus();
     }
   }
 }

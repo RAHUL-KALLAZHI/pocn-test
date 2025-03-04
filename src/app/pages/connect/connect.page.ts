@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit , ViewChild} from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonInput, ModalController } from '@ionic/angular';
 import { GraphqlDataService } from './../../services/graphql-data.service';
 import { LocalStorageManager } from "./../../services/local-storage-manager";
 import { CookieManager } from "./../../services/cookie-manager";
@@ -90,6 +90,7 @@ export class ConnectPage implements OnInit {
   @ViewChild("emailConnectInput") emailConnectInput ;
   @ViewChild(IonContent, { static: false }) content: IonContent;
   @ViewChild('manualInputSelector') manualInputSelector: ElementRef;
+  @ViewChild('workNumInput', {static: false}) workNumInputData: IonInput;
 
   public sign: string;
   showError:boolean = true ;
@@ -456,6 +457,7 @@ getUserProfile() {
 getDialerCaller() {
   this._pocnService.getDialerCaller(this.token)?.subscribe(({ data }) => {
     this.myUserDialerData = data['getDialerCaller'].data;
+    console.log("myUserDialerData",this.myUserDialerData)
   })
 }
 patientConnectStatusCalls(userId:String){
@@ -506,6 +508,7 @@ patientConnectStatusCalls(userId:String){
 //condition for common navigation
 //start steps
   stepNavigation() {
+    console.log("stepNavigation",this.myUserDialerData.length)
   this.hidePrevICon= true;
     let slide = 0;
     this._pocnService.patientConnectStatusCalls(this._pocnLocalStorageManager.getData("userId").toUpperCase()).subscribe(({ data }) => {
@@ -646,7 +649,7 @@ sendVerifyEmail(f:NgForm){
   this.successEmailResendMsg = false;
   this.hidePrevICon= true;
   if(f.value['email']){
-    let regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])?$/g;
+    let regex = /^[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@((?!gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com|aol\.com|zoho\.com|protonmail\.com|mail\.com|gmx\.com)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])?$/i;
     let lowVal = f.value['email'].toLowerCase();
     let searchfind = regex.test(lowVal);
     if(f.value['email'] != '' && searchfind === true){
@@ -659,7 +662,7 @@ sendVerifyEmail(f:NgForm){
         workEmailId: f.value['email'].toLowerCase(),
         channel: this.device.userAgent,
         ipAddressV4: this._pocnLocalStorageManager.getData("ipv4"),
-ipAddressV6:   this._pocnLocalStorageManager.getData("ipv6"),
+      ipAddressV6:   this._pocnLocalStorageManager.getData("ipv6"),
         device: this.deviceType,
         geoLocation:''
       }
@@ -1294,12 +1297,25 @@ clickVerifyNumber(f:NgForm){
       let phone= f.value['mobilePhoneNumber'].replace('+', '');
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
-      if(validNumber == true){
-        mobilePhoneNumber = phone;
+      let startsWithCountryCode = countryCodes.some(code => phone.startsWith(code));
+      if (startsWithCountryCode) {
+        this.showCallCountryError = false;
+        this.setSignUpConnectLoader= false;
+        console.error('Please do not include country codes.');
+        return;
+      } else {
+        this.showCallCountryError = true;
+        mobilePhoneNumber = countryCodes[1] + phone;
+        // Proceed with the rest of your logic using mobilePhoneNumber
+        // Add any further logic here
       }
-      else{
-        mobilePhoneNumber = countryCodes + phone;
-      }
+      // if(validNumber == true){
+      //   mobilePhoneNumber = phone;
+      // }
+      // else{
+      //   mobilePhoneNumber = 
+      // }
+      console.log(mobilePhoneNumber,validNumber,countryCodes,"mobilePhoneNumbermobilePhoneNumber")
       let validatePhoneNumber: any;
       validatePhoneNumber = {
             accessToken: this.token,
@@ -1364,10 +1380,11 @@ sendNumberResendCode(f:NgForm){
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
       if(validNumber == true){
-        mobilePhoneNumber = phone;
+        phone = phone.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+        mobilePhoneNumber = countryCodes[1] + phone;
       }
       else{
-        mobilePhoneNumber = countryCodes + this.mobilePhoneNumber;
+        mobilePhoneNumber = countryCodes[1] + phone;
       }
       const bodyData = { "phoneNumber": `${mobilePhoneNumber}`, "channel": 'sms' }
       this.http.post(`${this.twilioServerURL}/login`, bodyData).subscribe((data) => {
@@ -1407,10 +1424,12 @@ sendNumberResendCode(f:NgForm){
       let phone=mobileNumber;
       let  validNumber = countryCodes.some(elem => phone.match('^' + elem));
       if(validNumber == true){
-        mobileNumber = mobileNumber;
+        mobileNumber = mobileNumber.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '');
+        mobileNumber = countryCodes[1] + mobileNumber;
+
       }
       else{
-        mobileNumber = countryCodes + mobileNumber;
+        mobileNumber = countryCodes[1] + mobileNumber;
       }
       const bodyData = { "phoneNumber": `${mobileNumber}`, "code": this.otpNumber }
       this.http.post(`${this.twilioServerURL}/verify`, bodyData).subscribe((data) => {
@@ -1523,11 +1542,25 @@ sendNumberResendCode(f:NgForm){
       let phone= f.value['workPhoneNumber'].replace('+', '');
       let validNumber = countryCodes.some(elem => phone.match('^' + elem));
       let mobilePhoneNumber;
-      if(validNumber == true){
-        mobilePhoneNumber = phone;
-      }
-      else{
-        mobilePhoneNumber = countryCodes + phone;
+      // if(validNumber == true){
+      //   mobilePhoneNumber = phone;
+      // }
+      // else{
+      //   mobilePhoneNumber = countryCodes + phone;
+      // }
+      let startsWithCountryCode = countryCodes.some(code => phone.startsWith(code));
+      console.log(startsWithCountryCode,"startsWithCountryCode")
+      if (startsWithCountryCode) {
+        this.showWorkCountryError = false;
+        this.setSignUpConnectLoader= false;
+        console.error('Please do not include country codes.');
+        return;
+      } else {
+        this.showCallCountryError = true;
+        mobilePhoneNumber = countryCodes[0] + phone;
+        this.setSignUpConnectLoader= false;
+        // Proceed with the rest of your logic using mobilePhoneNumber
+        // Add any further logic here
       }
       let callerVerifyData;
       callerVerifyData = {
@@ -1782,9 +1815,24 @@ ipAddressV6:   this._pocnLocalStorageManager.getData("ipv6"),
 
     //this.router.navigate(['/faq'])
   }
+  setFocusWorkNumInput() {
+    console.log(this.workNumInputData, "workNumInputData");
+    if (this.workNumInputData) {
+      this.workNumInputData.setFocus();
+    }
+  }
   slidePrev(){
   this.patientConnectStatusCalls(this.userId.toUpperCase( ));
     this.slides.slideTo(0, 50);
     this.setLoader = false;
   }
+  submitForm(form: NgForm, event: Event) {
+    event.preventDefault(); // Stop form submission
+    event.stopPropagation(); // Prevent event bubbling
+    
+    if (form.valid) {
+      this.clickCallerConfirm(form);
+    }
+  }
+ 
 }

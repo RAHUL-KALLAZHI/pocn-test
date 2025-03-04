@@ -41,6 +41,25 @@
     <ion-row  [hidden] = "pageLoaderStatus" class="ion-padding-horizontal npi-details-main" *ngIf="npiResults.length==0">
       <ion-col class="lookup-modal-col">
         <p>We couldn’t find any matches for the information you provided. Please check your entry and try again.</p>
+        <p>If your entry is valid and if you still don’t see any matches, please submit a ticket to App Support by clicking the button below</p>
+        <ion-item lines="none" class="ion-no-padding mt-24"
+            [ngClass]="{ 'validation-error': f.submitted && email.invalid }">
+            <ion-label class="input-label" position="stacked">
+              
+              <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
+              <span class="required-star"><img src="assets/images/required.svg"></span> Email <span class="label-small">(will be used for App Support to contact you)</span>
+            </ion-label>
+            <ion-input class="custom-input" [clearInput]="true" type="text" name="email" [(ngModel)]="supportEmail"
+              #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required #emailInput ></ion-input>
+              <div *ngIf="npiEmailCheck " class="error-msg">
+                Email is required
+              </div>
+            <div *ngIf="npiEmptyResult" class="error-msg">{{npiErrMsg}}</div>
+          </ion-item>
+        <ion-button class="action-button blue-bg-button width-100p mt-16" fill="clear"  (click)="submitTicket()"  type="button">
+          <span >Submit Support Ticket</span>
+          <span *ngIf="setSignUpLoader" class="loader-npi"><img class="button-loader" src="/assets/images-pocn/loader.gif"></span>
+       </ion-button>
       </ion-col>
      </ion-row>
 

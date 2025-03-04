@@ -222,4 +222,5 @@ export class DialerEditPopoverPage implements OnInit {
     this.removeIconDisabled = true;
   }
 }
+
 }

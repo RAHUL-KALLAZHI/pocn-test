@@ -236,17 +236,12 @@ button span.next-btn-text {
 .custom-hco{
   text-transform: none;
 }
-// .next-bottom-button{
-//   margin: auto;
-//   position: absolute;
-//   text-align: center;
-//   bottom: 45px;
-//   width: 100%;
-// }
-// .add-edit-form{
-//   height: 75% !important;
-//   overflow: auto;
-// }
-// .add-edit-slide{
-//   display: block !important;
-// }
+.bottom-position {
+  position: absolute;
+  bottom: -5px;
+  width: 93%;
+}
+.top-position {
+  position: relative;
+  top: 0;
+}

@@ -97,14 +97,21 @@ export class AddcallPopoverPage implements OnInit {
     let phone=this.participantPhone;
     let  validNumber = this.countryCodeArray.some(elem => phone.match('^' + elem));
     let participantPhone;
-    if(!!validNumber){
-      participantPhone = this.participantPhone;
-      console.log(participantPhone)
+    // if(!!validNumber){
+    //   participantPhone = this.participantPhone;
+    //   console.log(participantPhone)
+    // }
+    // else{
+    //   participantPhone = this.countryCodeArray + this.participantPhone;
+    //   console.log(participantPhone)
+    // }
+    if (validNumber) {
+      participantPhone = phone.replace(/^(91|1)/, '');
+    } else {
+      participantPhone = phone; // Assign original value if no country code is found
     }
-    else{
-      participantPhone = this.countryCodeArray + this.participantPhone;
-      console.log(participantPhone)
-    }
+    // Prepend the new country code
+    participantPhone = this.countryCodeArray[1] + participantPhone;
     if(index == -1){
     const params = { to: participantPhone, callStatus: 'call', from: this.number, conferenceId: this.conferenceId };
     this.http.post(`${this.twilioServerURL}/addParticipant`, params,{responseType:'text'}).subscribe((data)=>{

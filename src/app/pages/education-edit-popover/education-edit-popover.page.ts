@@ -53,16 +53,9 @@ export class EducationEditPopoverPage implements OnInit {
   monthHistory: Source[] = [];
   public yearHistoryTemp: any[] = [];
   disablePrevBtn = true;
-
+  showSearch: boolean = false;
   educationList = [];
-  // public educationList: any[] = [{
-  //   school: '',
-  //   hcoDegree: '',
-  //   field: '',
-  //   periodFfrom: '',
-  //   periodTo: '',
-  //   description: ''
-  // }];
+  listSearchData : boolean = false;
   @Input() key1: number;
   setLoader: boolean = true;
   constructor(
@@ -312,6 +305,10 @@ export class EducationEditPopoverPage implements OnInit {
           //hcoDegree: educationData['hcoDegree'],
           description: educationData['description'],
         });
+        this.showSearch = !this.educationList?.some(item => item['school']);
+
+        console.log("hiiiworkHistoryList ", this.educationList );
+        console.log("hiii this.showSearch ", this.showSearch );
        // console.log("**************");
        // console.log(this.educationList);
       }
@@ -359,6 +356,7 @@ export class EducationEditPopoverPage implements OnInit {
   }
   updateActive(i){
     this.selectedItem = i;
+    this.showSearch = false;
   }
   swipeNextData(mySlider, f, searchResult) {
     searchResult.forEach((field, index) => {
@@ -417,8 +415,10 @@ export class EducationEditPopoverPage implements OnInit {
      // Keyboard.hide();
     this._pocnService.getEducationSearch(searchText).subscribe(({ data }) => {
       this.searchData = data['educationMasters']['nodes'];
+      this.listSearchData = true;
       if (this.searchData.length === 0) {
         this.statusMessage = true;
+        this.listSearchData = false;
       }
       else {
         this.statusMessage = false;
@@ -439,5 +439,12 @@ this.hcoDetails = test;
 slidePrev() {
   this.mySlider.lockSwipes(false); 
   this.mySlider.slidePrev();
+}
+clearSearch(workHistory: any) {
+  workHistory.healthOrganization = ''; 
+  this.searchData = [];
+  this.showSearch = true;
+  this.listSearchData = false;
+
 }
 }

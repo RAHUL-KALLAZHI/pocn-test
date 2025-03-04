@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router ,ActivatedRoute,Params} from '@angular/router';
-import { GraphqlDataService } from './../../services/graphql-data.service';
+import { Router } from '@angular/router';
 import { LocalStorageManager } from "./../../services/local-storage-manager";
 import { ModalController } from '@ionic/angular';
-import { AlertController,Platform } from '@ionic/angular';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { HttpClient } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 import { TelemetryService } from 'src/app/services/telemetry.service';
 @Component({
   selector: 'app-contact-us',
@@ -15,8 +12,6 @@ import { TelemetryService } from 'src/app/services/telemetry.service';
 export class ContactUsPage implements OnInit {
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private _pocnService: GraphqlDataService,
     private _pocnLocalStorageManager: LocalStorageManager,
     public modalController: ModalController,
     public alertController: AlertController,

@@ -87,13 +87,19 @@ export class DialerPopoverPage implements OnInit {
    getSelectNumber(set,event, index){
     let selected = {
       name: set.name,
-      phone:set.phoneNumber.replace(this.countryCodeArray, '')
+      phone :set.phoneNumber.replace(new RegExp(`^(${this.countryCodeArray.join('|')})`), '')
+      // phone:set.phoneNumber.replace(this.countryCodeArray, '')
      }
+     console.log("selected", selected);
     this.dialerDetails =  selected;
   }
 
   getDialerSave(){
     this.close(this.dialerDetails);
+  }
+  replaceCountryCode(phoneNumber: string): string {
+    const regex = new RegExp(`^(${this.countryCodeArray.join('|')})`);
+    return phoneNumber.replace(regex, '');
   }
 }
 

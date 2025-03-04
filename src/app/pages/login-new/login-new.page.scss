@@ -429,3 +429,7 @@ ion-text.pass-hint {
 .forgot-pass button {
   padding: 0 !important;
 }
+.text-wrap-style{
+  text-overflow: unset;
+  white-space: break-spaces;
+}

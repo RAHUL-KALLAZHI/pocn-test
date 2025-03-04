@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <h2 class="lookup-title">Contact Support
+          <span class="modal-close">
+            <button fill="clear" (click)="closeModal()" class="modal-close-button lookupmodal-close">
+              <img src="assets/images/close.svg">
+            </button>
+          </span>
+        </h2>
+
+      </ion-col>
+     
+    </ion-row>
+   
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="submitSupportTicket()">
+    <ion-item>
+      <ion-label position="floating">Message</ion-label>
+      <ion-textarea [(ngModel)]="message" name="message" required></ion-textarea>
+    </ion-item>
+    <ion-button class="action-button blue-bg-button width-100p mt-16" fill="clear" type="button">
+      <span >Send Email</span>
+   </ion-button>
+  </form>
+</ion-content>

@@ -1944,8 +1944,8 @@ updateMyConnectionsRequestNotification(accessToken:string) {
   }).pipe(map((data: any) => data))
 }
 getIpAddress(){
-  let v4; 
-  let v6; 
+  let v4:any; 
+  let v6:any; 
   this.httpClient.get('https://ipv4.jsonip.com').subscribe((value: any) => {
       v4 = value.ip;
     },(error) => {}
@@ -1979,6 +1979,13 @@ getTelephoneCountryCode(accessToken:string) {
 updateUserLog(args: any) {
   return this.apollo.use('second').mutate<any>({
     mutation: mutations.updateUserLog,
+    variables: args,
+  }).pipe(map((data: any) => data))
+}
+
+sendNpiLookupFailureNotification(args:any) {
+  return this.apollo.mutate<any>({
+    mutation: mutations.sendNpiLookupFailureNotification,
     variables: args,
   }).pipe(map((data: any) => data))
 }

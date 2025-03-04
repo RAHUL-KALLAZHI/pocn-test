@@ -2,18 +2,12 @@
   import { Component, OnInit, Input, ViewChild } from '@angular/core';
   import { Router } from '@angular/router';
   import { ModalController } from '@ionic/angular';
-  import { DataService } from 'src/app/services/data.service';
   import { GraphqlDataService } from './../../services/graphql-data.service';
-  import { CookieManager } from "./../../services/cookie-manager";
   import { LocalStorageManager } from "./../../services/local-storage-manager";
-  import { Source,EmploymentNode, UserProfileImage, UserResume, AddressNode, ContactNode, DegreeNode, SpecialityNode, StateNode, educationNode} from './../../services/type';
-  import { DomSanitizer } from '@angular/platform-browser';
-  import { TokenManager } from "./../../services/token-manager";
+  import { Source,EmploymentNode, DegreeNode,StateNode, educationNode} from './../../services/type';
   import { NgForm } from '@angular/forms';
   import { AlertController } from '@ionic/angular';
-  import { PopoverController } from "@ionic/angular";
-  import { ActionSheetController } from '@ionic/angular';
-  import { IonSlides, Platform } from '@ionic/angular';
+  import { IonSlides } from '@ionic/angular';
   import { IonContent } from '@ionic/angular';
 import { TelemetryService } from 'src/app/services/telemetry.service';
 @Component({
@@ -88,17 +82,13 @@ export class WorkhistoryEditPopoverPage implements OnInit {
   tempStartMonth = [];
   tempEndMonth = [];
   currentHcoDmcId: string;
+  showSearch: boolean = false;
+  listSearchData : boolean = false;
     constructor(
-      private popover: PopoverController,
-      private actionSheetCtrl: ActionSheetController,
-      private dataService: DataService,
       private modalController: ModalController,
       private router: Router,
       private _pocnService: GraphqlDataService,
-      private _pocnCookieManager: CookieManager,
       private _pocnLocalStorageManager: LocalStorageManager,
-      private _sanitizer: DomSanitizer,
-      private tokenManager: TokenManager,
       public alertController: AlertController,
       public telemetry: TelemetryService,
       ) {
@@ -106,6 +96,7 @@ export class WorkhistoryEditPopoverPage implements OnInit {
       }
 
     ngOnInit() {
+
       const spanName = "page-view" + this.router.url.replace(/\//g, '-') + '-'+ "edit-workhistry-popover";
     let attributes = {
         userId: this._pocnLocalStorageManager.getData("userId"),
@@ -293,6 +284,10 @@ export class WorkhistoryEditPopoverPage implements OnInit {
               endMonth:this.tempEndMonth[index],
               diffYear:this.yearDiff,
           }); 
+          this.showSearch = !this.workHistoryList?.some(item => item['healthOrganization']);
+
+          console.log("hiiiworkHistoryList ", this.workHistoryList );
+          console.log("hiii this.showSearch ", this.showSearch );
         }
         });
         this.setLoader = false;
@@ -579,6 +574,7 @@ export class WorkhistoryEditPopoverPage implements OnInit {
       if(searchText !=''){
         this._pocnService.getHcoListSearch(searchText).subscribe(({ data }) => {
           this.searchData = data['hcoMasters']['nodes']; 
+          this.listSearchData = true;
           if (this.searchData.length == 0) {
             this.statusMessage = true;
             this.showCustomAddBtn = true;
@@ -593,6 +589,7 @@ export class WorkhistoryEditPopoverPage implements OnInit {
   }
   updateActive(i){
     this.selectedItem = i;
+    this.showSearch = false;
   }
   ScrollToBottom(){
     setTimeout(() => {
@@ -615,5 +612,13 @@ export class WorkhistoryEditPopoverPage implements OnInit {
     this.statusMessage = false;
     this.searchData = [];
   }
+  clearSearch(workHistory: any) {
+    workHistory.healthOrganization = ''; 
+    this.searchData = [];
+    this.showSearch = true;
+    this.listSearchData = false;
+
+  }
+  
 }
 

@@ -230,9 +230,6 @@ button span.next-btn-text {
   position: relative;
   top: 2px;
 }
-.next-bottom-button{
-  
-}
 span.plus-icon img {
   width: 22px;
 }
@@ -245,4 +242,14 @@ span.plus-icon img {
 }
 .custom-hco{
   text-transform: none;
+}
+.bottom-position {
+  position: absolute;
+  bottom: 30px;
+  width: 93%;
+  z-index: 9;
+}
+.top-position {
+  position: relative;
+  top: 0;
 }

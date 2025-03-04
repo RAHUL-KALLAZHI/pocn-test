@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { GraphqlDataService } from './../../services/graphql-data.service';
 import { LocalStorageManager } from "./../../services/local-storage-manager";
 import { ModalController } from '@ionic/angular';
 import { TelemetryService } from 'src/app/services/telemetry.service';

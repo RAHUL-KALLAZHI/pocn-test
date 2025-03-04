@@ -21,7 +21,7 @@
 
                         <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span> Email or Phone Number to Invite <span class="required-star"><img src="assets/images/required.svg"></span>
                     </ion-label>
-                    <ion-input class="custom-input" [clearInput]="true" name="emailPhone" placeholder="beatrix@uhome.com" [(ngModel)]="emailPhone" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && emailPhone}" required></ion-input>
+                    <ion-input class="custom-input" [clearInput]="true" name="emailPhone" placeholder="beatrix@uhome.com" [(ngModel)]="emailPhone" #emailType="ngModel" [ngClass]="{ 'is-invalid': fEmail.submitted && emailPhone}" required (keyup.enter)="sendVerifyEmailPhone(fEmail)"></ion-input>
                     <div *ngIf="fEmail.submitted && !emailType?.valid">
                         <div *ngIf="emailType.errors?.required" class="error-msg">Email/Phone is required</div>
                     </div>

@@ -456,7 +456,6 @@ public countryCodeArray;
           this.getUserStat();
         }
         if (this.refetchPost.msg == 'settingsRoute') {
-          console.log("refetch call");
           this.getUserProfile();
         }
       }
@@ -468,7 +467,6 @@ public countryCodeArray;
       this.router.navigate(['/']);
     }
     const spanName = 'page-view' + this.router.url.replace(/\//g, '-');
-    console.log(spanName);
     let attributes = {
       userId: this._pocnLocalStorageManager.getData('userId'),
       firstName: this._pocnLocalStorageManager.getData('firstName'),
@@ -509,7 +507,6 @@ public countryCodeArray;
   }
   onIonInfinite(ev) {
     setTimeout(() => {
-      console.log('Done');
       ev.target.complete();
       //// if(this.searchTextData === ''){
       if (this.postUserView.length > 0) {
@@ -674,7 +671,6 @@ public countryCodeArray;
     popover.onDidDismiss().then((result) => {
       if (result['data'] != undefined) {
         this.showRenameResume = result['data'];
-        console.log(this.showRenameResume, 'kkkkk');
         if (this.showRenameResume == 'resumeRename') {
           this.showRename = true;
           this.addText();
@@ -702,7 +698,6 @@ public countryCodeArray;
           );
         }
         if (this.showRenameResume == 'resume') {
-          console.log('hiirename');
           this.successStatus = true;
           this.successStatusResume = true;
           this.successMsg = 'Resume replaced successfully';
@@ -779,8 +774,6 @@ public countryCodeArray;
     this.showEditTagLine = false;
     // this.tagLineInput.setFocus();
     this.tagLineInput.nativeElement.focus();
-    console.log( this.tagLineInput.nativeElement,"hii3455");
-    console.log( this.tagLineInput,"hii3455");
   }
   addContactLastName() {
     this.showLastNameInput = true;
@@ -1014,7 +1007,6 @@ public countryCodeArray;
         try {
           permissions = await Camera.requestPermissions();
         } catch (error) {
-          console.log(error);
         }
         permissionList = await Camera.checkPermissions();
         console.log('checking permissions.....', permissionList, permissions);
@@ -1862,6 +1854,7 @@ public countryCodeArray;
       });
   };
   updateFirstName(type: string, f) {
+    console.log("hiiiupdateFirstName",type,f);
     if (type == 'firstname') {
       this.showFirstnameInput = false;
       this.showAddFirstname = false;
@@ -2435,6 +2428,13 @@ public countryCodeArray;
     let validPhnNumber = countryCodes.some((elem) =>
       phoneNumber.match('^' + elem)
     );
+    if (validPhnNumber) {
+      // Remove the existing country code
+      phoneNumber = phoneNumber.replace(new RegExp(`^(${countryCodes.join('|')})`), '');
+    }
+    
+    // Add the country code from countryCodeArray[0]
+    phoneNumber = countryCodes[1] + phoneNumber;
     let findPhoneRegex1 = phoneRegex.test(phoneNumber);
     if (phoneNumber != '') {
       this.showPhnNumber = false;
@@ -4475,18 +4475,82 @@ ipAddressV6: this._pocnLocalStorageManager.getData("ipv6"),
     this._pocnService
       .updateMyConnectionsRequestNotification(token)
       .subscribe(({ data }) => {
-        console.log('hiii', data);
         this.showNotification = false;
         this.showConNotification = false;
       });
   }
   addText() {
-    // this.model = this.model + text;
-    console.log("hiii",this.resumeRenameInput);
     this.resumeRenameInput.setFocus();
    }
    addAboutmeCursor() {
-    console.log("hiii",this.tagLineInput.setFocus);
      this.tagLineInput.setFocus();
      }
+     onKeyupEnterFirstName(value: string,f): void {
+      if (this.showAddFirstname) {
+        this.addContactFirstname();
+          
+      } else {
+        this.updateFirstName(value, f);
+      }
+  }
+  onKeyupEnterLastName(value: string,F1): void {
+    if (this.showAddLastName) {
+      this.addContactLastName();
+        
+    } else {
+      this.updateLastName(value, F1);
+    }
+}
+
+
+onKeyupEnterCredentials(value: string,fCredentials): void {
+  if (this.showAddCredentials) {
+    this.addContactCredentials();
+      
+  } else {
+    this.updateCredentials(value, fCredentials);
+  }
+}
+
+
+onKeyupEnterCity(value: string,f): void {
+  if (this.showAddCity) {
+    this.addContactCity();
+      
+  } else {
+    this.updateCity(value, f);
+  }
+}
+onKeyupEnterZip(value: string,f): void {
+  if (this.showAddZip) {
+    this.addContactZip();
+      
+  } else {
+    this.updateZip(value, f);
+  }
+}
+onKeyupEnterPhoneNumber(value: string,f): void {
+  if (this.showAddTelephone) {
+    this.addContactTelephone();
+      
+  } else {
+    this.updateUserPhoneNumber(value, f);
+  }
+}
+onKeyupEnterMobileNumber(value: string,f): void {
+  if (this.showAddMobile) {
+    this.addContactMobile();
+      
+  } else {
+    this.updateUserMobileNumber(value, f);
+  }
+}
+onKeyupEnterFax(value: string,f): void {
+  if (this.showAddFax) {
+    this.addContactFax();
+      
+  } else {
+    this.updateUserFax(value, f);
+  }
+}
 }

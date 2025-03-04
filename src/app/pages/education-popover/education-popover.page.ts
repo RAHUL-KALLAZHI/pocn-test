@@ -60,6 +60,9 @@ export class EducationPopoverPage implements OnInit {
   }];
   eduSuccess: boolean = true;
   slideOpts;
+  showSearch: boolean = true;
+  listSearchData : boolean = false;
+  searchNoData: boolean = false;
   constructor(
     private popover: PopoverController,
     private actionSheetCtrl: ActionSheetController,
@@ -104,6 +107,7 @@ export class EducationPopoverPage implements OnInit {
   }
   updateActive(i){
     this.selectedItem = i;
+    this.showSearch = false;
   }
   getEducationList = () => {
     this._pocnService.getEducationList().subscribe(({ data }) => {
@@ -263,7 +267,7 @@ export class EducationPopoverPage implements OnInit {
   ionSlidesDidLoad(mySlider){
     mySlider.lockSwipes(true); 
   }
-  public async ionSlideDidChange(mySlider): Promise<void> {
+  public async ionSlideDidChange(): Promise<void> {
     let prom1 = this.mySlider.isBeginning();
     let prom2 = this.mySlider.isEnd();
   
@@ -272,7 +276,7 @@ export class EducationPopoverPage implements OnInit {
     });
     const index = await this.mySlider.getActiveIndex();
     let me = this;
-    mySlider.lockSwipes(true); 
+    me.mySlider.lockSwipes(true); 
     me.mySlider.isEnd().then((istrue) => {
       if (istrue) {
         me.NextSlide = 'Add Education';
@@ -284,6 +288,8 @@ export class EducationPopoverPage implements OnInit {
     });
     // this.mySlider.slideNext();
   }
+
+
   ScrollToTop(){
     this.content.scrollToTop(1500);
   }
@@ -326,15 +332,20 @@ export class EducationPopoverPage implements OnInit {
     this.educationList[index].description = description;
   }
   searchUser(searchText,index) {
+    if(searchText !=''){
     this._pocnService.getEducationSearch(searchText).subscribe(({ data }) => {
       this.searchData = data['educationMasters']['nodes'];
+      this.listSearchData = true;
       if (this.searchData.length === 0) {
         this.statusMessage = true;
+        this.searchNoData = true;
       }
       else {
         this.statusMessage = false;
+        this.searchNoData = false;
       }
     });
+  }
   }
   selectSearchData(test,i){
     this.ScrollToBottom();
@@ -348,4 +359,12 @@ export class EducationPopoverPage implements OnInit {
     this.mySlider.lockSwipes(false); 
     this.mySlider.slidePrev();
   }
+  clearSearch(workHistory: any) {
+    workHistory.healthOrganization = ''; 
+    this.searchData = [];
+    this.showSearch = true;
+    this.listSearchData = false;
+  }
+  
 }
+

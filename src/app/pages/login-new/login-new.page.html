@@ -376,7 +376,7 @@
             <ion-label class="input-label" position="stacked">
               
               <span class="alert-icon"><img src="assets/images/error-input-field.svg"></span>
-              Email <span class="label-small">(will be used as your username)</span> <span class="required-star"><img src="assets/images/required.svg"></span>
+              Email <span class="label-small text-wrap-style">(will be used as your username. Please make sure that there are no typos in your email. We will be sending you a verification email to complete your user registration.)</span> <span class="required-star"><img src="assets/images/required.svg"></span>
             </ion-label>
             <ion-input class="custom-input" [clearInput]="true" type="text" name="email" [(ngModel)]="person.email"
               #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required #emailInput (keyup.enter)="setFocusEmailInput()"></ion-input>

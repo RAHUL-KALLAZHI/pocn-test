@@ -23,15 +23,22 @@
                 <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
                   <ion-searchbar placeholder="" [(ngModel)]="education.school" #school="ngModel"
                   name="school" enterkeyhint="go" (search)="searchUser(education.school,i)" 
+                  (ionClear)="clearSearch(education)" 
                   inputmode="search" class="network-searchbar" [ngClass]="{ 'is-invalid': f1.submitted && education.school.invalid }" required></ion-searchbar>
                 </ion-item>
                 <div *ngIf="f1.submitted && school.invalid">
                   <div *ngIf="(school.errors.required )" class="error-msg">Please enter valid institution</div>
                 </div>
               </ion-col>
+              <ion-button [ngClass]="{'bottom-position': listSearchData, 'top-position': !listSearchData}" type="button" *ngIf="showSearch" 
+              (click)="searchUser(education.school,i)"
+              class="button-native blue-bg-button width-100p next-button" 
+              fill="clear" ion-button full round>
+          <span class="next-btn-text mr-8">Search</span>
+           </ion-button>
             </ion-row>
           </div>
-          <div *ngIf="statusMessage">
+          <div *ngIf="statusMessage" [ngClass]="{'top-position': !listSearchData}">
               <h1 class="no-result">No result found</h1>
           </div >
           <span *ngIf = "NextSlide != 'Edit Education'">
@@ -51,7 +58,7 @@
             </div>
           </span>
           <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none"  *ngIf="!setLoader">
-            <ion-col>
+            <ion-col *ngIf="!showSearch">
               <button type="submit" (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="swipeNext(mySlider,f1)">
               <span class="next-btn-text mr-8">{{NextSlide}}</span>
@@ -197,7 +204,7 @@
               </ion-row>
             </div>
           </div>
-          <ion-item class="item-background-color ionitem-padding-remove mb-24 ion-no-padding mt-16" lines="none">
+          <ion-item class="item-background-color ionitem-padding-remove mb-24 ion-no-padding mt-16" lines="none" *ngIf="!showSearch">
             <ion-col>
               <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="swipeNext(mySlider,f1)">

@@ -10,23 +10,29 @@
     </h2>
   </ion-header>
   <ion-content>
-    <ion-slides #mySlider pager="true" [options]="slideOpts"  pager="true" (ionSlidesDidLoad)="ionSlidesDidLoad(mySlider)" (ionSlideDidChange)='ionSlideDidChange(mySlider)' class="">
-      <ion-slide>
-        <!-- <h1>Slide 1</h1> -->
-        <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate class="width-100p add-education">
+    <ion-slides #mySlider pager="true" [options]="slideOpts" (ionSlideDidChange)='ionSlideDidChange()' class="">
+      <ion-slide class="startmonth-section">
+        <form name="form" (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate>
           <div *ngFor="let education of educationList; let i = index;">
-            <ion-row class="contact-form-row mt-24" *ngIf="i==0">
-              <ion-col class="align-left ion-padding">
+            <ion-row class="contact-form-row" *ngIf="i==0">
+              <ion-col class="align-left">
                 <ion-label>Institution <span class="required-star"><img src="assets/images/required.svg"></span></ion-label>
                 <ion-item class="ionitem-padding-remove ion-no-padding mynetwork-searchbar" lines="none">
                 <ion-searchbar placeholder="" [(ngModel)]="education.school" #school="ngModel" name="school" enterkeyhint="go"
                   (search)="searchUser(education.school,i)" inputmode="search"
+                  (ionClear)="clearSearch(education)" 
                   class="network-searchbar" [ngClass]="{ 'is-invalid': f1.submitted && education.school.invalid }" required></ion-searchbar>
                 </ion-item>
                 <div *ngIf="f1.submitted && school.invalid">
                   <div *ngIf="(school.errors.required )" class="error-msg">Please enter valid institution</div>
                 </div>
               </ion-col>
+              <ion-button [ngClass]="{'bottom-position': listSearchData, 'top-position': searchNoData}" type="button" *ngIf="showSearch" 
+              (click)="searchUser(education.school,i)"
+              class="button-native blue-bg-button width-100p next-button" 
+              fill="clear" ion-button full round>
+          <span class="next-btn-text mr-8">Search</span>
+           </ion-button>
             </ion-row>
           </div>
           <div *ngIf="statusMessage">
@@ -48,7 +54,7 @@
               </div>
             </div>
           </span>
-          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none" *ngIf="!showSearch">
             <ion-col>
               <button type="submit"  (click)="ScrollToTop()" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="swipeNext(mySlider,f1,selectedItem)">
@@ -60,7 +66,7 @@
         </form>
       </ion-slide>
       <ion-slide>
-        <!-- <h1>Slide 2</h1> -->
+
         <form name="form" (ngSubmit)="f2.form.valid" #f2="ngForm" novalidate class="width-100p add-education">
           <div class="chip-content-main add-edu-nobg" *ngIf="hcoDetails.hcoName">
           <div class="about-content-main" >
@@ -81,13 +87,6 @@
                 <ion-col class="align-left">
                   <ion-label>Degree Earned <span class="required-star"><img src="assets/images/required.svg"></span>
                   </ion-label>
-                  <!--<ion-select idlDefault placeholder="" [(ngModel)]="education.hcoDegree" #degree="ngModel" name="degree_{{i}}"
-                      class="contact-section-form blue-border-input"
-                      (ionChange)="hcoDegreeType($event,education.hcoDegree,i)" [ngClass]="{ 'is-invalid': f2.submitted && education.hcoDegree.invalid }" required>
-                      <ion-select-option *ngFor="let source of degreeType" value="{{ source.degreeName }}">
-                        {{ source.degreeName }}</ion-select-option>
-                    </ion-select>
-                  -->
                   <ionic-selectable class="custom-input ion-no-padding blue-border-input"
                   #degree="ngModel"
                   [ngClass]="{ 'is-invalid': f2.submitted && education.hcoDegree.invalid }"
@@ -108,7 +107,7 @@
                   closeButtonText="Close"
                   searchPlaceholder="">
 
-                              <ng-template ionicSelectableHeaderTemplate>
+         <ng-template ionicSelectableHeaderTemplate>
                                  <ion-row  class="searchmodule-header">
                                   <ion-col size="2"></ion-col>
                                   <ion-col size="8">
@@ -149,14 +148,6 @@
                 <ion-col class="align-left" >
                   <ion-label>Graduation Year <span class="required-star"><img src="assets/images/required.svg"></span>
                   </ion-label>
-                  <!--
-                  <ion-select idlDefault placeholder="" [(ngModel)]="education.year" #toYear="ngModel" name="periodFfrom_{{i}}"
-                    class="contact-section-form blue-border-input" (ionChange)="graduationYear($event,education.year,i)" 
-                    required>
-                    <ion-select-option *ngFor="let toYear of yearHistory" value="{{ toYear }}">{{ toYear }}
-                    </ion-select-option>
-                  </ion-select>-->
-
 
                   <ionic-selectable class="contact-section-form blue-border-input"
                   #toYear="ngModel"
@@ -209,7 +200,7 @@
               </ion-row>
             </div>
           </div>
-          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none">
+          <ion-item class="item-background-color ionitem-padding-remove ion-no-padding mt-16 next-bottom-button" lines="none" *ngIf="!showSearch"> 
             <ion-col>
               <button type="submit" class="button-native blue-bg-button width-100p next-button" fill="clear" ion-button
               full round (click)="swipeNextSecond(mySlider,f2)">

@@ -70,6 +70,12 @@ public mobileNumberInput='';
     let mobileNumber = f.value['phoneNumber'].replace('+','');
     let countryCodes= this.countryCodeArray;
     let validNumber = countryCodes.some(elem => mobileNumber.match('^' + elem));
+    if (validNumber) {
+      // Remove the existing country code
+      mobileNumber = mobileNumber.replace(new RegExp(`^(${countryCodes.join('|')})`), '');
+    }
+    // Add the country code from countryCodeArray[0]
+    mobileNumber = countryCodes[1] + mobileNumber;
     let phoneRegex = new RegExp("^[0-9]+$");
     let findPhoneRegex = phoneRegex.test(mobileNumber);
     if(mobileNumber.length < 10 || findPhoneRegex == false){

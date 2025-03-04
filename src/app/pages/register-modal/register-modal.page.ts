@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Output, EventEmitter } from '@angular/core';
 import { GraphqlDataService } from './../../services/graphql-data.service';
-import { ProvderInfoNode } from './../../services/type'
+import { npiNotificationResponse, ProvderInfoNode } from './../../services/type'
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -29,10 +29,19 @@ export class RegisterModalPage implements OnInit {
   setSuccess: boolean = false;
   selectWrapper;
   selectOptions;
+  isModalOpen = false;
+  email: string;
+  message: string;
+  supportEmail:any;
+  npiErrMsg:any;
+  npiEmptyResult:boolean;
+  npiEmailCheck:boolean;
+  setSignUpLoader:boolean;
   constructor(private modalCtr: ModalController,
     private router: Router,
     private _pocnService: GraphqlDataService,
     private loadingCtrl: LoadingController,
+    
   ) { }
 
   ngOnInit() {
@@ -127,4 +136,40 @@ export class RegisterModalPage implements OnInit {
   onCancel = (e) => {
     this.lookupProvider = '';
   }
+   // Open the modal
+    submitTicket() {
+      this.setSignUpLoader = true;
+      if(this.supportEmail){
+        let npiNotificationRes = {
+          fullName: this.firstName + ' ' + this.lastName,
+          userEmail: this.supportEmail,
+        }
+        this._pocnService.sendNpiLookupFailureNotification(npiNotificationRes).subscribe({
+          next: (response: npiNotificationResponse) => {
+            const npiResult = response?.data?.sendNpiLookupFailureNotification?.npiLookupFailureNotificationResult?.status;
+            const npiMessage = response?.data?.sendNpiLookupFailureNotification?.npiLookupFailureNotificationResult?.message;
+            console.log('submitTicket', response?.data);
+            this.setSignUpLoader = false;
+            if (npiResult === 'success') {
+              this.modalCtr.dismiss({});
+            } else if (npiResult === 'error' && npiMessage === "Please provide a valid email address") {
+              this.npiEmptyResult = true;
+              this.npiErrMsg = npiMessage;
+            }
+          },
+          error: (error) => {
+            console.error('Error:', error);
+          }
+        });
+      }else{
+        this.npiEmailCheck=true;
+      }
+  }
+
+  // Close the modal
+  closeModal() {
+    this.modalCtr.dismiss();
+  }
+
+  
 }
